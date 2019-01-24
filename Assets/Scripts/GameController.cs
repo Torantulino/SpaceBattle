@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
@@ -21,10 +22,23 @@ public class GameController : MonoBehaviour {
     #endregion
 
     public static GameObject LocalPlayer { get; private set; }
+    public static PlayerController LocalPlayerController { get; private set; }
 
     public static void SetLocalPlayer(GameObject player)
     {
         LocalPlayer = player;
+        LocalPlayerController = player.GetComponent<PlayerController>();
     }
 
+
+}
+
+public class EventArgs<T> : EventArgs
+{
+    public EventArgs(T value)
+    {
+        Value = value;
+    }
+
+    public T Value { get; private set; }
 }

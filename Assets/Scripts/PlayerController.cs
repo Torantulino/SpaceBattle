@@ -1,31 +1,35 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Ship))]
 public class PlayerController : NetworkBehaviour {
 
     [SyncVar(hook = "OnPlayerNameChanged")]
-    public string playerName;
+    private string playerName;
 
-    public float speed = 4f;
+    public Ship ship;
 
     public GameObject projectile;
     public InputField inputField;
 
-    private Rigidbody body;
+    public event EventHandler<EventArgs<string>> PlayerNameChanged;
 
-    public void Start()
+    void Start()
     {
         OnPlayerNameChanged(playerName);
+
+        PlayerNameChanged += (s, e) => inputField.text = e.Value;
     }
 
     public override void OnStartLocalPlayer()
     {
         // Set the local player as this game object
         GameController.SetLocalPlayer(gameObject);
-        // Set rigidbody reference
-        body = GetComponent<Rigidbody>();
+        // Set the reference for Ship
+        ship = GetComponent<Ship>();
         // Change color
         GetComponent<MeshRenderer>().material.color = Color.red;
         // Enabling input field for changing name
@@ -38,17 +42,31 @@ public class PlayerController : NetworkBehaviour {
         // Check if this code runs on the game object that represents my Player
 	    if (!isLocalPlayer)
 	        return;
-
+        
 	    //todo temporary code for testing - remove later
-	    body.AddForce(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * body.mass * speed);
-
+	    ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+	    
         //todo how to shoot - remove later
-	    if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
 	    {
 	        CmdShoot();
 	    }
     }
-    
+
+    // Getting playerName
+    public string GetPlayerName()
+    {
+        return playerName;
+    }
+
+    // Changing playerName
+    public void SetPlayerName(string newName)
+    {
+        CmdChangeName(newName);
+    }
+
+    #region Networking
+
     [Command]
     public void CmdShoot()
     {
@@ -58,12 +76,6 @@ public class PlayerController : NetworkBehaviour {
         NetworkServer.Spawn(shot);
         // Destroy it after some time
         Destroy(shot, 5f);
-    }
-
-    // Changing name using input field
-    public void UpdateName(string newName)
-    {
-        CmdChangeName(newName);
     }
 
     // Method for updating variable playerName - syncVar should be updated on the server
@@ -76,6 +88,10 @@ public class PlayerController : NetworkBehaviour {
     // Method is called when variable name was changed
     private void OnPlayerNameChanged(string newName)
     {
-        inputField.text = newName;
+        if (PlayerNameChanged != null)
+            PlayerNameChanged(this, new EventArgs<string>(newName));
     }
+
+    #endregion
+
 }
