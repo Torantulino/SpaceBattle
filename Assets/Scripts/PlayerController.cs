@@ -8,9 +8,19 @@ using UnityEngine.UI;
 public class PlayerController : NetworkBehaviour {
 
     [SyncVar(hook = "OnPlayerNameChanged")]
-    private string playerName;
+    private string _playerName;
 
-    public Ship ship;
+    #region Propeties
+
+    public string PlayerName
+    {
+        get { return _playerName; }
+        private set { CmdChangeName(value); }
+    }
+
+    #endregion
+
+    public Ship Ship { get; private set; }
 
     public GameObject projectile;
     public InputField inputField;
@@ -19,7 +29,7 @@ public class PlayerController : NetworkBehaviour {
 
     void Start()
     {
-        OnPlayerNameChanged(playerName);
+        OnPlayerNameChanged(PlayerName);
 
         PlayerNameChanged += (s, e) => inputField.text = e.Value;
     }
@@ -29,7 +39,7 @@ public class PlayerController : NetworkBehaviour {
         // Set the local player as this game object
         GameController.SetLocalPlayer(gameObject);
         // Set the reference for Ship
-        ship = GetComponent<Ship>();
+        Ship = GetComponent<Ship>();
         // Change color
         GetComponent<MeshRenderer>().material.color = Color.red;
         // Enabling input field for changing name
@@ -44,19 +54,13 @@ public class PlayerController : NetworkBehaviour {
 	        return;
         
 	    //todo temporary code for testing - remove later
-	    ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+	    Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 	    
         //todo how to shoot - remove later
         if (Input.GetKeyDown(KeyCode.Space))
 	    {
 	        CmdShoot();
 	    }
-    }
-
-    // Getting playerName
-    public string GetPlayerName()
-    {
-        return playerName;
     }
 
     // Changing playerName
@@ -82,7 +86,7 @@ public class PlayerController : NetworkBehaviour {
     [Command]
     public void CmdChangeName(string newName)
     {
-        playerName = newName;
+        _playerName = newName;
     }
 
     // Method is called when variable name was changed
