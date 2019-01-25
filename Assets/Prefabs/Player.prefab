@@ -111,7 +111,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1685116653520778}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.3740273, y: -0.85145736, z: -2.1061573}
+  m_LocalPosition: {x: -0.96732426, y: 0.35480857, z: -1.2014837}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224713118473935356}
@@ -262,7 +262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b910a229c709807418a14a6f27ba380a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ship: {fileID: 0}
   projectile: {fileID: 1308864699473142, guid: e6a28a2711f43e74c90aaf87a7ea1b8b, type: 2}
   inputField: {fileID: 114948410030391022}
 --- !u!114 &114494204510440322
@@ -417,7 +416,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114218671116480646}
-        m_MethodName: SetPlayerName
+        m_MethodName: set_PlayerName
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

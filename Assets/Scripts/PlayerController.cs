@@ -12,10 +12,13 @@ public class PlayerController : NetworkBehaviour {
 
     #region Propeties
 
+    /// <summary>
+    /// Synchronized variable
+    /// </summary>
     public string PlayerName
     {
         get { return _playerName; }
-        private set { CmdChangeName(value); }
+        set { CmdChangeName(value); }
     }
 
     #endregion
@@ -29,9 +32,9 @@ public class PlayerController : NetworkBehaviour {
 
     void Start()
     {
-        OnPlayerNameChanged(PlayerName);
-
         PlayerNameChanged += (s, e) => inputField.text = e.Value;
+
+        OnPlayerNameChanged(PlayerName);
     }
 
     public override void OnStartLocalPlayer()
@@ -63,13 +66,14 @@ public class PlayerController : NetworkBehaviour {
 	    }
     }
 
-    // Changing playerName
-    public void SetPlayerName(string newName)
-    {
-        CmdChangeName(newName);
-    }
-
     #region Networking
+
+    // Method is called when variable name was changed
+    private void OnPlayerNameChanged(string newName)
+    {
+        if (PlayerNameChanged != null)
+            PlayerNameChanged(this, new EventArgs<string>(newName));
+    }
 
     [Command]
     public void CmdShoot()
@@ -87,13 +91,6 @@ public class PlayerController : NetworkBehaviour {
     public void CmdChangeName(string newName)
     {
         _playerName = newName;
-    }
-
-    // Method is called when variable name was changed
-    private void OnPlayerNameChanged(string newName)
-    {
-        if (PlayerNameChanged != null)
-            PlayerNameChanged(this, new EventArgs<string>(newName));
     }
 
     #endregion

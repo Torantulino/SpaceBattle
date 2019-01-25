@@ -9,10 +9,13 @@ public class Destructible : NetworkBehaviour
 
     #region Propeties
 
+    /// <summary>
+    /// Synchronized variable
+    /// </summary>
     public float Hp
     {
         get { return _hp; }
-        private set { CmdChangeHp(value); }
+        set { CmdChangeHp(value); }
     }
 
     #endregion
