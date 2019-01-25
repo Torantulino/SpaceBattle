@@ -2,7 +2,7 @@
 We're using **UNet** - Unity Networking together with High Level API to handle all multiplayer aspects.  
 All players in a scene are created using the same prefab - **Player**. To distinguish between "my" Player and other players in the scene we need an idea of **Local Player**.
 Local player is set automatically when we *connect to a server* (it's useful to run a check if there's a reference before trying to access it).  
-**GameController** is a singleton class that provides some useful stuff.
+**GameController** is a singleton MonoBehaviour class that provides some useful stuff.
 
 ### Accessing Local Player
 To access local player use static fields in the GameController, for  **GameObject**
@@ -20,15 +20,20 @@ GameController.LocalPlayerController.Ship
 // or
 GameController.LocalPlayer.GetComponent<Ship>()
 ```
-### Get & Set methods
-Due to UNet limitations all variables that are synchronized, ex. Ship's Hp cannot use *get* and *set* properties. For them there are Get and Set methods and they handle all code needed for synchronization.
+### Properties & Methods
+Please don't use private variables directly, to make sure that they're synchronized properly. Even better - use events instead of getting values.
+Properties
 ```cs
-PlayerController.GetPlayerName();
-PlayerController.SetPlayerName(string newName);
-Ship.GetHp();
+PlayerController.PlayerName
+PlayerController.Ship
+Ship.Hp
+```
+Methods
+```cs
+
 ```
 ### Events
-There're events everywhere and events are nice, so use them. For now they use generic implementation of EventArgs in the GameController.cs file (just use *Value* from the EventArgs). Example:
+For now, events use generic implementation of EventArgs in the GameController.cs file (just use *Value* from the EventArgs). Example:
 ```cs
 GameController.LocalPlayerController.PlayerNameChanged += (s, e) => 
 Debug.Log("Local player name was changed to: " + e.Value);
