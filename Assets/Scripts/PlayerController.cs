@@ -21,9 +21,9 @@ public class PlayerController : NetworkBehaviour {
         set { CmdChangeName(value); }
     }
 
-    #endregion
-
     public Ship Ship { get; private set; }
+
+    #endregion
 
     public InputField inputField;
 

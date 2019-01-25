@@ -38,6 +38,9 @@ public class Unit : Destructible
 
 	}
 
+    /// <summary>
+    /// Tries to shoot from all weapons
+    /// </summary>
     public void Shoot()
     {
         //todo should do checks on the client side before sending Command
