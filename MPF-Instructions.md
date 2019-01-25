@@ -10,7 +10,7 @@ To access local player use static fields in the GameController, for  **GameObjec
 GameController.LocalPlayer
 ```
 Local player **PlayerController** script (with all information about player, ex. name)
-Player controller is attached to all Player objects, so for example you can access any player name by using `GetComponent<PlayerController>().GetPlayerName()`
+Player controller is attached to all Player objects, so for example you can access any player name by using `GetComponent<PlayerController>().PlayerName`
 ```cs
 GameController.LocalPlayerController
 ```
