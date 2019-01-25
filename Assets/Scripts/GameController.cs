@@ -30,7 +30,6 @@ public class GameController : MonoBehaviour {
         LocalPlayerController = player.GetComponent<PlayerController>();
     }
 
-
 }
 
 public class EventArgs<T> : EventArgs

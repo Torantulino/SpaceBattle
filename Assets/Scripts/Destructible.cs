@@ -7,7 +7,7 @@ public class Destructible : NetworkBehaviour
     [SyncVar(hook = "OnHpChanged")]
     private float _hp;
 
-    #region Propeties
+    #region Properties
 
     /// <summary>
     /// Synchronized variable
@@ -20,7 +20,7 @@ public class Destructible : NetworkBehaviour
 
     #endregion
 
-    public event EventHandler<EventArgs<float>> HpChanged;
+    public event EventHandler<EventArgs<float>> HpChanged;//
 
     public void Start()
     {

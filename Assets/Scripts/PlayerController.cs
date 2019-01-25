@@ -10,7 +10,7 @@ public class PlayerController : NetworkBehaviour {
     [SyncVar(hook = "OnPlayerNameChanged")]
     private string _playerName;
 
-    #region Propeties
+    #region Properties
 
     /// <summary>
     /// Synchronized variable
@@ -25,7 +25,6 @@ public class PlayerController : NetworkBehaviour {
 
     public Ship Ship { get; private set; }
 
-    public GameObject projectile;
     public InputField inputField;
 
     public event EventHandler<EventArgs<string>> PlayerNameChanged;
@@ -62,9 +61,15 @@ public class PlayerController : NetworkBehaviour {
         //todo how to shoot - remove later
         if (Input.GetKeyDown(KeyCode.Space))
 	    {
-	        CmdShoot();
+	        Ship.Shoot();
 	    }
-    }
+
+        //todo changing aiming direction - upgrade later
+	    if (Input.GetKey(KeyCode.E))
+	        Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
+	    if (Input.GetKey(KeyCode.Q))
+	        Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
+	}
 
     #region Networking
 
@@ -73,17 +78,6 @@ public class PlayerController : NetworkBehaviour {
     {
         if (PlayerNameChanged != null)
             PlayerNameChanged(this, new EventArgs<string>(newName));
-    }
-
-    [Command]
-    public void CmdShoot()
-    {
-        // Instantiate GameObject
-        GameObject shot = Instantiate(projectile, transform.position, transform.rotation);
-        // Spawn it - so it appears for all clients
-        NetworkServer.Spawn(shot);
-        // Destroy it after some time
-        Destroy(shot, 5f);
     }
 
     // Method for updating variable playerName - syncVar should be updated on the server
