@@ -24,13 +24,23 @@ GameController.LocalPlayer.GetComponent<Ship>()
 Please don't use private variables directly, to make sure that they're synchronized properly. Even better - use events instead of getting values.
 Properties
 ```cs
-PlayerController.PlayerName
-PlayerController.Ship
-Ship.Hp
+// PlayerController
+PlayerName
+Ship
+
+// Ship
+Hp
+Target
 ```
 Methods
 ```cs
+// PlayerController
 
+// Ship
+void Shoot()
+
+// Weapon
+bool Ready()
 ```
 ### Events
 For now, events use generic implementation of EventArgs in the GameController.cs file (just use *Value* from the EventArgs). Example:
@@ -40,10 +50,10 @@ Debug.Log("Local player name was changed to: " + e.Value);
 ```
 Events:
 ```
-* PlayerController:
+// PlayerController:
 PlayerNameChanged
 
-* Ship:
+// Ship:
 HpChanged
 ```
 ### Player movement
