@@ -5,10 +5,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
-public class PlayerController : NetworkBehaviour {
-
-    [SyncVar(hook = "OnPlayerNameChanged")]
-    private string _playerName;
+public partial class PlayerController : NetworkBehaviour {
 
     #region Properties
 
@@ -27,25 +24,11 @@ public class PlayerController : NetworkBehaviour {
 
     public InputField inputField;
 
-    public event EventHandler<EventArgs<string>> PlayerNameChanged;
-
     void Start()
     {
         PlayerNameChanged += (s, e) => inputField.text = e.Value;
 
         OnPlayerNameChanged(PlayerName);
-    }
-
-    public override void OnStartLocalPlayer()
-    {
-        // Set the local player as this game object
-        GameController.SetLocalPlayer(gameObject);
-        // Set the reference for Ship
-        Ship = GetComponent<Ship>();
-        // Change color
-        GetComponent<MeshRenderer>().material.color = Color.red;
-        // Enabling input field for changing name
-        inputField.interactable = true;
     }
 
     // Update is called once per frame
@@ -70,23 +53,5 @@ public class PlayerController : NetworkBehaviour {
 	    if (Input.GetKey(KeyCode.Q))
 	        Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
 	}
-
-    #region Networking
-
-    // Method is called when variable name was changed
-    private void OnPlayerNameChanged(string newName)
-    {
-        if (PlayerNameChanged != null)
-            PlayerNameChanged(this, new EventArgs<string>(newName));
-    }
-
-    // Method for updating variable playerName - syncVar should be updated on the server
-    [Command]
-    public void CmdChangeName(string newName)
-    {
-        _playerName = newName;
-    }
-
-    #endregion
 
 }
