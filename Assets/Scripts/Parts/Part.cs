@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Part : MonoBehaviour
 {
-    [SerializeField]//todo temporary - set this when recreating ship
     protected Ship playerShip;
 
 	// Use this for initialization
-	public void Start () {
-		
+	public void Start ()
+	{
+	    playerShip = GetComponentInParent<Ship>();
 	}
 	
 	// Update is called once per frame
 	public void Update () {
 		
 	}
+
 }

@@ -29,9 +29,9 @@ public partial class PlayerController : NetworkBehaviour {
         PlayerNameChanged += (s, e) => inputField.text = e.Value;
 
         OnPlayerNameChanged(PlayerName);
+
     }
 
-    // Update is called once per frame
     void FixedUpdate ()
 	{
         // Check if this code runs on the game object that represents my Player
@@ -52,6 +52,10 @@ public partial class PlayerController : NetworkBehaviour {
 	        Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
 	    if (Input.GetKey(KeyCode.Q))
 	        Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
-	}
+
+        //todo manually refreshing Ship's structure
+	    if (Input.GetKeyUp(KeyCode.R))
+            Ship.RefreshParts();
+    }
 
 }
