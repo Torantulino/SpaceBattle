@@ -14,14 +14,14 @@ public class Weapon : Part
 	new void Start () {
 		base.Start();
 
-        //todo warn if there's no gun transform or no bullet prefab
+        if(!gunTransform || !bulletPrefab)
+            Debug.LogWarning("Weapon has no gunTransform and/or bulletPrefab attached.");
 	}
 	
 	// Update is called once per frame
 	new void Update () {
 		base.Update();
 
-        //todo upgrade
         gunTransform.localEulerAngles = playerShip.Target;
 	}
 

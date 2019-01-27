@@ -63,7 +63,6 @@ public class Unit : Destructible
     /// </summary>
     public void Shoot()
     {
-        //todo should do checks on the client side before sending Command
         CmdShoot();
     }
 
@@ -161,12 +160,10 @@ public class Unit : Destructible
             if (!weapon.Ready())
                 continue;
             // Instantiate GameObject
-            //todo repair
             GameObject shot = Instantiate(weapon.bulletPrefab, weapon.gunTransform.position, weapon.gunTransform.rotation);
             // Spawn it - so it appears for all clients
             NetworkServer.Spawn(shot);
             // Destroy it after some time
-            //todo projectile should handle that itself
             Destroy(shot, 5f);
         }       
     }
