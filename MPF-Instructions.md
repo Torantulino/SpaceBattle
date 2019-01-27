@@ -10,20 +10,23 @@ Local player is set automatically when we *connect to a server* (it's useful to 
 * Add and synchronize all parts that build up players' ships
 
 ### Scripts explanation
-* GameController - provides some useful stuff
-* PlayerController.cs, PlayerControllerNet.cs - (partial class) controller for players
-* ProjectileController - (temporary) class to control bullets
-* Destructible.cs - destructible objects
-* Unit.cs (inherits from Destructible) - objects that can have parts
-* Ship.cs (inherits from Unit) - movable Units
+* *Controllers*
+  * GameController.cs - provides some useful stuff
+  * PlayerController.cs, PlayerControllerNet.cs - (partial class) controller for players
+  * ProjectileController.cs - (temporary) class to control bullets
+* *Destructibles*
+  * Destructible.cs - destructible objects
+  * Unit.cs (inherits from Destructible) - objects that can have parts
+  * Ship.cs (inherits from Unit) - movable Units
 * *Extensions*
+  * GenericEventArgs.cs - implements generic version of EventArgs
   * TransformExtension.cs - adds DestroyChildren(..) extension method to Transform
 * *Parts*
   * Part.cs - MonoBehaviour class for parts
   * Weapon.cs (inherits from Part) - Weapon MonoBehaviour - can turn and shoot
   * PartInfo.cs - ScriptableObject that holds information about a part (id, prefab)
   * PartData.cs - holds information about single Part that is attached to a Ship (id, position, rotation)
-  * PartController.cs - keeps a List of all PartInfo scriptable objects
+  * PartManager.cs - keeps a List of all PartInfo scriptable objects
 
 ### Accessing Local Player
 To access local player use static fields in the GameController, for  **GameObject**
@@ -38,19 +41,19 @@ GameController.LocalPlayerController
 Local player **Ship** script (all information about vessel, ex. hp)
 ```
 GameController.LocalPlayerController.Ship
-// or
-GameController.LocalPlayer.GetComponent<Ship>()
 ```
+### How to set up a scene to work with MP
+Drag GameController, NetworkManager and PartManager from Prefabs folder to your scene.
 ### Properties
 Please don't use private variables directly, to make sure that they're synchronized properly.
 ```cs
 // PlayerController
-PlayerName
-Ship
+string PlayerName
+Ship Ship
 
 // Ship
-Hp
-Target
+float Hp
+Vector3 Target
 ```
 ### Methods
 ```cs
@@ -65,7 +68,7 @@ void RefreshParts()
 bool Ready()
 ```
 ### Events
-For now, events use generic implementation of EventArgs in the GameController.cs file (just use *Value* from the EventArgs).
+For now, events use generic implementation of EventArgs (just use *Value* from the EventArgs).
 ```
 // PlayerController
 PlayerNameChanged
@@ -74,18 +77,18 @@ PlayerNameChanged
 HpChanged
 PartsChanged
 ```
-
 ### Creating a new Part
-1. Create a prefab and add a class that derives from Part to the parent object.
-2. Fill all needed visible fields in the inspector for it.
+1. Create a prefab for your Part and add a class that derives from Part to the parent GameObject of that prefab.
+2. Fill all needed fields in Inspector.
 3. Create ScriptableObject instance: Assets/Create/Parts/*
 4. Edit all information in Inspector, make sure that id is unique.
-5. Add it to the **Registered Parts** in the "Part Controller" component of GameController.
+5. Add it to the **Registered Parts** in the "Part Manager" component of Managers/PartManager.
 
 **Never change fields of ScriptableObject instances via code - changes are permanent.**
 
-Only server can add parts to Units. Any parts you add locally will be overriden when you refresh List for parts!
+Only server can add parts to Units. Any parts you add locally will be overridden when you refresh List for parts!
 API for requesting Part adding will be provided soon.
-
 ### Player movement
 Local Player movement isn't restricted in any way - all changes in position and rotation will be synchronized automatically. For now, there's `Thrust(Vector3 force)` method in Ship.
+### Known issues
+* when refreshing and rebuilding Parts for a Unit, each time *weapons* Count keeps rising until *2n - 1* (where *n* is actual number of weapons); there are no warnings/errors and Shoot() still works.
