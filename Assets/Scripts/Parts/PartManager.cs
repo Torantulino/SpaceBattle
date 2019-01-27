@@ -1,16 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Keeps all PartInfo scriptable objects
+/// Keeps all PartInfo scriptable objects.
 /// </summary>
-public class PartController : MonoBehaviour
+public class PartManager : MonoBehaviour
 {
     #region Singleton
-    private static PartController instance;
+    private static PartManager instance;
 
-    public static PartController Instance { get { return instance; } }
+    public static PartManager Instance { get { return instance; } }
 
     private void Awake()
     {
@@ -25,9 +24,15 @@ public class PartController : MonoBehaviour
     }
     #endregion
 
+    [Header("Add all PartInfo scriptable objects below.")]
     [SerializeField]
     private List<PartInfo> registeredParts;
 
+    /// <summary>
+    /// Returns PartInfo for specified part.
+    /// </summary>
+    /// <param name="id">Id of a Part.</param>
+    /// <returns></returns>
     public PartInfo GetPartById(int id)
     {
         //todo handle null

@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Networking;
+﻿using UnityEngine;
 
+/// <summary>
+/// Controls a projectile.
+/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class ProjectileController : MonoBehaviour {
 

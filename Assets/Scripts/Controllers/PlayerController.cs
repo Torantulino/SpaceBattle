@@ -1,8 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 
+/// <summary>
+/// Class for all Player prefabs.
+/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
 public partial class PlayerController : NetworkBehaviour {
@@ -10,7 +11,7 @@ public partial class PlayerController : NetworkBehaviour {
     #region Properties
 
     /// <summary>
-    /// Synchronized variable
+    /// Name of the player. Synchronized variable
     /// </summary>
     public string PlayerName
     {
@@ -18,20 +19,21 @@ public partial class PlayerController : NetworkBehaviour {
         set { CmdChangeName(value); }
     }
 
+    /// <summary>
+    /// Ship script of the Player.
+    /// </summary>
     public Ship Ship { get; private set; }
 
     #endregion
 
-    public InputField inputField;
-
+    // Use this for initialization
     void Start()
     {
-        PlayerNameChanged += (s, e) => inputField.text = e.Value;
-
+        // Update PlayerName, to reflect actual value for players that just joined
         OnPlayerNameChanged(PlayerName);
-
     }
 
+    // Update is called once per physics tick
     void FixedUpdate ()
 	{
         // Check if this code runs on the game object that represents my Player
@@ -43,9 +45,7 @@ public partial class PlayerController : NetworkBehaviour {
 	    
         //todo how to shoot - remove later
         if (Input.GetKeyDown(KeyCode.Space))
-	    {
 	        Ship.Shoot();
-	    }
 
         //todo changing aiming direction - upgrade later
 	    if (Input.GetKey(KeyCode.E))

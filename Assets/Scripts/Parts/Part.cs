@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Base class for all parts.
+/// </summary>
+[SelectionBase]
 public class Part : MonoBehaviour
 {
     protected Ship playerShip;

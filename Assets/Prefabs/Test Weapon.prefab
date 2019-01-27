@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 4852845717343110}
   - component: {fileID: 114014936788064114}
   m_Layer: 0
-  m_Name: TestWeapon
+  m_Name: Test Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,7 +306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dcb9fdc064f3854a9dfe8604e936fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerShip: {fileID: 0}
   gunTransform: {fileID: 4761842585499514}
   bulletPrefab: {fileID: 1308864699473142, guid: e6a28a2711f43e74c90aaf87a7ea1b8b,
     type: 2}

@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+/// <summary>
+/// Class for all objects that can have Parts.
+/// </summary>
 public class Unit : Destructible
 {
+    [Tooltip("Empty GameObject used to represent aiming direction. Should also be put into NetworkTransformChild component.")]
     public Transform aimTransform;
 
     protected List<PartData> parts = new List<PartData>();
     protected List<Weapon> weapons = new List<Weapon>();
-
-    public event EventHandler<EventArgs> PartsChanged;
 
     #region Properties
 
@@ -24,6 +26,11 @@ public class Unit : Destructible
     }
 
     #endregion
+
+    /// <summary>
+    /// Invoked when all or some parts changed.
+    /// </summary>
+    public event EventHandler<EventArgs> PartsChanged;
 
     // Use this for initialization
     public new void Start () {
@@ -45,12 +52,14 @@ public class Unit : Destructible
         if (!isServer)
             return;
 
-        //todo test part
+        // Add all parts that every player should have when they start.
         parts.Add(new PartData(0, new Vector3(0, 1, 0)));
+        parts.Add(new PartData(0, new Vector3(1, 0, 0)));
+        parts.Add(new PartData(0, new Vector3(-1, 0, 0)));
     }
 
     /// <summary>
-    /// Tries to shoot from all weapons
+    /// Tries to shoot from all weapons.
     /// </summary>
     public void Shoot()
     {
@@ -59,7 +68,7 @@ public class Unit : Destructible
     }
 
     /// <summary>
-    /// Just refreshes parts List
+    /// Refreshes the parts List. Rebuilds parts when successful.
     /// </summary>
     public void RefreshParts()
     {
@@ -74,14 +83,13 @@ public class Unit : Destructible
     private void RebuildParts()
     {
         // Remove all children
-        //todo remove Canvas if no longer needed
-        transform.DestroyChildren("Aim", "Canvas");
+        transform.DestroyChildren("Aim");
         // Loop through parts and instantiate them
         // Note: Those parts are only created locally
         foreach (PartData part in parts)
         {
-            Instantiate(PartController.Instance.GetPartById(part.id).prefab, transform.position + part.position,
-                Quaternion.Euler(transform.localEulerAngles + part.rotation), gameObject.transform);
+            Instantiate(PartManager.Instance.GetPartById(part.Id).prefab, transform.position + part.Position,
+                Quaternion.Euler(transform.localEulerAngles + part.Rotation), gameObject.transform);
         }
         // Invoking event
         if (PartsChanged != null)
@@ -89,10 +97,13 @@ public class Unit : Destructible
     }
 
     /// <summary>
-    /// Method searches through children for Weapon and assigns them to the List
+    /// Event handler for PartsChanged.
     /// </summary>
     private void OnPartsChanged(object sender, EventArgs e)
     {
+        // Clear weapons List
+        weapons.Clear();
+        // Search through children for Weapon and assign them to the List.
         foreach (Transform child in transform)
         {
             Weapon weapon = child.GetComponent<Weapon>();
@@ -105,6 +116,9 @@ public class Unit : Destructible
 
     #region Networking
 
+    /// <summary>
+    /// Request for refreshing parts List.
+    /// </summary>
     [Command]
     private void CmdRefreshParts()
     {
@@ -118,6 +132,9 @@ public class Unit : Destructible
         RpcSendParts(strings);
     }
 
+    /// <summary>
+    /// Send parts to clients.
+    /// </summary>
     [ClientRpc]
     private void RpcSendParts(string[] strings)
     {
@@ -132,8 +149,11 @@ public class Unit : Destructible
         RebuildParts();
     }
 
+    /// <summary>
+    /// Request server to shoot.
+    /// </summary>
     [Command]
-    public void CmdShoot()
+    private void CmdShoot()
     {
         foreach (Weapon weapon in weapons)
         {
@@ -141,6 +161,7 @@ public class Unit : Destructible
             if (!weapon.Ready())
                 continue;
             // Instantiate GameObject
+            //todo repair
             GameObject shot = Instantiate(weapon.bulletPrefab, weapon.gunTransform.position, weapon.gunTransform.rotation);
             // Spawn it - so it appears for all clients
             NetworkServer.Spawn(shot);

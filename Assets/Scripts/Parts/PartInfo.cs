@@ -1,14 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// ScriptableObject that holds information about a part.
+/// </summary>
 [CreateAssetMenu(fileName = "New Part", menuName = "Parts/PartInfo")]
 public class PartInfo : ScriptableObject
 {
+    [Tooltip("Unique id of a part")]
+    public int id;
 
-    public int id;// unique id of a part
-    public new string name = "New Part";// default name for ScriptableObject instance
-    public Sprite icon = null;// Icon for this part
-    public GameObject prefab = null;// GameObject that is created when this part is attached to a ship
+    [Tooltip("Name of a Part")]
+    public new string name = "New Part";
+
+    [Tooltip("Part icon to show on UI")]
+    public Sprite icon = null;
+
+    [Tooltip("GameObject that is created when this part is attached to a ship")]
+    public GameObject prefab = null;
 
 }
