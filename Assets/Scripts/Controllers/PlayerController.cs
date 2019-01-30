@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
+[RequireComponent(typeof(BuildController))]
 public partial class PlayerController : NetworkBehaviour {
 
     #region Properties
@@ -32,6 +33,8 @@ public partial class PlayerController : NetworkBehaviour {
     {
         // Update PlayerName, to reflect actual value for players that just joined
         OnPlayerNameChanged(PlayerName);
+        //Get buildController
+        buildController = GetComponent<BuildController>();
     }
 
     // Update is called once per physics tick
