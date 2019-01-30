@@ -31,6 +31,13 @@ public partial class PlayerController : NetworkBehaviour {
     {
         // Update PlayerName, to reflect actual value for players that just joined
         OnPlayerNameChanged(PlayerName);
+
+        // All other players
+        if (isLocalPlayer)
+            return;
+
+        // Set the reference for Ship
+        Ship = GetComponent<Ship>();
     }
 
     // Update is called once per physics tick
@@ -53,9 +60,9 @@ public partial class PlayerController : NetworkBehaviour {
 	    if (Input.GetKey(KeyCode.Q))
 	        Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
 
-        //todo manually refreshing Ship's structure
+        //todo manually refresh all parts
 	    if (Input.GetKeyUp(KeyCode.R))
-            Ship.RefreshParts();
+	        Ship.RefreshParts();
     }
 
 }

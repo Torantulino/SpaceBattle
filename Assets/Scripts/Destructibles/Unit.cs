@@ -52,10 +52,6 @@ public class Unit : Destructible
         if (!isServer)
             return;
 
-        // Add all parts that every player should have when they start.
-        parts.Add(new PartData(0, new Vector3(0, 1, 0)));
-        parts.Add(new PartData(0, new Vector3(1, 0, 0)));
-        parts.Add(new PartData(0, new Vector3(-1, 0, 0)));
     }
 
     /// <summary>
@@ -64,6 +60,16 @@ public class Unit : Destructible
     public void Shoot()
     {
         CmdShoot();
+    }
+
+    /// <summary>
+    /// Adds part to Unit.
+    /// </summary>
+    /// <param name="partData"></param>
+    public void AddPart(PartData partData)
+    {
+        CmdAddPart(partData.ToString());
+        RefreshParts();
     }
 
     /// <summary>
@@ -114,6 +120,16 @@ public class Unit : Destructible
     }
 
     #region Networking
+
+    /// <summary>
+    /// Request for adding a Part.
+    /// </summary>
+    /// <param name="part">PartData</param>
+    [Command]
+    private void CmdAddPart(string part)
+    {
+        parts.Add(new PartData(part));
+    }
 
     /// <summary>
     /// Request for refreshing parts List.
