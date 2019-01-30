@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Base class for all parts.
@@ -7,11 +8,15 @@
 public class Part : MonoBehaviour
 {
     protected Ship playerShip;
+    public List<Node> Nodes;
 
-	// Use this for initialization
-	public void Start ()
+    // Use this for initialization
+    public void Start ()
 	{
 	    playerShip = GetComponentInParent<Ship>();
+        //Initialise Nodes
+        foreach (Node n in GetComponentsInChildren<Node>())
+            Nodes.Add(n);
 	}
 	
 	// Update is called once per frame
