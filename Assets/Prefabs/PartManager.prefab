@@ -53,3 +53,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   registeredParts:
   - {fileID: 11400000, guid: 401fdc590f71b884294222d6aaf312da, type: 2}
+  - {fileID: 11400000, guid: 89637ab7606b83044a41c0e79ff63fd8, type: 2}
