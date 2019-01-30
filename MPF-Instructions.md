@@ -1,7 +1,7 @@
 ## Multiplayer Framework
-We're using **UNet** - Unity Networking together with High Level API to handle all multiplayer aspects.  
+We're using **UNet** - Unity Networking together with High-Level API to handle all multiplayer aspects.  
 All players in a scene are created using the same prefab - **Player**. To distinguish between "my" Player and other players in the scene we need an idea of **Local Player**.
-Local player is set automatically when we *connect to a server* (it's useful to run a check if there's a reference before trying to access it).
+The local player is set automatically when we *connect to a server* (it's useful to run a check if there's a reference before trying to access it).
 
 ### Features
 * Create/connect to a server
@@ -14,6 +14,7 @@ Local player is set automatically when we *connect to a server* (it's useful to 
   * GameController.cs - provides some useful stuff
   * PlayerController.cs, PlayerControllerNet.cs - (partial class) controller for players
   * ProjectileController.cs - (temporary) class to control bullets
+  * CameraController.cs - controls the Main Camera
 * *Destructibles*
   * Destructible.cs - destructible objects
   * Unit.cs (inherits from Destructible) - objects that can have parts
@@ -43,7 +44,7 @@ Local player **Ship** script (all information about vessel, ex. hp)
 GameController.LocalPlayerController.Ship
 ```
 ### How to set up a scene to work with MP
-Drag GameController, NetworkManager and PartManager from Prefabs folder to your scene.
+Drag all prefabs from Prefabs/Controllers folder to your scene.
 ### Properties
 Please don't use private variables directly, to make sure that they're synchronized properly.
 ```cs
@@ -63,6 +64,7 @@ Vector3 Target
 void Thrust(Vector3 force)
 void Shoot()
 void RefreshParts()
+void AddPart(PartData partData)
 
 // Weapon
 bool Ready()
@@ -80,7 +82,7 @@ PartsChanged
 ### Creating a new Part
 1. Create a prefab for your Part and add a class that derives from Part to the parent GameObject of that prefab.
 2. Fill all needed fields in Inspector.
-3. Create ScriptableObject instance: Assets/Create/Parts/*
+3. Create ScriptableObject instance: Assets->Create->Parts->PartData
 4. Edit all information in Inspector, make sure that id is unique.
 5. Add it to the **Registered Parts** in the "Part Manager" component of Managers/PartManager.
 
@@ -92,3 +94,4 @@ API for requesting Part adding will be provided soon.
 Local Player movement isn't restricted in any way - all changes in position and rotation will be synchronized automatically. For now, there's `Thrust(Vector3 force)` method in Ship.
 ### Known issues
 * when refreshing and rebuilding Parts for a Unit, each time *weapons* Count keeps rising until *2n - 1* (where *n* is actual number of weapons); there are no warnings/errors and Shoot() still works.
+* Parts of ships that are already in the server won't refresh automatically for a new client. You can broadcast your own parts by clicking `R`, so new players can see your parts. Will be fixed in few days with a custom NetworkManager.
