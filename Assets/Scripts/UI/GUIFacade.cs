@@ -12,6 +12,11 @@ public class GUIFacade : MonoBehaviour
 	[SerializeField] private GUIToggle CombatPanel;
 	[SerializeField] private DisplayHP Health;
 
+	private void Start()
+	{
+		CursorMode();
+	}
+
 	/// <summary>
 	/// Toggle between build/combat mode
 	///<para>Changes between build/combat mode UI then appropriately locks or unlocks the cursor.</para>
@@ -20,9 +25,14 @@ public class GUIFacade : MonoBehaviour
 	{
 		ToggleElement(BuildPanel);
 		ToggleElement(CombatPanel);
+		CursorMode();
+	}
 
+	private void CursorMode()
+	{
 		//when the Build panel is active unlock mouse, else lock the mouse to the centre
-		switch (BuildPanel.isActiveAndEnabled)
+
+		switch (BuildPanel.isActiveAndEnabled)//this line give a null ref exception exactly once but still works for some reason.
 		{
 			case true:
 				Cursor.lockState = CursorLockMode.None;
