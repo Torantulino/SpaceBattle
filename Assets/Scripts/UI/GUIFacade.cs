@@ -15,9 +15,27 @@ public class GUIFacade : MonoBehaviour
 		BuildPanel = GameObject.Find("BuildPanel").GetComponent<GUIToggle>();
 	}
 
+	/// <summary>
+	/// Toggle build mode on/off
+	///<para>Changes state of build mode UI to on or off then appropriately locks or unlocks the cursor.</para>
+	/// </summary>
 	public void ToggleBuildMode()
 	{
 		ToggleElement(BuildPanel);
+
+		//when the Build panel is active unlock mouse, else lock the mouse to the centre
+		switch (BuildPanel.isActiveAndEnabled)
+		{
+			case true:
+				Cursor.lockState = CursorLockMode.None;
+				break;
+			case false:
+				Cursor.lockState = CursorLockMode.Locked;
+				break;
+			default:
+				Debug.LogError("Something's null and that's Bad.");
+				break;
+		}
 	}
 
 	/// <summary>
