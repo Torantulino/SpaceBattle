@@ -14,9 +14,14 @@ public class KeyboardListener : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKeyDown("tab"))
+		if (Input.GetKeyDown(KeyCode.Tab))
 		{
 			gui.ToggleBuildMode();
+		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
 		}
 
 		//debug and demo options
