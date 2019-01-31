@@ -32,7 +32,7 @@ public class GUIFacade : MonoBehaviour
 	{
 		//when the Build panel is active unlock mouse, else lock the mouse to the centre
 
-		switch (BuildPanel.isActiveAndEnabled)//this line give a null ref exception exactly once but still works for some reason.
+		switch (BuildPanel.isActiveAndEnabled) //this line give a null ref exception exactly once but still works for some reason.
 		{
 			case true:
 				Cursor.lockState = CursorLockMode.None;
