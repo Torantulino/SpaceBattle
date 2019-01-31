@@ -37,12 +37,12 @@ public class KeyboardListener : MonoBehaviour
 
 		if (Input.GetKey("up"))
 		{
-			gui.IncrementHealthBar(2 * Time.deltaTime);
+			gui.IncrementHealthBar(1 * Time.deltaTime);
 		}
 
 		if (Input.GetKey("down"))
 		{
-			gui.IncrementHealthBar(-2 * Time.deltaTime);
+			gui.IncrementHealthBar(-1 * Time.deltaTime);
 		}
 	}
 }
