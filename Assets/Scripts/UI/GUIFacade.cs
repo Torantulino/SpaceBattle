@@ -8,12 +8,7 @@ public class GUIFacade : MonoBehaviour
 	//This class is used as a hub for calls coming from or to GUI processes/objects
 
 	//build mode panel
-	public static GUIToggle BuildPanel;
-
-	void Start()
-	{
-		BuildPanel = GameObject.Find("BuildPanel").GetComponent<GUIToggle>();
-	}
+	[SerializeField] private GUIToggle BuildPanel;
 
 	/// <summary>
 	/// Toggle build mode on/off
