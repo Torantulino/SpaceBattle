@@ -35,10 +35,12 @@ public class GUIFacade : MonoBehaviour
 		if (BuildPanel.isActiveAndEnabled) //this line give a null ref exception exactly once but still works for some reason.
 		{
 			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
 		}
 		else
 		{
 			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
 		}
 	}
 
