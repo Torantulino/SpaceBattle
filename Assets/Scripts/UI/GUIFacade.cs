@@ -9,14 +9,17 @@ public class GUIFacade : MonoBehaviour
 
 	//build mode panel
 	[SerializeField] private GUIToggle BuildPanel;
+	[SerializeField] private GUIToggle CombatPanel;
+	[SerializeField] private DisplayHP Health;
 
 	/// <summary>
-	/// Toggle build mode on/off
-	///<para>Changes state of build mode UI to on or off then appropriately locks or unlocks the cursor.</para>
+	/// Toggle between build/combat mode
+	///<para>Changes between build/combat mode UI then appropriately locks or unlocks the cursor.</para>
 	/// </summary>
 	public void ToggleBuildMode()
 	{
 		ToggleElement(BuildPanel);
+		ToggleElement(CombatPanel);
 
 		//when the Build panel is active unlock mouse, else lock the mouse to the centre
 		switch (BuildPanel.isActiveAndEnabled)
@@ -41,5 +44,34 @@ public class GUIFacade : MonoBehaviour
 	public void ToggleElement(GUIToggle toggle)
 	{
 		toggle.Flip();
+	}
+
+	/// <summary>
+	/// Sets level of HP bar to given value. 
+	///<para>Values must range between 0 and 1.</para>
+	/// </summary>
+	public void SetHealthBar(float value)
+	{
+		if (value > 1 || value < 0)
+		{
+			Debug.LogError("Input out of bounds. Value must be > 0 && < 1.");
+		}
+
+		Health.SetHP(value);
+
+	}
+
+	/// <summary>
+	/// Adds a value to current display level of health bar. 
+	///<para>May be positive or negative. Absolute value should be no more than 1.</para>
+	/// </summary>
+	public void IncrementHealthBar(float value)
+	{
+		if (Mathf.Abs(value) > 1)
+		{
+			Debug.LogError("Input out of bounds. Value must be > -1 && < 1.");
+		}
+
+		Health.IncrementHP(value);
 	}
 }
