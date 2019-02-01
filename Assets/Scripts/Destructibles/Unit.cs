@@ -65,7 +65,6 @@ public class Unit : Destructible
     /// <summary>
     /// Adds part to Unit.
     /// </summary>
-    /// <param name="partData"></param>
     public void AddPart(PartData partData)
     {
         CmdAddPart(partData.ToString());
