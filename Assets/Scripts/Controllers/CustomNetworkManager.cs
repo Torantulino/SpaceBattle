@@ -127,7 +127,6 @@ public class CustomNetworkManager : NetworkManager
 
         Debug.Log("Client has requested to get his player added to the game");
 
-        //todo 名前をセットして
         // Refreshing parts for all players
         foreach (UnityEngine.Networking.PlayerController playerController in client.connection.playerControllers)
         {
