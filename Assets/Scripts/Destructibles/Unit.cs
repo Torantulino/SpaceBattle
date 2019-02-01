@@ -25,6 +25,14 @@ public class Unit : Destructible
         set { aimTransform.localEulerAngles = value; }
     }
 
+    /// <summary>
+    /// List of PartData parts attached to this Unit.
+    /// </summary>
+    public List<PartData> PartsData
+    {
+        get { return parts; }
+    }
+
     #endregion
 
     /// <summary>

@@ -55,6 +55,7 @@ Ship Ship
 // Ship
 float Hp
 Vector3 Target
+List<PartData> PartsData
 ```
 ### Methods
 ```cs
