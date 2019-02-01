@@ -22,7 +22,7 @@ public class Weapon : Part
 	new void Update () {
 		base.Update();
 
-        gunTransform.localEulerAngles = playerShip.Target;
+        gunTransform.eulerAngles = playerShip.transform.eulerAngles + playerShip.Target;
 	}
 
     /// <summary>
