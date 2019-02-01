@@ -84,7 +84,7 @@ PartsChanged
 2. Fill all needed fields in Inspector.
 3. Create ScriptableObject instance: Assets->Create->Parts->PartData
 4. Edit all information in Inspector, make sure that id is unique.
-5. Add it to the **Registered Parts** in the "Part Manager" component of Managers/PartManager.
+5. Add it to the **Registered Parts** in the "Part Manager" component of PartManager.
 
 **Never change fields of ScriptableObject instances via code - changes are permanent.**
 
@@ -94,4 +94,3 @@ API for requesting Part adding will be provided soon.
 Local Player movement isn't restricted in any way - all changes in position and rotation will be synchronized automatically. For now, there's `Thrust(Vector3 force)` method in Ship.
 ### Known issues
 * when refreshing and rebuilding Parts for a Unit, each time *weapons* Count keeps rising until *2n - 1* (where *n* is actual number of weapons); there are no warnings/errors and Shoot() still works.
-* Parts of ships that are already in the server won't refresh automatically for a new client. You can broadcast your own parts by clicking `R`, so new players can see your parts. Will be fixed in few days with a custom NetworkManager.
