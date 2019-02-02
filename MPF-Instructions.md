@@ -15,6 +15,7 @@ The local player is set automatically when we *connect to a server* (it's useful
   * PlayerController.cs, PlayerControllerNet.cs - (partial class) controller for players
   * ProjectileController.cs - (temporary) class to control bullets
   * CameraController.cs - controls the Main Camera
+  * CustomNetworkManager.cs - singleton for server/client matters
 * *Destructibles*
   * Destructible.cs - destructible objects
   * Unit.cs (inherits from Destructible) - objects that can have parts
@@ -28,7 +29,22 @@ The local player is set automatically when we *connect to a server* (it's useful
   * PartInfo.cs - ScriptableObject that holds information about a part (id, prefab)
   * PartData.cs - holds information about single Part that is attached to a Ship (id, position, rotation)
   * PartManager.cs - keeps a List of all PartInfo scriptable objects
+  
+### Using CustomNetworkManager (CNM)
+> How to set up a scene to work with MP:  
+> Drag all prefabs from Prefabs/Controllers folder to your scene.  
 
+Default UI was removed.  
+Hosting (creating a server and being a client at the same time)
+```cs
+NetworkClient CustomNetworkmanager.Instance.StartHost(int port = 7777)
+```
+Connecting to the server as a client
+```cs
+NetworkClient CustomNetworkmanager.Instance.Connect(string ipAddress = "localhost", int port = 7777)
+```
+You don't need to do anything with the return value. You can use events from CNM if you ever needed them.  
+There's a lot of other methods in CNM, but please don't use them as they are just overridden callbacks from the parent class and I can't change their access rights to hide them. Most of them don't do anything now, but they might in the future.
 ### Accessing Local Player
 To access local player use static fields in the GameController, for  **GameObject**
 ```cs
@@ -43,8 +59,6 @@ Local player **Ship** script (all information about vessel, ex. hp)
 ```
 GameController.LocalPlayerController.Ship
 ```
-### How to set up a scene to work with MP
-Drag all prefabs from Prefabs/Controllers folder to your scene.
 ### Properties
 Please don't use private variables directly, to make sure that they're synchronized properly.
 ```cs
