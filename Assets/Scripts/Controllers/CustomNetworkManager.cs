@@ -48,46 +48,18 @@ public class CustomNetworkManager : NetworkManager
 
     #region Custom methods
 
-    public override NetworkClient StartHost()
+    public NetworkClient StartHost(int port = 7777)
     {
-        SetPort();
+        networkPort = port;
         return base.StartHost();
     }
 
-    /*public void StartHost()
+    public NetworkClient Connect(string ipAddress = "localhost", int port = 7777)
     {
-        Debug.Log("Start HOSTTT");
-        SetPort();
-        base.StartHost();
-        //NetworkManager.singleton.StartHost();
-    }*/
-
-    public void Connect()
-    {
-        SetIpAddress();
-        SetPort();
-        StartClient();
-
-        //todo temp
-        if (isNetworkActive)
-        {
-            StopHost();
-            //NetworkManager.singleton.StopClient();
-        }
-
-    }
-
-    public void SetIpAddress()
-    {
-        string ipAddress = "";
-        if (string.IsNullOrEmpty(ipAddress))
-            ipAddress = "localhost";
         networkAddress = ipAddress;
-    }
+        networkPort = port;
 
-    public void SetPort()
-    {
-        networkPort = 7777;
+        return StartClient();
     }
 
     #endregion
@@ -116,7 +88,7 @@ public class CustomNetworkManager : NetworkManager
     {
         NetworkServer.SetClientReady(conn);
 
-        Debug.Log("Client is set to the ready state (ready to receive state updates): " + conn);
+        //Debug.Log("Client is set to the ready state (ready to receive state updates): " + conn);
     }
 
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
@@ -125,7 +97,7 @@ public class CustomNetworkManager : NetworkManager
 
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
 
-        Debug.Log("Client has requested to get his player added to the game");
+        //Debug.Log("Client has requested to get his player added to the game");
 
         // Refreshing parts for all players
         foreach (UnityEngine.Networking.PlayerController playerController in client.connection.playerControllers)
@@ -147,22 +119,22 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnStartHost()
     {
-        Debug.Log("Host has started");
+        //Debug.Log("Host has started");
     }
 
     public override void OnStartServer()
     {
-        Debug.Log("Server has started");
+        //Debug.Log("Server has started");
     }
 
     public override void OnStopServer()
     {
-        Debug.Log("Server has stopped");
+        //Debug.Log("Server has stopped");
     }
 
     public override void OnStopHost()
     {
-        Debug.Log("Host has stopped");
+        //Debug.Log("Host has stopped");
     }
 
     // Client callbacks
@@ -195,24 +167,24 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnClientNotReady(NetworkConnection conn)
     {
-        Debug.Log("Server has set client to be not-ready (stop getting state updates)");
+        //Debug.Log("Server has set client to be not-ready (stop getting state updates)");
     }
 
     public override void OnStartClient(NetworkClient client)
     {
-        Debug.Log("Client has started");
+        //Debug.Log("Client has started");
     }
 
     public override void OnStopClient()
     {
-        Debug.Log("Client has stopped");
+        //Debug.Log("Client has stopped");
     }
 
     public override void OnClientSceneChanged(NetworkConnection conn)
     {
         base.OnClientSceneChanged(conn);
 
-        Debug.Log("Server triggered scene change and we've done the same, do any extra work here for the client...");
+        //Debug.Log("Server triggered scene change and we've done the same, do any extra work here for the client...");
     }
 
 }
