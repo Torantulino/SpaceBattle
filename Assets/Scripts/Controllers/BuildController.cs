@@ -21,6 +21,8 @@ public class BuildController : MonoBehaviour {
     private GameObject ghost;
     private bool partSelected;
 
+    private Dictionary<Vector3, bool> partPositions = new Dictionary<Vector3, bool>();
+
     // Use this for initialization
     void Start () {
         buildmode = false;
@@ -36,7 +38,6 @@ public class BuildController : MonoBehaviour {
 
         GetCurrentParts();
         GetAvailableNodes();
-
     }
 	
 	// Update is called once per frame
@@ -50,9 +51,12 @@ public class BuildController : MonoBehaviour {
             {
                 //setflag
                 partSelected = true;
+                GetCurrentParts();
+                GetAvailableNodes();
 
                 //Display 'ghost' block
                 ghost = Instantiate(partManager.GetPartById(selectedPartID).prefab, transform);
+                ghost.name = "ghost";
                 //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
                 Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
                 col.a = 0.66f;
@@ -88,7 +92,10 @@ public class BuildController : MonoBehaviour {
             //Build Part
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                BuildPart(selectedPartID, ghost.transform.position);
+                BuildPart(selectedPartID, ghost.transform.localPosition);
+
+                Destroy(ghost);
+
                 partSelected = false;
             }
 
@@ -104,8 +111,17 @@ public class BuildController : MonoBehaviour {
     private void GetCurrentParts()
     {
         currentParts.Clear();
+        partPositions.Clear();
+        //Occupy center (core)
+        partPositions.Add(Vector3.zero, true);
+
         foreach (Part p in GetComponentsInChildren<Part>())
+        {
             currentParts.Add(p);
+            //round position to nearest int to ensure key is accurate
+            Vector3 pos = new Vector3(Mathf.Round(p.transform.localPosition.x), Mathf.Round(p.transform.localPosition.y), Mathf.Round(p.transform.localPosition.z));
+            partPositions.Add(pos, true);
+        }
     }
 
     private void GetAvailableNodes()
@@ -114,7 +130,23 @@ public class BuildController : MonoBehaviour {
 
         //Ship Nodes
         foreach (Node n in GetComponentsInChildren<Node>())
-            availableNodes.Add(n);
+        {
+            Vector3 nodePos = n.transform.parent.parent.position + n.transform.localPosition * 2.0f;
+            nodePos = new Vector3(Mathf.Round(nodePos.x), Mathf.Round(nodePos.y), Mathf.Round(nodePos.z));
+            //Check if space is already occupied
+            if (partPositions.ContainsKey(nodePos) && partPositions.ContainsValue(true))
+            {
+                //Make invisible, leave active to allow later reference
+                Color col = n.gameObject.GetComponent<Renderer>().material.color;
+                col.a = 0.0f;
+                n.gameObject.GetComponent<Renderer>().material.color = col;
+            }
+            else
+            {
+                //Add to list of available nodes
+                availableNodes.Add(n);
+            }
+        }
 
         ////Part Nodes
         //foreach (Part p in currentParts)
