@@ -51,7 +51,9 @@ public class BuildController : MonoBehaviour {
                 //Display 'ghost' block
                 ghost = Instantiate(partManager.GetPartById(selectedPartID).prefab, transform);
                 //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
-                ghost.gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+                Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
+                col.a = 0.66f;
+                ghost.gameObject.GetComponent<Renderer>().material.color = col;
                 ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
             }
 
