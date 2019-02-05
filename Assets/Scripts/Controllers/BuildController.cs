@@ -46,6 +46,7 @@ public class BuildController : MonoBehaviour {
         {
             if (!partSelected)
             {
+                //setflag
                 partSelected = true;
 
                 //Display 'ghost' block
@@ -54,6 +55,7 @@ public class BuildController : MonoBehaviour {
                 Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
                 col.a = 0.66f;
                 ghost.gameObject.GetComponent<Renderer>().material.color = col;
+                //Move ghost
                 ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
             }
 
@@ -66,7 +68,7 @@ public class BuildController : MonoBehaviour {
                     currentNode++;
                 else
                     currentNode = 0;
-
+                //Move ghost
                 ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
             }
             //cycle right
@@ -77,7 +79,7 @@ public class BuildController : MonoBehaviour {
                     currentNode--;
                 else
                     currentNode = availableNodes.Count - 1;
-
+                //Move ghost
                 ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
             }
 

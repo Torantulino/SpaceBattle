@@ -35,6 +35,13 @@ public partial class PlayerController : NetworkBehaviour {
         OnPlayerNameChanged(PlayerName);
         //Get buildController
         buildController = GetComponent<BuildController>();
+
+        // All other players
+        if (isLocalPlayer)
+            return;
+
+        // Set the reference for Ship
+        Ship = GetComponent<Ship>();
     }
 
     // Update is called once per physics tick
@@ -46,28 +53,27 @@ public partial class PlayerController : NetworkBehaviour {
 
         //Flight & Fight Mode
         if (!buildController.buildmode) {
-            //todo temporary code for testing - remove later
-            Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
-
+	        //todo temporary code for testing - remove later
+	        Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+	    
             //todo how to shoot - remove later
             if (Input.GetKeyDown(KeyCode.Space))
-                Ship.Shoot();
+	            Ship.Shoot();
 
             //todo changing aiming direction - upgrade later
-            if (Input.GetKey(KeyCode.E))
-                Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
-            if (Input.GetKey(KeyCode.Q))
-                Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
+	        if (Input.GetKey(KeyCode.E))
+	            Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
+	        if (Input.GetKey(KeyCode.Q))
+	            Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
 
-            //todo manually refreshing Ship's structure
-            if (Input.GetKeyUp(KeyCode.R))
-                Ship.RefreshParts();
+            //todo manually refresh all parts
+	        if (Input.GetKeyUp(KeyCode.R))
+	            Ship.RefreshParts();
         }
-	    //Toggle build mode
+	        
+        //Toggle build mode
 	    if (Input.GetKeyDown(KeyCode.Tab))
-	    {
-	        buildController.ToggleBuildmode();
-	    }
+            buildController.ToggleBuildmode();
     }
 
 }

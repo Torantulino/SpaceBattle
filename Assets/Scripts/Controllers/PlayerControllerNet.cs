@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public partial class PlayerController : NetworkBehaviour
@@ -18,6 +19,9 @@ public partial class PlayerController : NetworkBehaviour
         GameController.SetLocalPlayer(gameObject);
         // Set the reference for Ship
         Ship = GetComponent<Ship>();
+        // Adding Parts that every player receives when they start
+        Ship.AddPart(new PartData(0, new Vector3(0, 1, 0)));
+        Ship.AddPart(new PartData(0, new Vector3(0, -1, 0), new Vector3(0f, 0f, 180f)));
     }
 
     /// <summary>
