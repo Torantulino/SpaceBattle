@@ -89,6 +89,7 @@ public class BuildController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 BuildPart(selectedPartID, ghost.transform.position);
+                partSelected = false;
             }
 
         }
