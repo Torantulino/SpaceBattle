@@ -11,17 +11,31 @@ using UnityEngine;
 public class BuildController : MonoBehaviour {
 
     public bool buildmode;
-    private int selectedPartID;
-    private List<Part> currentParts;
-    private List<Node> availableNodes;
+    private int selectedPartID;             //ID of part to spawn
+    private List<Part> currentParts = new List<Part>();
+    private List<Node> availableNodes = new List<Node>();
+    private int currentNode;
 
-	// Use this for initialization
-	void Start () {
+    private PartManager partManager;
+    private GameObject ghost;
+    private bool partSelected;
+
+    // Use this for initialization
+    void Start () {
         buildmode = false;
-        //todo: TESTING
-	    selectedPartID = 1;
+        partSelected = false;
 
-	}
+        //TESTING
+        selectedPartID = 1;
+	    currentNode = 0;
+
+        //Find part manager in scene
+	    partManager = FindObjectOfType<PartManager>();
+
+        GetCurrentParts();
+        GetAvailableNodes();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -30,17 +44,35 @@ public class BuildController : MonoBehaviour {
         // - Buildmode -
         if (buildmode)
         {
+            if (!partSelected)
+            {
+                partSelected = true;
+
+                //Display 'ghost' block
+                ghost = Instantiate(partManager.GetPartById(selectedPartID).prefab, transform);
+                //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
+                ghost.gameObject.GetComponent<Renderer>().material.color = new Color(1.0f, 1.0f, 1.0f, 0.7f);
+                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
+            }
+
             //Node Cycling
             //cycle left
             if (Input.GetKeyDown(KeyCode.A))
             {
+                //Cycle
+                if (availableNodes.Count-1 > currentNode)
+                    currentNode++;
+                else
+                    currentNode = 0;
 
+                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
             }
             //cycle right
             if (Input.GetKeyDown(KeyCode.D))
             {
 
             }
+
         }
     }
 
@@ -54,13 +86,19 @@ public class BuildController : MonoBehaviour {
     private void GetAvailableNodes()
     {
         availableNodes.Clear();
-        foreach (Part p in currentParts)
-        {
-            foreach (Node n in p.Nodes){
-                if (n.gameObject.activeSelf)
-                    availableNodes.Add(n);
-            }
-        }
+
+        //Ship Nodes
+        foreach (Node n in GetComponentsInChildren<Node>())
+            availableNodes.Add(n);
+
+        ////Part Nodes
+        //foreach (Part p in currentParts)
+        //{
+        //    foreach (Node n in p.Nodes){
+        //        if (n.gameObject.activeSelf)
+        //            availableNodes.Add(n);
+        //    }
+        //}
     }
 
     public void ToggleBuildmode()
