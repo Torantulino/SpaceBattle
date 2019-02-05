@@ -17,6 +17,7 @@ public class BuildController : MonoBehaviour {
     private int currentNode;
 
     private PartManager partManager;
+    private Ship ship;
     private GameObject ghost;
     private bool partSelected;
 
@@ -31,6 +32,7 @@ public class BuildController : MonoBehaviour {
 
         //Find part manager in scene
 	    partManager = FindObjectOfType<PartManager>();
+        ship = GetComponent<Ship>();
 
         GetCurrentParts();
         GetAvailableNodes();
@@ -83,7 +85,19 @@ public class BuildController : MonoBehaviour {
                 ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
             }
 
+            //Build Part
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                BuildPart(selectedPartID, ghost.transform.position);
+            }
+
         }
+    }
+
+    private void BuildPart(int id, Vector3 pos)
+    {
+        PartData newPart = new PartData(id, pos);
+        ship.AddPart(newPart);
     }
 
     private void GetCurrentParts()
