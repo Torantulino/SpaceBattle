@@ -72,7 +72,13 @@ public class BuildController : MonoBehaviour {
             //cycle right
             if (Input.GetKeyDown(KeyCode.D))
             {
+                //Cycle
+                if (currentNode != 0)
+                    currentNode--;
+                else
+                    currentNode = availableNodes.Count - 1;
 
+                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
             }
 
         }
