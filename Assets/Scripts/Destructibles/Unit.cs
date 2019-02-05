@@ -95,7 +95,7 @@ public class Unit : Destructible
     private void RebuildParts()
     {
         // Remove all children
-        transform.DestroyChildren("Aim");
+        transform.DestroyChildren("Aim", "Nodes");
         // Loop through parts and instantiate them
         // Note: Those parts are only created locally
         foreach (PartData part in parts)
