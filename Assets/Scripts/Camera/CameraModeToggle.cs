@@ -43,6 +43,8 @@ public class CameraModeToggle : MonoBehaviour
 			{
 				cam.m_XAxis.Value = lastFrameCamX;
 				cam.m_YAxis.Value = lastFrameCamY;
+				cam.m_XAxis.m_InputAxisValue = 0;
+				cam.m_YAxis.m_InputAxisValue = 0;
 			}
 
 			//update the last known state of the camera
