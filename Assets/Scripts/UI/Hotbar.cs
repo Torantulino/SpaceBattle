@@ -49,6 +49,7 @@ public class Hotbar : MonoBehaviour
 		{
 			if (hotkeys[i])
 			{
+				Debug.Log("hotbar index : " + i);
 				activeCell = i;
 			}
 		}
