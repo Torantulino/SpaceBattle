@@ -53,6 +53,7 @@ public class BuildController : MonoBehaviour {
                 partSelected = true;
                 GetCurrentParts();
                 GetAvailableNodes();
+                currentNode = 0;
 
                 //Display 'ghost' block
                 ghost = Instantiate(partManager.GetPartById(selectedPartID).prefab, transform);
@@ -110,6 +111,19 @@ public class BuildController : MonoBehaviour {
                 //PartData newPart = new PartData(selectedPartID, ghost.transform.localPosition);
                 ////ship.AddPart(newPart);
                 //GameController.LocalPlayerController.Ship.AddPart(newPart);
+            }
+            //Remove Part
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                //if part is not core
+                if (availableNodes[currentNode].transform.parent.parent.gameObject.GetComponent<Ship>() == null)
+                {
+                    //Remove part from collection
+                    currentParts.Remove(availableNodes[currentNode].transform.parent.parent.gameObject.GetComponent<Part>());
+                    Destroy(availableNodes[currentNode].transform.parent.parent.gameObject);
+                    Destroy(ghost);
+                    partSelected = false;
+                }
             }
 
             //TESTING
