@@ -192,5 +192,6 @@ public class BuildController : MonoBehaviour {
             partSelected = false;
         }
         //todo: toggle cursor lock
+        //todo: entering buildmode should cause player to slow and stop before they can build. (no moving and building)
     }
 }
