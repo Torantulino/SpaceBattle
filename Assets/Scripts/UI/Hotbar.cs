@@ -10,7 +10,7 @@ public class Hotbar : MonoBehaviour
 	///<summary>
 	/// reference to a part in inventory corresponding to the index of the highlighted cell
 	///</summary>
-	public GameObject SelectedPart { get; private set; }
+	public Part SelectedPart { get; private set; }
 
 	private List<Image> highlights = new List<Image>();
 	private List<Button> cells = new List<Button>();
@@ -66,6 +66,9 @@ public class Hotbar : MonoBehaviour
 				highlights[i].gameObject.SetActive(false);
 			}
 		}
+
+		//set selected part to a reference to a part on the top row of the inventory
+		SelectedPart = Inventory.locations[0, activeCell];
 
 	}
 
