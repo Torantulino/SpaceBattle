@@ -97,7 +97,7 @@ public class BuildController : MonoBehaviour {
                 //BuildPart(selectedPartID, ghost.transform.rotation * ghost.transform.localPosition);
                 //BuildPart(selectedPartID, ghost.transform.position - transform.position);
 
-                //TESTING
+                //TESTING while waiting for serverside fix
                 GameObject testObj = Instantiate(partManager.GetPartById(selectedPartID).prefab, transform);
                 testObj.transform.position = ghost.transform.position;
                 testObj.name = "test";
@@ -105,8 +105,6 @@ public class BuildController : MonoBehaviour {
                 Destroy(ghost);
 
                 partSelected = false;
-
-                Debug.Log("HIT!");
 
                 //PartData newPart = new PartData(selectedPartID, ghost.transform.localPosition);
                 ////ship.AddPart(newPart);
@@ -120,8 +118,11 @@ public class BuildController : MonoBehaviour {
                 {
                     //Remove part from collection
                     currentParts.Remove(availableNodes[currentNode].transform.parent.parent.gameObject.GetComponent<Part>());
+
+                    //TESTING while waiting for serverside fix
                     Destroy(availableNodes[currentNode].transform.parent.parent.gameObject);
                     Destroy(ghost);
+
                     partSelected = false;
                 }
             }
