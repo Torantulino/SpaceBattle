@@ -9,6 +9,7 @@ public class Part : MonoBehaviour
 {
     protected Ship playerShip;
     public List<Node> Nodes;
+    public bool isGhost;            //todo: properly protect value
 
     // Use this for initialization
     public void Start ()

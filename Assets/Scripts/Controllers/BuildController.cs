@@ -57,12 +57,13 @@ public class BuildController : MonoBehaviour {
                 //Display 'ghost' block
                 ghost = Instantiate(partManager.GetPartById(selectedPartID).prefab, transform);
                 ghost.name = "ghost";
+                ghost.GetComponent<Part>().isGhost = true;
                 //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
                 Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
                 col.a = 0.66f;
                 ghost.gameObject.GetComponent<Renderer>().material.color = col;
                 //Move ghost
-                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
+                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.rotation * availableNodes[currentNode].transform.localPosition;
             }
 
             //Node Cycling
@@ -75,7 +76,7 @@ public class BuildController : MonoBehaviour {
                 else
                     currentNode = 0;
                 //Move ghost
-                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
+                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.rotation * availableNodes[currentNode].transform.localPosition;
             }
             //cycle right
             if (Input.GetKeyDown(KeyCode.D))
@@ -86,17 +87,35 @@ public class BuildController : MonoBehaviour {
                 else
                     currentNode = availableNodes.Count - 1;
                 //Move ghost
-                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.localPosition;
+                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.rotation * availableNodes[currentNode].transform.localPosition;
             }
 
             //Build Part
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                BuildPart(selectedPartID, ghost.transform.localPosition);
+                //BuildPart(selectedPartID, ghost.transform.rotation * ghost.transform.localPosition);
+                //BuildPart(selectedPartID, ghost.transform.position - transform.position);
+
+                //TESTING
+                GameObject testObj = Instantiate(partManager.GetPartById(selectedPartID).prefab, transform);
+                testObj.transform.position = ghost.transform.position;
+                testObj.name = "test";
 
                 Destroy(ghost);
 
                 partSelected = false;
+
+                Debug.Log("HIT!");
+
+                //PartData newPart = new PartData(selectedPartID, ghost.transform.localPosition);
+                ////ship.AddPart(newPart);
+                //GameController.LocalPlayerController.Ship.AddPart(newPart);
+            }
+
+            //TESTING
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                Debug.Log(GameController.LocalPlayerController.Ship.PartsData.Count);
             }
 
         }
@@ -105,7 +124,8 @@ public class BuildController : MonoBehaviour {
     private void BuildPart(int id, Vector3 pos)
     {
         PartData newPart = new PartData(id, pos);
-        ship.AddPart(newPart);
+        //ship.AddPart(newPart);
+        GameController.LocalPlayerController.Ship.AddPart(newPart);
     }
 
     private void GetCurrentParts()
@@ -117,10 +137,15 @@ public class BuildController : MonoBehaviour {
 
         foreach (Part p in GetComponentsInChildren<Part>())
         {
-            currentParts.Add(p);
-            //round position to nearest int to ensure key is accurate
-            Vector3 pos = new Vector3(Mathf.Round(p.transform.localPosition.x), Mathf.Round(p.transform.localPosition.y), Mathf.Round(p.transform.localPosition.z));
-            partPositions.Add(pos, true);
+            //Add all but ghost
+            if (!p.isGhost)
+            {
+                currentParts.Add(p);
+                //round position to nearest int to ensure key is accurate
+                Vector3 pos = new Vector3(Mathf.Round(p.transform.localPosition.x),
+                    Mathf.Round(p.transform.localPosition.y), Mathf.Round(p.transform.localPosition.z));
+                partPositions.Add(pos, true);
+            }
         }
     }
 
@@ -131,7 +156,7 @@ public class BuildController : MonoBehaviour {
         //Ship Nodes
         foreach (Node n in GetComponentsInChildren<Node>())
         {
-            Vector3 nodePos = n.transform.parent.parent.position + n.transform.localPosition * 2.0f;
+            Vector3 nodePos = n.transform.parent.parent.localPosition + n.transform.localPosition * 2.0f;
             nodePos = new Vector3(Mathf.Round(nodePos.x), Mathf.Round(nodePos.y), Mathf.Round(nodePos.z));
             //Check if space is already occupied
             if (partPositions.ContainsKey(nodePos) && partPositions.ContainsValue(true))
@@ -162,10 +187,5 @@ public class BuildController : MonoBehaviour {
     {
         buildmode = !buildmode;
         //todo: toggle cursor lock
-    }
-
-    //todo: wait for Unit AddPart then implement
-    private void AddPart()
-    {
     }
 }

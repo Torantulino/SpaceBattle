@@ -101,7 +101,7 @@ public class Unit : Destructible
         foreach (PartData part in parts)
         {
             Instantiate(PartManager.Instance.GetPartById(part.Id).prefab, transform.position + part.Position,
-                Quaternion.Euler(transform.localEulerAngles + part.Rotation), gameObject.transform);
+            Quaternion.Euler(transform.localEulerAngles + part.Rotation), gameObject.transform);
         }
         // Invoking event
         if (PartsChanged != null)
