@@ -186,6 +186,11 @@ public class BuildController : MonoBehaviour {
     public void ToggleBuildmode()
     {
         buildmode = !buildmode;
+        if (!buildmode)
+        {
+            Destroy(ghost);
+            partSelected = false;
+        }
         //todo: toggle cursor lock
     }
 }
