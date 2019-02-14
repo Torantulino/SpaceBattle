@@ -46,9 +46,15 @@ public partial class PlayerController : NetworkBehaviour {
         // Check if this code runs on the game object that represents my Player
 	    if (!isLocalPlayer)
 	        return;
-        
-	    //todo temporary code for testing - remove later
-	    Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+
+	    if (Input.GetKeyDown(KeyCode.F))
+	    {
+	        Ship.AddPart(new PartData(0, new Vector3(0, 1, 0)));
+	        Debug.Log(Ship.PartsData.Count);
+	    }
+
+        //todo temporary code for testing - remove later
+        Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 	    
         //todo how to shoot - remove later
         if (Input.GetKeyDown(KeyCode.Space))
