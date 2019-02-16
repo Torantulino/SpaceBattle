@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -28,9 +29,9 @@ public class Unit : Destructible
     /// <summary>
     /// List of PartData parts attached to this Unit.
     /// </summary>
-    public List<PartData> PartsData
+    public ReadOnlyCollection<PartData> PartsData
     {
-        get { return parts; }
+        get { return parts.AsReadOnly(); }
     }
 
     #endregion

@@ -1,8 +1,12 @@
 using UnityEngine;
-using UnityEngine.UI;
+
 public class ItemContainer
 {
     public int ItemID { get; set; }
-    public int Quantity { get; private set; }
-    public Image Icon { get; set; }
+    public int Quantity { get; set; }
+
+    public Sprite Icon
+    {
+        get { return PartManager.Instance.GetPartById(ItemID).icon; }
+    }
 }

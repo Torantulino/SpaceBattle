@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Holds information about single Part that is attached to a Unit.
+/// Holds information about single Part that is attached to an Unit.
 /// </summary>
 public class PartData
 {

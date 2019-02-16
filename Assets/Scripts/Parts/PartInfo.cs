@@ -17,5 +17,4 @@ public class PartInfo : ScriptableObject
 
     [Tooltip("GameObject that is created when this part is attached to a ship")]
     public GameObject prefab = null;
-
 }
