@@ -4,12 +4,15 @@ using UnityEngine;
 /// <summary>
 /// Controls Main Camera.
 /// </summary>
-public class CameraController : MonoBehaviour {
+public class CameraController : MonoBehaviour
+{
 
     #region Singleton
     private static CameraController instance;
 
     public static CameraController Instance { get { return instance; } }
+
+    public static Transform CameraAnchor;
 
     private void Awake()
     {
@@ -36,10 +39,16 @@ public class CameraController : MonoBehaviour {
     void Update()
     {
         if (!GameController.LocalPlayer)
+        {
             return;
-
-        // Setting Player to follow
+        }
+        // Setting Player to follow the camera anchor on the active player
         if (!_cinemachineVirtualCamera.m_Follow)
-            _cinemachineVirtualCamera.m_Follow = GameController.LocalPlayer.transform;
+        {
+            CameraAnchor = GameController.LocalPlayer.GetComponentsInChildren<Transform>() [1];
+            _cinemachineVirtualCamera.m_Follow = CameraAnchor;
+            print(CameraAnchor.position.x);
+        }
+
     }
 }

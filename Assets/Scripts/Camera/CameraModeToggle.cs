@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class CameraModeToggle : MonoBehaviour
 {
-	[SerializeField] GameObject FollowPoint;
-	[SerializeField] CinemachineFreeLook cam;
+	CinemachineFreeLook cam;
 	[SerializeField] float buildHeight = 5.08f;
 	[SerializeField] float buildRadius = 5.08f;
 	[SerializeField] float combatHeight = 1.08f;
@@ -15,6 +14,11 @@ public class CameraModeToggle : MonoBehaviour
 
 	public float lastFrameCamX;
 	public float lastFrameCamY;
+
+	private void Start()
+	{
+		cam = GetComponentInChildren<CinemachineFreeLook>();
+	}
 
 	// Use lateupdate to try to act after any Cinemachine scripts to avoid jitter (not really working)
 	void LateUpdate()
@@ -25,46 +29,49 @@ public class CameraModeToggle : MonoBehaviour
 			buildMode = !buildMode;
 		}
 
-		//if in build mode don't invert mouse and more focus point ot centre on ship
-		if (buildMode)
+		//if a player with a camera anchor exists:
+		if (CameraController.CameraAnchor != null)
 		{
-			FollowPoint.transform.localPosition = new Vector3(0, 0, 0);
-			cam.m_YAxis.m_InvertAxis = false;
-
-			//set centre radius
-			cam.m_Orbits[1].m_Radius = buildRadius;
-
-			//set top and bottom heights
-			cam.m_Orbits[0].m_Height = buildHeight;
-			cam.m_Orbits[2].m_Height = -buildHeight;
-
-			//stop camera moving if C is held down
-			if (Input.GetKey(KeyCode.C))
+			//if in build mode don't invert mouse and more focus point ot centre on ship
+			if (buildMode)
 			{
-				cam.m_XAxis.Value = lastFrameCamX;
-				cam.m_YAxis.Value = lastFrameCamY;
-				cam.m_XAxis.m_InputAxisValue = 0;
-				cam.m_YAxis.m_InputAxisValue = 0;
+				CameraController.CameraAnchor.localPosition = new Vector3(0, 0, 0);
+				cam.m_YAxis.m_InvertAxis = false;
+
+				//set centre radius
+				cam.m_Orbits[1].m_Radius = buildRadius;
+
+				//set top and bottom heights
+				cam.m_Orbits[0].m_Height = buildHeight;
+				cam.m_Orbits[2].m_Height = -buildHeight;
+
+				//stop camera moving if C is held down
+				if (Input.GetKey(KeyCode.C))
+				{
+					cam.m_XAxis.Value = lastFrameCamX;
+					cam.m_YAxis.Value = lastFrameCamY;
+					cam.m_XAxis.m_InputAxisValue = 0;
+					cam.m_YAxis.m_InputAxisValue = 0;
+				}
+
+				//update the last known state of the camera
+				lastFrameCamX = cam.m_XAxis.Value;
+				lastFrameCamY = cam.m_YAxis.Value;
+
 			}
+			else
+			{
+				CameraController.CameraAnchor.localPosition = new Vector3(0, 1.77f, 0);
+				cam.m_YAxis.m_InvertAxis = true;
+				cam.m_Orbits[1].m_Radius = 1.08f;
 
-			//update the last known state of the camera
-			lastFrameCamX = cam.m_XAxis.Value;
-			lastFrameCamY = cam.m_YAxis.Value;
+				//set centre radius
+				cam.m_Orbits[1].m_Radius = combatRadius;
 
+				//set top and bottom heights
+				cam.m_Orbits[0].m_Height = combatHeight;
+				cam.m_Orbits[2].m_Height = -combatHeight;
+			}
 		}
-		else
-		{
-			FollowPoint.transform.localPosition = new Vector3(0, 1.77f, 0);
-			cam.m_YAxis.m_InvertAxis = true;
-			cam.m_Orbits[1].m_Radius = 1.08f;
-
-			//set centre radius
-			cam.m_Orbits[1].m_Radius = combatRadius;
-
-			//set top and bottom heights
-			cam.m_Orbits[0].m_Height = combatHeight;
-			cam.m_Orbits[2].m_Height = -combatHeight;
-		}
-
 	}
 }
