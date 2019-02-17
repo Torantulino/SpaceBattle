@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
+[RequireComponent(typeof(BuildController))]
 public partial class PlayerController : NetworkBehaviour {
 
     private readonly List<ItemContainer> _items = new List<ItemContainer>();
@@ -36,6 +37,7 @@ public partial class PlayerController : NetworkBehaviour {
         get { return _items.AsReadOnly(); }
     }
 
+    private BuildController buildController;
     #endregion
 
     // Use this for initialization
@@ -43,6 +45,8 @@ public partial class PlayerController : NetworkBehaviour {
     {
         // Update PlayerName, to reflect actual value for players that just joined
         OnPlayerNameChanged(PlayerName);
+        //Get buildController
+        buildController = GetComponent<BuildController>();
 
         // All other players
         if (isLocalPlayer)
@@ -59,7 +63,29 @@ public partial class PlayerController : NetworkBehaviour {
 	    if (!isLocalPlayer)
 	        return;
 
+        //Flight & Fight Mode
+        if (!buildController.buildmode) {
+	        //todo temporary code for testing - remove later
+	        Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+	    
+            //todo how to shoot - remove later
+            if (Input.GetKeyDown(KeyCode.Space))
+	            Ship.Shoot();
 
+            //todo changing aiming direction - upgrade later
+	        if (Input.GetKey(KeyCode.E))
+	            Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
+	        if (Input.GetKey(KeyCode.Q))
+	            Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
+
+            //todo manually refresh all parts
+	        if (Input.GetKeyUp(KeyCode.R))
+	            Ship.RefreshParts();
+        }
+	        
+        //Toggle build mode
+	    if (Input.GetKeyDown(KeyCode.Tab))
+            buildController.ToggleBuildmode();
     }
 
     /// <summary>
