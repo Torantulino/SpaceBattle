@@ -45,9 +45,9 @@ public class CameraController : MonoBehaviour
         // Setting Player to follow the camera anchor on the active player
         if (!_cinemachineVirtualCamera.m_Follow)
         {
-            CameraAnchor = GameController.LocalPlayer.GetComponentsInChildren<Transform>() [1];
+            CameraAnchor = transform.Find("CameraAnchor");
             _cinemachineVirtualCamera.m_Follow = CameraAnchor;
-            print(CameraAnchor.position.x);
+
         }
 
     }

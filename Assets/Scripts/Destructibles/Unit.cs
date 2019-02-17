@@ -41,8 +41,9 @@ public class Unit : Destructible
     public event EventHandler<EventArgs> PartsChanged;
 
     // Use this for initialization
-    public new void Start () {
-		base.Start();
+    public new void Start()
+    {
+        base.Start();
 
         // Making sure that there's an Aim GameObject
         if (!aimTransform)
@@ -95,7 +96,7 @@ public class Unit : Destructible
     private void RebuildParts()
     {
         // Remove all children
-        transform.DestroyChildren("Aim");
+        transform.DestroyChildren("Aim", "CameraAnchor");
         // Loop through parts and instantiate them
         // Note: Those parts are only created locally
         foreach (PartData part in parts)
@@ -119,7 +120,7 @@ public class Unit : Destructible
         foreach (Transform child in transform)
         {
             Weapon weapon = child.GetComponent<Weapon>();
-            if(weapon)
+            if (weapon)
             {
                 weapons.Add(weapon);
             }
@@ -188,7 +189,7 @@ public class Unit : Destructible
             NetworkServer.Spawn(shot);
             // Destroy it after some time
             Destroy(shot, 5f);
-        }       
+        }
     }
 
     #endregion
