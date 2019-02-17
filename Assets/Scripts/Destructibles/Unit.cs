@@ -101,7 +101,7 @@ public class Unit : Destructible
         // Note: Those parts are only created locally
         foreach (PartData part in parts)
         {
-            Instantiate(PartManager.Instance.GetPartById(part.Id).prefab, transform.position + part.Position,
+            Instantiate(PartManager.Instance.GetPartById(part.Id).Prefab, transform.position + part.Position,
                 Quaternion.Euler(transform.localEulerAngles + part.Rotation), gameObject.transform);
         }
         // Invoking event

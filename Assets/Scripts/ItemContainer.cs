@@ -7,6 +7,6 @@ public class ItemContainer
 
     public Sprite Icon
     {
-        get { return PartManager.Instance.GetPartById(ItemID).icon; }
+        get { return PartManager.Instance.GetPartById(ItemID).Icon; }
     }
 }

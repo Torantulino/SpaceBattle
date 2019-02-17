@@ -6,15 +6,55 @@
 [CreateAssetMenu(fileName = "New Part", menuName = "Parts/PartInfo")]
 public class PartInfo : ScriptableObject
 {
+    [SerializeField]
     [Tooltip("Unique id of a part")]
-    public int id;
+    private int _id;
 
+    [SerializeField]
     [Tooltip("Name of a Part")]
-    public new string name = "New Part";
+    private string _name = "New Part";
 
+    [SerializeField]
     [Tooltip("Part icon to show on UI")]
-    public Sprite icon = null;
+    private Sprite _icon = null;
 
+    [SerializeField]
     [Tooltip("GameObject that is created when this part is attached to a ship")]
-    public GameObject prefab = null;
+    private GameObject _prefab = null;
+
+    #region Properties
+
+    /// <summary>
+    /// Unique id of a part.
+    /// </summary>
+    public int Id
+    {
+        get { return _id; }
+    }
+
+    /// <summary>
+    /// Name of a part.
+    /// </summary>
+    public string Name
+    {
+        get { return _name; }
+    }
+
+    /// <summary>
+    /// Part icon to show on UI.
+    /// </summary>
+    public Sprite Icon
+    {
+        get { return _icon; }
+    }
+
+    /// <summary>
+    /// GameObject that is created when this part is attached to a ship
+    /// </summary>
+    public GameObject Prefab
+    {
+        get { return _prefab; }
+    }
+
+    #endregion
 }

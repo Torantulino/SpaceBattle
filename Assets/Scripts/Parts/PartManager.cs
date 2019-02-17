@@ -35,7 +35,7 @@ public class PartManager : MonoBehaviour
     /// <returns></returns>
     public PartInfo GetPartById(int id)
     {
-        return registeredParts.Find(part => part.id == id);
+        return registeredParts.Find(part => part.Id == id);
     }
 }
 
