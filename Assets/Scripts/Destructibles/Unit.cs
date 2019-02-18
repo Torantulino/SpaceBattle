@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -12,8 +13,9 @@ public class Unit : Destructible
     [Tooltip("Empty GameObject used to represent aiming direction. Should also be put into NetworkTransformChild component.")]
     public Transform aimTransform;
 
-    protected List<PartData> parts = new List<PartData>();
+    protected List<PartData> partsData = new List<PartData>();
     protected List<Weapon> weapons = new List<Weapon>();
+    protected Dictionary<Vector3Int, Part> parts = new Dictionary<Vector3Int, Part>();
 
     #region Properties
 
@@ -29,9 +31,18 @@ public class Unit : Destructible
     /// <summary>
     /// List of PartData parts attached to this Unit.
     /// </summary>
+    [Obsolete("Use Parts property instead.", false)]
     public ReadOnlyCollection<PartData> PartsData
     {
-        get { return parts.AsReadOnly(); }
+        get { return partsData.AsReadOnly(); }
+    }
+
+    /// <summary>
+    /// All parts (position, Part) of this Unit.
+    /// </summary>
+    public Dictionary<Vector3Int, Part> Parts
+    {
+        get { return parts; }
     }
 
     #endregion
@@ -72,12 +83,50 @@ public class Unit : Destructible
     }
 
     /// <summary>
+    /// Returns a List with all available nodes.
+    /// </summary>
+    /// <param name="onlyAvailable">True will return only available nodes.</param>
+    /// <returns></returns>
+    public ReadOnlyCollection<Node> GetNodes(bool onlyAvailable)
+    {
+        List<Node> nodes = new List<Node>();
+
+        // Adding nodes from Unit
+        foreach (Node node in transform.Find("Nodes").GetComponentsInChildren<Node>())
+        {
+            if(node.IsAvailable || !onlyAvailable)
+                nodes.Add(node);
+        }
+
+        // Adding nodes from parts
+        foreach (KeyValuePair<Vector3Int, Part> part in parts)
+        {
+            part.Value.Nodes.ForEach(n =>
+            {
+                if(n.IsAvailable || !onlyAvailable)
+                    nodes.Add(n);
+            });
+        }
+
+        return nodes.AsReadOnly();
+    }
+
+    /// <summary>
     /// Adds part to Unit.
     /// </summary>
     public void AddPart(PartData partData)
     {
+        //todo may use Part in an argument
         CmdAddPart(partData.ToString());
-        RefreshParts();
+    }
+
+    /// <summary>
+    /// Removes part from Unit.
+    /// </summary>
+    public void RemovePart(Vector3 position)
+    {
+        //todo may use Part in an argument
+        CmdRemovePart(position);
     }
 
     /// <summary>
@@ -96,17 +145,126 @@ public class Unit : Destructible
     private void RebuildParts()
     {
         // Remove all children
-        transform.DestroyChildren("Aim", "Nodes");
+        transform.DestroyChildren("Aim", "Nodes");//todo fix
+        // Clear parts Dictionary
+        parts.Clear();
         // Loop through parts and instantiate them
         // Note: Those parts are only created locally
-        foreach (PartData part in parts)
+        foreach (PartData part in partsData)
         {
-            Instantiate(PartManager.Instance.GetPartById(part.Id).Prefab, transform.position + part.Position,
-                Quaternion.Euler(transform.localEulerAngles + part.Rotation), gameObject.transform);
+            InstantiatePart(part);
         }
+        // Recalculate attachments to all nodes
+        //RecalculateAttachments(GetNodes(false));
+        RecalculateAllAttachments();
         // Invoking event
         if (PartsChanged != null)
             PartsChanged(this, EventArgs.Empty);
+    }
+
+    /// <summary>
+    /// Instantiates one Part.
+    /// </summary>
+    private Part InstantiatePart(PartData partData)
+    {
+        GameObject partGameObject = Instantiate(PartManager.Instance.GetPartById(partData.Id).Prefab, transform.position + partData.Position,
+            Quaternion.Euler(transform.localEulerAngles + partData.Rotation), gameObject.transform);
+        // Taking Part component
+        Part part = partGameObject.GetComponent<Part>();
+        // Setting Part Id
+        part.SetID(partData.Id);
+        // Adding Part to parts Dictionary
+        parts.Add(Vector3Int.RoundToInt(partData.Position), part);
+        // Returning Part
+        return part;
+    }
+
+    /// <summary>
+    ///  Reattaches all connections for given nodes.
+    /// </summary>
+    /// <param name="nodes">Nodes to recalculate</param>
+    /// <param name="partsChecked">Will add all parts that were checked to this List.</param>
+    /// <param name="recursion">Execute function on all parts' nodes that are found.</param>
+    /// <returns>True if at least one node is connected to the Unit.</returns>
+    //todo should probably take Part as an argument (but Unit is problematic)
+    private bool RecalculateAttachments(IEnumerable<Node> nodes, ref List<Part> partsChecked, bool recursion = false)
+    {
+        bool connection = false;
+
+        foreach (Node node in nodes)
+        {
+            Part foundPart;
+            if (parts.TryGetValue(Vector3Int.RoundToInt(node.AttachmentPosition), out foundPart))
+            {
+                node.ReattachPart(foundPart);
+                if (recursion && !foundPart.Checked)
+                {
+                    foundPart.Checked = true;
+                    partsChecked.Add(foundPart);
+                    connection = RecalculateAttachments(foundPart.Nodes, ref partsChecked, true);
+                }
+            }
+            // If node is pointing at Vector3Int.zero (Unit position)
+            if (Vector3Int.RoundToInt(node.AttachmentPosition) == Vector3Int.zero)
+            {
+                node.IsAttachedToUnit = true;
+                //todo might work more efficient
+                node.GetComponentInParent<Part>().ConnectedToUnit = true;
+                connection = true;
+            }
+        }
+
+        return connection;
+    }
+
+    private void RecalculateAllAttachments()
+    {
+        // Set all Parts as not yet checked and without connection to the Unit
+        foreach (KeyValuePair<Vector3Int, Part> keyValuePair in Parts)
+        {
+            keyValuePair.Value.Checked = false;
+            keyValuePair.Value.ConnectedToUnit = false;
+        }
+
+        // Recalculate attachments for Unit nodes
+        List<Part> temp = new List<Part>();
+        RecalculateAttachments(transform.Find("Nodes").GetComponentsInChildren<Node>(), ref temp);
+
+        // Parts to remove
+        List<Vector3Int> keys = new List<Vector3Int>();
+
+        // Foreach Parts
+        foreach (KeyValuePair<Vector3Int, Part> keyValuePair in Parts)
+        {
+            Part part = keyValuePair.Value;
+            // Continue if already checked
+            if(part.Checked)
+                continue;
+            // Mark part as checked
+            part.Checked = true;
+            // Hold all parts recursively checked
+            List<Part> partsChecked = new List<Part>();
+            partsChecked.Add(part);
+            // Recalculate attachments recursively
+            if (!RecalculateAttachments(part.Nodes, ref partsChecked, true))
+            {
+                // If there was no connection to the Unit
+                // Keys to remove
+                foreach (Part partChecked in partsChecked)
+                {
+                    partChecked.transform.parent = part.transform;
+                    keys.Add(Parts.First(p => p.Value == partChecked).Key);
+                }
+                
+                part.transform.parent = null;
+            }
+        }
+        //todo try foreach
+        for (int i = 0; i < keys.Count; i++)
+        {
+            Parts.Remove(keys[i]);
+        }
+
     }
 
     /// <summary>
@@ -116,27 +274,39 @@ public class Unit : Destructible
     {
         // Clear weapons List
         weapons.Clear();
-        // Search through children for Weapon and assign them to the List.
-        foreach (Transform child in transform)
-        {
-            Weapon weapon = child.GetComponent<Weapon>();
-            if(weapon)
-            {
-                weapons.Add(weapon);
-            }
-        }
+        // Add weapons
+        weapons.AddRange(GetComponentsInChildren<Weapon>());
     }
 
     #region Networking
 
     /// <summary>
-    /// Request for adding a Part.
+    /// Request to add a Part.
     /// </summary>
     /// <param name="part">PartData</param>
     [Command]
     private void CmdAddPart(string part)
     {
-        parts.Add(new PartData(part));
+        partsData.Add(new PartData(part));
+        RpcAddPart(part);
+        RecalculateAllAttachments();
+    }
+
+    /// <summary>
+    /// Request to remove a Part from position (relative to Unit).
+    /// </summary>
+    [Command]
+    private void CmdRemovePart(Vector3 position)
+    {
+        // Searching for a Part in Parts
+        KeyValuePair<Vector3Int, Part> keyValuePair = Parts.First(p => p.Key == Vector3Int.RoundToInt(position));
+        // If a Part was found
+        if (!keyValuePair.Equals(default(KeyValuePair<Vector3Int, Part>)))
+        {
+            Parts.Remove(keyValuePair.Key);
+            Destroy(keyValuePair.Value.gameObject);
+            RpcRemovePart(position);
+        }
     }
 
     /// <summary>
@@ -146,10 +316,10 @@ public class Unit : Destructible
     private void CmdRefreshParts()
     {
         // Converting PartData to string array
-        string[] strings = new string[parts.Count];
-        for (int i = 0; i < parts.Count; i++)
+        string[] strings = new string[partsData.Count];
+        for (int i = 0; i < partsData.Count; i++)
         {
-            strings[i] = parts[i].ToString();
+            strings[i] = partsData[i].ToString();
         }
         // Sending parts to client
         RpcSendParts(strings);
@@ -162,14 +332,54 @@ public class Unit : Destructible
     private void RpcSendParts(string[] strings)
     {
         // Clearing parts List
-        parts.Clear();
+        partsData.Clear();
         // Loading PartData from string array
         foreach (string s in strings)
         {
-            parts.Add(new PartData(s));
+            partsData.Add(new PartData(s));
         }
         // Rebuild parts
         RebuildParts();
+    }
+
+    /// <summary>
+    /// Requests client to add a new Part.
+    /// </summary>
+    [ClientRpc]
+    private void RpcAddPart(string str)
+    {
+        // Add a part on clients (skip server, Part was already added in the CmdAddPart)
+        if(!isServer)
+        {
+            partsData.Add(new PartData(str));
+        }
+        // Instantiate this part
+        InstantiatePart(new PartData(str));
+        // Recalculate attachments for all parts
+        RecalculateAllAttachments();
+    }
+
+    /// <summary>
+    /// Request client to remove a Part
+    /// </summary>
+    [ClientRpc]
+    private void RpcRemovePart(Vector3 position)
+    {
+        // Remove on clients
+        if (!isServer)
+        {
+            // Searching for a Part in Parts
+            KeyValuePair<Vector3Int, Part>  keyValuePair = Parts.First(p => p.Key == Vector3Int.RoundToInt(position));
+            // If a Part was not found
+            if (keyValuePair.Equals(default(KeyValuePair<Vector3Int, Part>)))
+                return;
+
+            Parts.Remove(keyValuePair.Key);
+            Destroy(keyValuePair.Value.gameObject);
+        }
+
+        RecalculateAllAttachments();
+
     }
 
     /// <summary>

@@ -8,10 +8,10 @@ public class Weapon : Part
     [Tooltip("GameObject for weapon barrel.")]
     public Transform gunTransform;
     [Tooltip("Bullet prefab - must be registered in the Network manager.")]
-    public GameObject bulletPrefab;
+    public GameObject bulletPrefab;//todo should be registered automatically in Unit
 
-	// Use this for initialization
-	new void Start () {
+    // Use this for initialization
+    new void Start () {
 		base.Start();
 
         if(!gunTransform || !bulletPrefab)

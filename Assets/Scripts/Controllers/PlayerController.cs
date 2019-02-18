@@ -40,6 +40,8 @@ public partial class PlayerController : NetworkBehaviour {
     private BuildController buildController;
     #endregion
 
+    private int _testCounter = 0;
+
     // Use this for initialization
     void Start()
     {
@@ -78,11 +80,36 @@ public partial class PlayerController : NetworkBehaviour {
 	        if (Input.GetKey(KeyCode.Q))
 	            Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
 
+            //todo testing
+            if (Input.GetKeyUp(KeyCode.T))
+            {
+                switch (_testCounter++)
+                {
+                    case 1:
+                        Ship.AddPart(new PartData(1, new Vector3(0, 1, 0)));
+                        break;
+                    case 2:
+                        Ship.AddPart(new PartData(1, new Vector3(0, 2, 0)));
+                        break;
+                    case 3:
+                        Ship.AddPart(new PartData(1, new Vector3(0, 3, 0)));
+                        break;
+                    case 4:
+                        Ship.AddPart(new PartData(1, new Vector3(0, 4, 0)));
+                        break;
+                    case 5:
+                        Ship.RemovePart(new Vector3(0, 2, 0));
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
             //todo manually refresh all parts
-	        if (Input.GetKeyUp(KeyCode.R))
+            if (Input.GetKeyUp(KeyCode.R))
 	            Ship.RefreshParts();
         }
-	        
         //Toggle build mode
 	    if (Input.GetKeyDown(KeyCode.Tab))
             buildController.ToggleBuildmode();

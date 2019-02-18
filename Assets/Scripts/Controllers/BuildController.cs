@@ -29,7 +29,7 @@ public class BuildController : MonoBehaviour {
         partSelected = false;
 
         //TESTING
-        selectedPartID = 1;
+        selectedPartID = 0;
 	    currentNode = 0;
 
         //Find part manager in scene
@@ -56,7 +56,7 @@ public class BuildController : MonoBehaviour {
                 currentNode = 0;
 
                 //Display 'ghost' block
-                ghost = Instantiate(partManager.GetPartById(selectedPartID).prefab, transform);
+                ghost = Instantiate(partManager.GetPartById(selectedPartID).Prefab, transform);
                 ghost.name = "ghost";
                 ghost.GetComponent<Part>().isGhost = true;
                 //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
@@ -98,7 +98,7 @@ public class BuildController : MonoBehaviour {
                 //BuildPart(selectedPartID, ghost.transform.position - transform.position);
 
                 //TESTING while waiting for serverside fix
-                GameObject testObj = Instantiate(partManager.GetPartById(selectedPartID).prefab, transform);
+                GameObject testObj = Instantiate(partManager.GetPartById(selectedPartID).Prefab, transform);
                 testObj.transform.position = ghost.transform.position;
                 testObj.name = "test";
 
