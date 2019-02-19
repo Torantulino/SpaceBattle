@@ -6,7 +6,8 @@ using UnityEngine;
 public class CameraModeToggle : MonoBehaviour
 {
     [SerializeField] GameObject FollowPoint;
-    [SerializeField] CinemachineFreeLook cam;
+    [SerializeField] CinemachineFreeLook buildCam;
+    CinemachineVirtualCamera flightCam;
     [SerializeField] float buildHeight = 5.08f;
     [SerializeField] float buildRadius = 5.08f;
     [SerializeField] float combatHeight = 1.08f;
@@ -18,8 +19,9 @@ public class CameraModeToggle : MonoBehaviour
 
 	private void Start()
 	{
-		cam = GetComponentInChildren<CinemachineFreeLook>();
-	}
+		buildCam = GetComponentInChildren<CinemachineFreeLook>();
+        flightCam = transform.Find("CM 3rd-Person-FlightMode").GetComponent<CinemachineVirtualCamera>();
+    }
 
 	// Use lateupdate to try to act after any Cinemachine scripts to avoid jitter (not really working)
 	void LateUpdate()
@@ -30,42 +32,51 @@ public class CameraModeToggle : MonoBehaviour
 			//if in build mode don't invert mouse and more focus point ot centre on ship
 			if (buildMode)
 			{
+                //Switch Cameras
+                flightCam.gameObject.SetActive(false);
+                buildCam.gameObject.SetActive(true);
+
 				CameraController.CameraAnchor.transform.localPosition = new Vector3(0, 0, 0);
-				cam.m_YAxis.m_InvertAxis = false;
+				buildCam.m_YAxis.m_InvertAxis = false;
 
 				//set centre radius
-				cam.m_Orbits[1].m_Radius = buildRadius;
+				buildCam.m_Orbits[1].m_Radius = buildRadius;
 
 				//set top and bottom heights
-				cam.m_Orbits[0].m_Height = buildHeight;
-				cam.m_Orbits[2].m_Height = -buildHeight;
+				buildCam.m_Orbits[0].m_Height = buildHeight;
+				buildCam.m_Orbits[2].m_Height = -buildHeight;
 
-				//stop camera moving if C is held down
+				//stop camera moving if Shift is held down
 				if (Input.GetKey(KeyCode.LeftShift))
 				{
-					cam.m_XAxis.Value = lastFrameCamX;
-					cam.m_YAxis.Value = lastFrameCamY;
-					cam.m_XAxis.m_InputAxisValue = 0;
-					cam.m_YAxis.m_InputAxisValue = 0;
+					buildCam.m_XAxis.Value = lastFrameCamX;
+					buildCam.m_YAxis.Value = lastFrameCamY;
+					buildCam.m_XAxis.m_InputAxisValue = 0;
+					buildCam.m_YAxis.m_InputAxisValue = 0;
 				}
 
 				//update the last known state of the camera
-				lastFrameCamX = cam.m_XAxis.Value;
-				lastFrameCamY = cam.m_YAxis.Value;
+				lastFrameCamX = buildCam.m_XAxis.Value;
+				lastFrameCamY = buildCam.m_YAxis.Value;
 
 			}
+            //Flight mode
 			else
 			{
-				CameraController.CameraAnchor.transform.localPosition = new Vector3(0, 1.77f, 0);
-				cam.m_YAxis.m_InvertAxis = true;
-				cam.m_Orbits[1].m_Radius = 1.08f;
+                //Switch Cameras
+                flightCam.gameObject.SetActive(true);
+                buildCam.gameObject.SetActive(false);
 
-				//set centre radius
-				cam.m_Orbits[1].m_Radius = combatRadius;
+                CameraController.CameraAnchor.transform.localPosition = new Vector3(0.0f, 0.0f, 10.0f);
+				//cam.m_YAxis.m_InvertAxis = true;
+				//cam.m_Orbits[1].m_Radius = 1.08f;
 
-				//set top and bottom heights
-				cam.m_Orbits[0].m_Height = combatHeight;
-				cam.m_Orbits[2].m_Height = -combatHeight;
+				////set centre radius
+				//cam.m_Orbits[1].m_Radius = combatRadius;
+
+				////set top and bottom heights
+				//cam.m_Orbits[0].m_Height = combatHeight;
+				//cam.m_Orbits[2].m_Height = -combatHeight;
 
 				if (Input.GetKey(KeyCode.LeftShift))
 				{
