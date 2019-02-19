@@ -35,7 +35,7 @@ public class CameraModeToggle : MonoBehaviour
 			//if in build mode don't invert mouse and more focus point ot centre on ship
 			if (buildMode)
 			{
-				CameraController.CameraAnchor.localPosition = new Vector3(0, 0, 0);
+				CameraController.CameraAnchor.transform.localPosition = new Vector3(0, 0, 0);
 				cam.m_YAxis.m_InvertAxis = false;
 
 				//set centre radius
@@ -61,7 +61,7 @@ public class CameraModeToggle : MonoBehaviour
 			}
 			else
 			{
-				CameraController.CameraAnchor.localPosition = new Vector3(0, 1.77f, 0);
+				CameraController.CameraAnchor.transform.localPosition = new Vector3(0, 1.77f, 0);
 				cam.m_YAxis.m_InvertAxis = true;
 				cam.m_Orbits[1].m_Radius = 1.08f;
 
@@ -72,6 +72,10 @@ public class CameraModeToggle : MonoBehaviour
 				cam.m_Orbits[0].m_Height = combatHeight;
 				cam.m_Orbits[2].m_Height = -combatHeight;
 			}
+		}
+		else
+		{
+			print("Camera Anchor NUll");
 		}
 	}
 }

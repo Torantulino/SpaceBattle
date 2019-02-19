@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
 
     public static CameraController Instance { get { return instance; } }
 
-    public static Transform CameraAnchor;
+    public static GameObject CameraAnchor;
 
     private void Awake()
     {
@@ -32,22 +32,23 @@ public class CameraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _cinemachineVirtualCamera = GetComponent<CinemachineFreeLook>();
+        _cinemachineVirtualCamera = GetComponentInChildren<CinemachineFreeLook>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!GameController.LocalPlayer)
+        if (GameController.LocalPlayer == null)
         {
+            Debug.LogWarning("LocalPlayer NUll");
             return;
         }
         // Setting Player to follow the camera anchor on the active player
         if (!_cinemachineVirtualCamera.m_Follow)
         {
-            CameraAnchor = transform.Find("CameraAnchor");
-            _cinemachineVirtualCamera.m_Follow = CameraAnchor;
-            _cinemachineVirtualCamera.m_LookAt = CameraAnchor;
+            CameraAnchor = GameController.LocalPlayer.transform.Find("CameraAnchor").gameObject;
+            _cinemachineVirtualCamera.m_Follow = CameraAnchor.transform;
+            _cinemachineVirtualCamera.m_LookAt = CameraAnchor.transform;
 
         }
 
