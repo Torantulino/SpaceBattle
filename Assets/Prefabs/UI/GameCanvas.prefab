@@ -56,7 +56,6 @@ GameObject:
   - component: {fileID: 224087491146025082}
   - component: {fileID: 222322141170865022}
   - component: {fileID: 114386738776926830}
-  - component: {fileID: 114121804831826832}
   m_Layer: 5
   m_Name: CombatPanel
   m_TagString: Untagged
@@ -566,7 +565,6 @@ GameObject:
   - component: {fileID: 114500809147547444}
   - component: {fileID: 114771096173921694}
   - component: {fileID: 114743132473139772}
-  - component: {fileID: 114738032990641714}
   m_Layer: 5
   m_Name: InventoryPanel
   m_TagString: Untagged
@@ -656,7 +654,6 @@ GameObject:
   - component: {fileID: 224715782748675942}
   - component: {fileID: 222332639492673026}
   - component: {fileID: 114210730588177722}
-  - component: {fileID: 114297622967573780}
   m_Layer: 5
   m_Name: BuildPanel
   m_TagString: Untagged
@@ -901,17 +898,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114121804831826832
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1059962710485166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10709834f40b6e0439e05594235e9fec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114123548503812008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1274,17 +1260,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114297622967573780
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1900287210525566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10709834f40b6e0439e05594235e9fec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114300241350691262
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2004,8 +1979,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3be3af587afc84d871e9390ccf6c62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildPanel: {fileID: 114297622967573780}
-  CombatPanel: {fileID: 114121804831826832}
+  BuildPanel: {fileID: 1900287210525566}
+  CombatPanel: {fileID: 1059962710485166}
   Health: {fileID: 114289917622586418}
 --- !u!114 &114597749740566708
 MonoBehaviour:
@@ -2303,17 +2278,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114738032990641714
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1812037587887176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10709834f40b6e0439e05594235e9fec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114740811448297774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2352,8 +2316,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3be3af587afc84d871e9390ccf6c62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildPanel: {fileID: 0}
-  CombatPanel: {fileID: 0}
+  BuildPanel: {fileID: 1900287210525566}
+  CombatPanel: {fileID: 1059962710485166}
   Health: {fileID: 0}
 --- !u!114 &114743188534776012
 MonoBehaviour:
@@ -2571,7 +2535,7 @@ MonoBehaviour:
         m_MethodName: ToggleElement
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 114738032990641714}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: GUIToggle, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0

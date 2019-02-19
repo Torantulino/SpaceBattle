@@ -152,6 +152,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114608511245467904, guid: 72290dbf966104e45b11a1b8f5be4fe0,
+        type: 2}
+      propertyPath: m_FollowOffset.z
+      value: -7.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 72290dbf966104e45b11a1b8f5be4fe0, type: 2}
   m_IsPrefabParent: 0
@@ -402,6 +407,15 @@ Prefab:
         type: 2}
       propertyPath: field of view
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 114737704705778012, guid: 7640e468346044b418881eea22a412d0,
+        type: 2}
+      propertyPath: m_ShowCameraFrustum
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1734463438625052, guid: 7640e468346044b418881eea22a412d0, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7640e468346044b418881eea22a412d0, type: 2}
