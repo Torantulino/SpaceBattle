@@ -63,15 +63,15 @@ public partial class PlayerController : NetworkBehaviour {
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
         guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
 
+        //Update buildmode accross the board
+        UpdateBuildMode();
+
         // All other players
         if (isLocalPlayer)
             return;
 
         // Set the reference for Ship
         Ship = GetComponent<Ship>();
-
-        buildMode = true;
-        UpdateBuildMode();
     }
 
     // Update is called once per physics tick
