@@ -71,6 +71,8 @@ ReadOnlyCollection<ItemContainer> Items
 float Hp
 Vector3 Target
 ReadOnlyCollection<PartData> PartsData
+Dictionary<Vector3Int, Part> Parts
+
 ```
 ### Methods
 ```cs
@@ -85,6 +87,8 @@ void Thrust(Vector3 force)
 void Shoot()
 void RefreshParts()
 void AddPart(PartData partData)
+void RemovePart(Vector3 position)
+ReadOnlyCollection<Node> GetNodes(bool onlyAvailable)
 
 // Weapon
 bool Ready()
