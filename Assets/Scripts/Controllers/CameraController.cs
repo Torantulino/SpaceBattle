@@ -27,12 +27,14 @@ public class CameraController : MonoBehaviour
     }
     #endregion
 
-    private CinemachineFreeLook _cinemachineVirtualCamera;
+    private CinemachineFreeLook _cinemachineFreeLookCamera;
+    private CinemachineVirtualCamera _flightCamera;
 
     // Use this for initialization
     void Start()
     {
-        _cinemachineVirtualCamera = GetComponentInChildren<CinemachineFreeLook>();
+        _cinemachineFreeLookCamera = GetComponentInChildren<CinemachineFreeLook>();
+        _flightCamera = transform.Find("CM 3rd-Person-FlightMode").GetComponent<CinemachineVirtualCamera>();    //Obtaining ref by GetComponent wasn't working
     }
 
     // Update is called once per frame
@@ -42,14 +44,22 @@ public class CameraController : MonoBehaviour
         {
             return;
         }
+
         // Setting Player to follow the camera anchor on the active player
-        if (!_cinemachineVirtualCamera.m_Follow)
+        if (!_cinemachineFreeLookCamera.m_Follow)
         {
             CameraAnchor = GameController.LocalPlayer.transform.Find("CameraAnchor").gameObject;
-            _cinemachineVirtualCamera.m_Follow = CameraAnchor.transform;
-            _cinemachineVirtualCamera.m_LookAt = CameraAnchor.transform;
+            _cinemachineFreeLookCamera.m_Follow = CameraAnchor.transform;
+            _cinemachineFreeLookCamera.m_LookAt = CameraAnchor.transform;
 
         }
-
+        //Set flightcam Follow and Lookat
+        if (!_flightCamera.m_Follow)
+        {
+            //Follow player
+            _flightCamera.m_Follow = GameController.LocalPlayer.transform;
+            //Lookat Anchor
+            _flightCamera.m_LookAt = GameController.LocalPlayer.transform.Find("CameraAnchor").gameObject.transform;
+        }
     }
 }
