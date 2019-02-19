@@ -27,12 +27,12 @@ public class CameraController : MonoBehaviour
     }
     #endregion
 
-    private CinemachineVirtualCamera _cinemachineVirtualCamera;
+    private CinemachineFreeLook _cinemachineVirtualCamera;
 
     // Use this for initialization
     void Start()
     {
-        _cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
+        _cinemachineVirtualCamera = GetComponent<CinemachineFreeLook>();
     }
 
     // Update is called once per frame
@@ -47,6 +47,7 @@ public class CameraController : MonoBehaviour
         {
             CameraAnchor = transform.Find("CameraAnchor");
             _cinemachineVirtualCamera.m_Follow = CameraAnchor;
+            _cinemachineVirtualCamera.m_LookAt = CameraAnchor;
 
         }
 
