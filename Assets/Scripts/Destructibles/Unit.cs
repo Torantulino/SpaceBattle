@@ -56,8 +56,9 @@ public class Unit : Destructible
     public event EventHandler<EventArgs> PartsChanged;
 
     // Use this for initialization
-    public new void Start () {
-		base.Start();
+    public new void Start()
+    {
+        base.Start();
 
         // Making sure that there's an Aim GameObject
         if (!aimTransform)
@@ -436,7 +437,7 @@ public class Unit : Destructible
             NetworkServer.Spawn(shot);
             // Destroy it after some time
             Destroy(shot, 5f);
-        }       
+        }
     }
 
     #endregion

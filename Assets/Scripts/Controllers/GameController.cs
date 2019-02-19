@@ -3,7 +3,8 @@
 /// <summary>
 /// Controls the game and players.
 /// </summary>
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour
+{
 
     #region Singleton
     private static GameController instance;

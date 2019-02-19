@@ -52,6 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4400867222704632}
   - component: {fileID: 114992261084997636}
+  - component: {fileID: 114209140504324080}
   m_Layer: 0
   m_Name: CameraSystem
   m_TagString: Untagged
@@ -332,6 +333,17 @@ MonoBehaviour:
   - {fileID: 114563482421185160}
   - {fileID: 114796004613854102}
   - {fileID: 114913513252182962}
+--- !u!114 &114209140504324080
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1321311687125460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 263f5d5d59d2e6948a118bd552d71328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114245796433081314
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -611,8 +623,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f5be9d2331cde47b47ff5ff754a83c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FollowPoint: {fileID: 0}
-  cam: {fileID: 114170240781688060}
   buildHeight: 5.08
   buildRadius: 5.08
   combatHeight: 1.08

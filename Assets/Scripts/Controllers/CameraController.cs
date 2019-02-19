@@ -4,12 +4,15 @@ using UnityEngine;
 /// <summary>
 /// Controls Main Camera.
 /// </summary>
-public class CameraController : MonoBehaviour {
+public class CameraController : MonoBehaviour
+{
 
     #region Singleton
     private static CameraController instance;
 
     public static CameraController Instance { get { return instance; } }
+
+    public static GameObject CameraAnchor;
 
     private void Awake()
     {
@@ -24,22 +27,29 @@ public class CameraController : MonoBehaviour {
     }
     #endregion
 
-    private CinemachineVirtualCamera _cinemachineVirtualCamera;
+    private CinemachineFreeLook _cinemachineVirtualCamera;
 
     // Use this for initialization
     void Start()
     {
-        _cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
+        _cinemachineVirtualCamera = GetComponentInChildren<CinemachineFreeLook>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!GameController.LocalPlayer)
+        if (GameController.LocalPlayer == null)
+        {
             return;
-
-        // Setting Player to follow
+        }
+        // Setting Player to follow the camera anchor on the active player
         if (!_cinemachineVirtualCamera.m_Follow)
-            _cinemachineVirtualCamera.m_Follow = GameController.LocalPlayer.transform;
+        {
+            CameraAnchor = GameController.LocalPlayer.transform.Find("CameraAnchor").gameObject;
+            _cinemachineVirtualCamera.m_Follow = CameraAnchor.transform;
+            _cinemachineVirtualCamera.m_LookAt = CameraAnchor.transform;
+
+        }
+
     }
 }
