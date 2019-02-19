@@ -40,7 +40,6 @@ public class CameraController : MonoBehaviour
     {
         if (GameController.LocalPlayer == null)
         {
-            Debug.LogWarning("LocalPlayer NUll");
             return;
         }
         // Setting Player to follow the camera anchor on the active player

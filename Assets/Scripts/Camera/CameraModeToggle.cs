@@ -46,7 +46,7 @@ public class CameraModeToggle : MonoBehaviour
 				cam.m_Orbits[2].m_Height = -buildHeight;
 
 				//stop camera moving if C is held down
-				if (Input.GetKey(KeyCode.C))
+				if (Input.GetKey(KeyCode.LeftShift))
 				{
 					cam.m_XAxis.Value = lastFrameCamX;
 					cam.m_YAxis.Value = lastFrameCamY;
@@ -71,11 +71,22 @@ public class CameraModeToggle : MonoBehaviour
 				//set top and bottom heights
 				cam.m_Orbits[0].m_Height = combatHeight;
 				cam.m_Orbits[2].m_Height = -combatHeight;
+
+				if (Input.GetKey(KeyCode.LeftShift))
+				{
+					Cursor.lockState = CursorLockMode.None;
+					Cursor.visible = true;
+				}
+				else
+				{
+					Cursor.lockState = CursorLockMode.Locked;
+					Cursor.visible = false;
+				}
 			}
 		}
 		else
 		{
-			print("Camera Anchor NUll");
+			Debug.LogWarning("Waiting for valid camera Player/CameraAnchor");
 		}
 	}
 }
