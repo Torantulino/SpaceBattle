@@ -24,12 +24,6 @@ public class CameraModeToggle : MonoBehaviour
 	// Use lateupdate to try to act after any Cinemachine scripts to avoid jitter (not really working)
 	void LateUpdate()
 	{
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            buildMode = !buildMode;
-        }
-
 		//if a player with a camera anchor exists:
 		if (CameraController.CameraAnchor != null)
 		{
@@ -90,4 +84,10 @@ public class CameraModeToggle : MonoBehaviour
 			Debug.LogWarning("Waiting for valid camera Player/CameraAnchor");
 		}
 	}
+
+    public void UpdateBuildmode(bool b)
+    {
+        buildMode = b;  //Hard set rather than toggle to ensure sync
+    }
+
 }

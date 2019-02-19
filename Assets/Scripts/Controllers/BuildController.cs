@@ -23,18 +23,23 @@ public class BuildController : MonoBehaviour {
 
     private Dictionary<Vector3, bool> partPositions = new Dictionary<Vector3, bool>();
 
+    private PlayerController playerController;
+
     // Use this for initialization
     void Start () {
         buildmode = false;
         partSelected = false;
 
         //TESTING
-        selectedPartID = 0;
+        selectedPartID = 1;
 	    currentNode = 0;
 
         //Find part manager in scene
 	    partManager = FindObjectOfType<PartManager>();
         ship = GetComponent<Ship>();
+
+        //Get player controller
+        playerController = GetComponent<PlayerController>();
 
         GetCurrentParts();
         GetAvailableNodes();
@@ -198,9 +203,9 @@ public class BuildController : MonoBehaviour {
         //}
     }
 
-    public void ToggleBuildmode()
+    public void UpdateBuildmode(bool b)
     {
-        buildmode = !buildmode;
+        buildmode = b;  //Hard set rather than toggle to ensure sync
         if (!buildmode)
         {
             Destroy(ghost);

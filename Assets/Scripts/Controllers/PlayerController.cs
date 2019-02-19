@@ -37,7 +37,17 @@ public partial class PlayerController : NetworkBehaviour {
         get { return _items.AsReadOnly(); }
     }
 
+    public bool BuildMode
+    {
+        get { return buildMode; }
+        set { buildMode = value; } //todo -----------------------
+    }
+
+    private bool buildMode;
+
     private BuildController buildController;
+    private CameraModeToggle cameraModeToggle;
+    private GUIFacade guiFacade;
     #endregion
 
     private int _testCounter = 0;
@@ -49,6 +59,9 @@ public partial class PlayerController : NetworkBehaviour {
         OnPlayerNameChanged(PlayerName);
         //Get buildController
         buildController = GetComponent<BuildController>();
+        //etc
+        cameraModeToggle = FindObjectOfType<CameraModeToggle>();
+        guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
 
         // All other players
         if (isLocalPlayer)
@@ -56,6 +69,9 @@ public partial class PlayerController : NetworkBehaviour {
 
         // Set the reference for Ship
         Ship = GetComponent<Ship>();
+
+        buildMode = true;
+        UpdateBuildMode();
     }
 
     // Update is called once per physics tick
@@ -66,7 +82,7 @@ public partial class PlayerController : NetworkBehaviour {
 	        return;
 
         //Flight & Fight Mode
-        if (!buildController.buildmode) {
+        if (!buildMode) {
 	        //todo testing
 	        Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 
@@ -109,7 +125,20 @@ public partial class PlayerController : NetworkBehaviour {
         }
         //Toggle build mode
 	    if (Input.GetKeyDown(KeyCode.Tab))
-            buildController.ToggleBuildmode();
+	    {
+	        buildMode = !buildMode;
+            UpdateBuildMode();
+        }
+    }
+
+    private void UpdateBuildMode()
+    {
+        //Update BuildController
+        buildController.UpdateBuildmode(buildMode);
+        //Update CameraModeToggle
+        cameraModeToggle.UpdateBuildmode(buildMode);
+        //Update Gui facade
+        guiFacade.UpdateBuildmode(buildMode);
     }
 
     /// <summary>
