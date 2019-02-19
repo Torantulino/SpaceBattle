@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 /// <summary>
 /// Base class for all parts.
@@ -7,16 +10,60 @@
 public class Part : MonoBehaviour
 {
     protected Ship playerShip;
+    protected int id = -1;
 
-	// Use this for initialization
-	public void Start ()
+    #region Properties
+
+    /// <summary>
+    /// If this Part was checked. Needed for attachment recalculations.
+    /// </summary>
+    public bool Checked;
+
+    /// <summary>
+    /// If this Part is directly or indirectly connected to the Unit.
+    /// </summary>
+    //todo remove later
+    [Obsolete("Property isn't used anywhere and therefore isn't updated.")]
+    public bool ConnectedToUnit;
+
+    /// <summary>
+    /// All nodes of this Part.
+    /// </summary>
+    public List<Node> Nodes = new List<Node>();
+
+    #endregion
+
+    public bool isGhost;//todo: properly protect value
+    
+    public void Awake ()
 	{
 	    playerShip = GetComponentInParent<Ship>();
+        //Initialise Nodes
+        foreach (Node n in transform.Find("Nodes").GetComponentsInChildren<Node>())
+        {
+            Nodes.Add(n);
+        }
 	}
-	
-	// Update is called once per frame
-	public void Update () {
-		
-	}
+
+    // Use this for initialization
+    public void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    public void Update ()
+	{
+
+    }
+
+    /// <summary>
+    /// ID is set when Part gameObject is instantiated.
+    /// </summary>
+    /// <param name="id"></param>
+    public void SetID(int id)
+    {
+        this.id = id;
+    }
 
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public static class TransformExtension {
 
     /// <summary>
-    /// Detaches and Destroys all children of this transform. Skips children listed in params skip.
+    /// Destroys all children of this transform. Skips children listed in params skip.
     /// </summary>
     /// <param name="skip">Children to skip</param>
     public static void DestroyChildren(this Transform transform, params string[] skip)
@@ -13,7 +13,6 @@ public static class TransformExtension {
         {
             if(skip.Any(s => s == child.name))
                 continue;
-            child.parent = null;
             GameObject.Destroy(child.gameObject);
         }
     }

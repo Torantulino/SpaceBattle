@@ -5,15 +5,16 @@ using UnityEngine;
 
 public class CameraModeToggle : MonoBehaviour
 {
-	CinemachineFreeLook cam;
-	[SerializeField] float buildHeight = 5.08f;
-	[SerializeField] float buildRadius = 5.08f;
-	[SerializeField] float combatHeight = 1.08f;
-	[SerializeField] float combatRadius = 1.08f;
-	private bool buildMode = false;
+    [SerializeField] GameObject FollowPoint;
+    [SerializeField] CinemachineFreeLook cam;
+    [SerializeField] float buildHeight = 5.08f;
+    [SerializeField] float buildRadius = 5.08f;
+    [SerializeField] float combatHeight = 1.08f;
+    [SerializeField] float combatRadius = 1.08f;
+    private bool buildMode = false;
 
-	public float lastFrameCamX;
-	public float lastFrameCamY;
+    public float lastFrameCamX;
+    public float lastFrameCamY;
 
 	private void Start()
 	{
@@ -24,10 +25,10 @@ public class CameraModeToggle : MonoBehaviour
 	void LateUpdate()
 	{
 
-		if (Input.GetKeyDown(KeyCode.Tab))
-		{
-			buildMode = !buildMode;
-		}
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            buildMode = !buildMode;
+        }
 
 		//if a player with a camera anchor exists:
 		if (CameraController.CameraAnchor != null)

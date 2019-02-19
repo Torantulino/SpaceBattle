@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using UnityEngine;
 using UnityEngine.Networking;
 
 /// <summary>
@@ -6,7 +8,10 @@ using UnityEngine.Networking;
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
+[RequireComponent(typeof(BuildController))]
 public partial class PlayerController : NetworkBehaviour {
+
+    private readonly List<ItemContainer> _items = new List<ItemContainer>();
 
     #region Properties
 
@@ -24,13 +29,26 @@ public partial class PlayerController : NetworkBehaviour {
     /// </summary>
     public Ship Ship { get; private set; }
 
+    /// <summary>
+    /// Items in the inventory. Local Player only.
+    /// </summary>
+    public ReadOnlyCollection<ItemContainer> Items
+    {
+        get { return _items.AsReadOnly(); }
+    }
+
+    private BuildController buildController;
     #endregion
+
+    private int _testCounter = 0;
 
     // Use this for initialization
     void Start()
     {
         // Update PlayerName, to reflect actual value for players that just joined
         OnPlayerNameChanged(PlayerName);
+        //Get buildController
+        buildController = GetComponent<BuildController>();
 
         // All other players
         if (isLocalPlayer)
@@ -46,23 +64,97 @@ public partial class PlayerController : NetworkBehaviour {
         // Check if this code runs on the game object that represents my Player
 	    if (!isLocalPlayer)
 	        return;
-        
-	    //todo temporary code for testing - remove later
-	    Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
-	    
-        //todo how to shoot - remove later
-        if (Input.GetKeyDown(KeyCode.Space))
-	        Ship.Shoot();
 
-        //todo changing aiming direction - upgrade later
-	    if (Input.GetKey(KeyCode.E))
-	        Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
-	    if (Input.GetKey(KeyCode.Q))
-	        Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
+        //Flight & Fight Mode
+        if (!buildController.buildmode) {
+	        //todo testing
+	        Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 
-        //todo manually refresh all parts
-	    if (Input.GetKeyUp(KeyCode.R))
-	        Ship.RefreshParts();
+            if (Input.GetKeyDown(KeyCode.Space))
+	            Ship.Shoot();
+
+	        if (Input.GetKey(KeyCode.E))
+	            Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
+	        if (Input.GetKey(KeyCode.Q))
+	            Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
+
+            if (Input.GetKeyUp(KeyCode.R))
+                Ship.RefreshParts();
+
+            if (Input.GetKeyUp(KeyCode.T))
+            {
+                switch (_testCounter++)
+                {
+                    case 1:
+                        Ship.AddPart(new PartData(1, new Vector3(0, 1, 0)));
+                        break;
+                    case 2:
+                        Ship.AddPart(new PartData(1, new Vector3(0, 2, 0)));
+                        break;
+                    case 3:
+                        Ship.AddPart(new PartData(1, new Vector3(0, 3, 0)));
+                        break;
+                    case 4:
+                        Ship.AddPart(new PartData(1, new Vector3(0, 4, 0)));
+                        break;
+                    case 5:
+                        Ship.RemovePart(new Vector3(0, 2, 0));
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
+        }
+        //Toggle build mode
+	    if (Input.GetKeyDown(KeyCode.Tab))
+            buildController.ToggleBuildmode();
+    }
+
+    /// <summary>
+    /// Add items to the Local Player inventory.
+    /// </summary>
+    public void AddItem(int id, int quantity = 1)
+    {
+        if (!isLocalPlayer)
+            return;
+
+        CmdUpdateItem(new ItemData { ItemId = id, Quantity = quantity });
+    }
+
+    /// <summary>
+    /// Remove items from the Local Player inventory.
+    /// </summary>
+    public void RemoveItem(int id, int quantity = 1)
+    {
+        if (!isLocalPlayer)
+            return;
+
+        CmdUpdateItem(new ItemData { ItemId = id, Quantity = -quantity });
+    }
+
+    /// <summary>
+    /// Refreshes all items in the inventory.
+    /// Usually not necessary to call that manually.
+    /// </summary>
+    public void RefreshItems()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        CmdRefreshItems();
+    }
+
+    /// <summary>
+    /// Clear all items from the inventory.
+    /// </summary>
+    public void ClearItems()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        CmdClearItems();
     }
 
 }
