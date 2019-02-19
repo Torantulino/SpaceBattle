@@ -22,14 +22,19 @@ public class Part : MonoBehaviour
     /// <summary>
     /// If this Part is directly or indirectly connected to the Unit.
     /// </summary>
+    //todo remove later
+    [Obsolete("Property isn't used anywhere and therefore isn't updated.")]
     public bool ConnectedToUnit;
+
+    /// <summary>
+    /// All nodes of this Part.
+    /// </summary>
+    public List<Node> Nodes = new List<Node>();
 
     #endregion
 
-    //todo to readonly collection probably
-    public List<Node> Nodes;
-    public bool isGhost;            //todo: properly protect value
-
+    public bool isGhost;//todo: properly protect value
+    
     public void Awake ()
 	{
 	    playerShip = GetComponentInParent<Ship>();

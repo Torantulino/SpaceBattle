@@ -67,20 +67,20 @@ public partial class PlayerController : NetworkBehaviour {
 
         //Flight & Fight Mode
         if (!buildController.buildmode) {
-	        //todo temporary code for testing - remove later
+	        //todo testing
 	        Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
-	    
-            //todo how to shoot - remove later
+
             if (Input.GetKeyDown(KeyCode.Space))
 	            Ship.Shoot();
 
-            //todo changing aiming direction - upgrade later
 	        if (Input.GetKey(KeyCode.E))
 	            Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
 	        if (Input.GetKey(KeyCode.Q))
 	            Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
 
-            //todo testing
+            if (Input.GetKeyUp(KeyCode.R))
+                Ship.RefreshParts();
+
             if (Input.GetKeyUp(KeyCode.T))
             {
                 switch (_testCounter++)
@@ -106,9 +106,6 @@ public partial class PlayerController : NetworkBehaviour {
 
             }
 
-            //todo manually refresh all parts
-            if (Input.GetKeyUp(KeyCode.R))
-	            Ship.RefreshParts();
         }
         //Toggle build mode
 	    if (Input.GetKeyDown(KeyCode.Tab))

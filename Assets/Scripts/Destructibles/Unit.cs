@@ -17,6 +17,9 @@ public class Unit : Destructible
     protected List<Weapon> weapons = new List<Weapon>();
     protected Dictionary<Vector3Int, Part> parts = new Dictionary<Vector3Int, Part>();
 
+    // Holds all children that won't be deleted when rebuilding parts
+    private readonly List<string> _children = new List<string>();
+
     #region Properties
 
     /// <summary>
@@ -36,7 +39,7 @@ public class Unit : Destructible
     {
         get { return partsData.AsReadOnly(); }
     }
-
+    
     /// <summary>
     /// All parts (position, Part) of this Unit.
     /// </summary>
@@ -66,6 +69,10 @@ public class Unit : Destructible
             GetComponent<NetworkTransformChild>().target = aimTransform;
         }
 
+        // Adding all children to the List that will prevent them from being destroyed
+        _children.AddRange(transform.GetComponentsInChildren<Transform>().Select(t => t.name));
+
+        // Handling event
         PartsChanged += OnPartsChanged;
 
         // Only on server
@@ -116,7 +123,6 @@ public class Unit : Destructible
     /// </summary>
     public void AddPart(PartData partData)
     {
-        //todo may use Part in an argument
         CmdAddPart(partData.ToString());
     }
 
@@ -125,7 +131,6 @@ public class Unit : Destructible
     /// </summary>
     public void RemovePart(Vector3 position)
     {
-        //todo may use Part in an argument
         CmdRemovePart(position);
     }
 
@@ -145,18 +150,15 @@ public class Unit : Destructible
     private void RebuildParts()
     {
         // Remove all children
-        transform.DestroyChildren("Aim", "Nodes");//todo fix
+        transform.DestroyChildren(_children.ToArray());
         // Clear parts Dictionary
-        parts.Clear();
+        Parts.Clear();
         // Loop through parts and instantiate them
         // Note: Those parts are only created locally
         foreach (PartData part in partsData)
         {
             InstantiatePart(part);
         }
-        // Recalculate attachments to all nodes
-        //RecalculateAttachments(GetNodes(false));
-        RecalculateAllAttachments();
         // Invoking event
         if (PartsChanged != null)
             PartsChanged(this, EventArgs.Empty);
@@ -208,10 +210,13 @@ public class Unit : Destructible
             if (Vector3Int.RoundToInt(node.AttachmentPosition) == Vector3Int.zero)
             {
                 node.IsAttachedToUnit = true;
-                //todo might work more efficient
-                node.GetComponentInParent<Part>().ConnectedToUnit = true;
                 connection = true;
+                if (node.AttachedPart != null)
+                    node.DetachPart();
             }
+            // Detach a Part if there isn't any now
+            if(!foundPart && node.AttachedPart != null)
+                node.DetachPart();
         }
 
         return connection;
@@ -223,7 +228,6 @@ public class Unit : Destructible
         foreach (KeyValuePair<Vector3Int, Part> keyValuePair in Parts)
         {
             keyValuePair.Value.Checked = false;
-            keyValuePair.Value.ConnectedToUnit = false;
         }
 
         // Recalculate attachments for Unit nodes
@@ -243,8 +247,7 @@ public class Unit : Destructible
             // Mark part as checked
             part.Checked = true;
             // Hold all parts recursively checked
-            List<Part> partsChecked = new List<Part>();
-            partsChecked.Add(part);
+            List<Part> partsChecked = new List<Part> {part};
             // Recalculate attachments recursively
             if (!RecalculateAttachments(part.Nodes, ref partsChecked, true))
             {
@@ -259,10 +262,13 @@ public class Unit : Destructible
                 part.transform.parent = null;
             }
         }
-        //todo try foreach
-        for (int i = 0; i < keys.Count; i++)
+        foreach (Vector3Int key in keys)
         {
-            Parts.Remove(keys[i]);
+            // Removing from PartsData
+            partsData.Remove(partsData.First(p => Vector3Int.RoundToInt(p.Position) == key));
+
+            // Remove from Parts
+            Parts.Remove(key);
         }
 
     }
@@ -272,6 +278,8 @@ public class Unit : Destructible
     /// </summary>
     private void OnPartsChanged(object sender, EventArgs e)
     {
+        // Revalculate all connections
+        RecalculateAllAttachments();
         // Clear weapons List
         weapons.Clear();
         // Add weapons
@@ -289,7 +297,11 @@ public class Unit : Destructible
     {
         partsData.Add(new PartData(part));
         RpcAddPart(part);
-        RecalculateAllAttachments();
+        // Instantiate this part
+        InstantiatePart(new PartData(part));
+        // Invoking event
+        if (PartsChanged != null)
+            PartsChanged(this, EventArgs.Empty);
     }
 
     /// <summary>
@@ -303,9 +315,24 @@ public class Unit : Destructible
         // If a Part was found
         if (!keyValuePair.Equals(default(KeyValuePair<Vector3Int, Part>)))
         {
+            // Removing from Parts
             Parts.Remove(keyValuePair.Key);
+
+            // Removing from PartsData
+            partsData.Remove(partsData.First(p => Vector3Int.RoundToInt(p.Position) == keyValuePair.Key));
+
+            // Destroying gameObject
             Destroy(keyValuePair.Value.gameObject);
+
             RpcRemovePart(position);
+            // Invoking event
+            if (PartsChanged != null)
+                PartsChanged(this, EventArgs.Empty);
+        }
+        else
+        {
+            // Display warning if there's no Part in this position (server only warning)
+            Debug.LogWarning("Trying to remove a non-existent Part (check if removal position is correct).");
         }
     }
 
@@ -349,14 +376,17 @@ public class Unit : Destructible
     private void RpcAddPart(string str)
     {
         // Add a part on clients (skip server, Part was already added in the CmdAddPart)
-        if(!isServer)
-        {
-            partsData.Add(new PartData(str));
-        }
+        if (isServer)
+            return;
+
+        partsData.Add(new PartData(str));
+
         // Instantiate this part
         InstantiatePart(new PartData(str));
-        // Recalculate attachments for all parts
-        RecalculateAllAttachments();
+
+        // Invoking event (for server already invoked in Command)
+        if (PartsChanged != null)
+            PartsChanged(this, EventArgs.Empty);
     }
 
     /// <summary>
@@ -366,20 +396,27 @@ public class Unit : Destructible
     private void RpcRemovePart(Vector3 position)
     {
         // Remove on clients
-        if (!isServer)
-        {
-            // Searching for a Part in Parts
-            KeyValuePair<Vector3Int, Part>  keyValuePair = Parts.First(p => p.Key == Vector3Int.RoundToInt(position));
-            // If a Part was not found
-            if (keyValuePair.Equals(default(KeyValuePair<Vector3Int, Part>)))
-                return;
+        if (isServer)
+            return;
 
-            Parts.Remove(keyValuePair.Key);
-            Destroy(keyValuePair.Value.gameObject);
-        }
+        // Searching for a Part in Parts
+        KeyValuePair<Vector3Int, Part>  keyValuePair = Parts.First(p => p.Key == Vector3Int.RoundToInt(position));
+        // If a Part was not found
+        if (keyValuePair.Equals(default(KeyValuePair<Vector3Int, Part>)))
+            return;
 
-        RecalculateAllAttachments();
+        // Removing from Parts
+        Parts.Remove(keyValuePair.Key);
 
+        // Destroying gameObject
+        Destroy(keyValuePair.Value.gameObject);
+
+        // Removing from PartsData
+        partsData.Remove(partsData.First(p => Vector3Int.RoundToInt(p.Position) == keyValuePair.Key));
+
+        // Invoking event (for server already invoked in Command)
+        if (PartsChanged != null)
+            PartsChanged(this, EventArgs.Empty);
     }
 
     /// <summary>
