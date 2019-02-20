@@ -95,11 +95,11 @@ public partial class PlayerController : NetworkBehaviour {
             //Roll
             if (Input.GetKey(KeyCode.Q))
             {
-                transform.RotateAroundLocal(transform.forward, -2.5f * Time.deltaTime);
+                transform.RotateAroundLocal(transform.forward, 2.5f * Time.deltaTime);
             }
             if (Input.GetKey(KeyCode.E))
             {
-                transform.RotateAroundLocal(transform.forward, 2.5f * Time.deltaTime);
+                transform.RotateAroundLocal(transform.forward, -2.5f * Time.deltaTime);
             }
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
