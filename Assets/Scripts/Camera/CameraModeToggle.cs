@@ -109,7 +109,7 @@ public class CameraModeToggle : MonoBehaviour
 
         //Obtain the furthest out value
         foreach (Renderer childRend in GameController.LocalPlayer.GetComponentsInChildren<Renderer>()) {
-            if (childRend.name != "Visualiser") { 
+            if (childRend.name != "Visualiser" && childRend.name != "Crosshair") { 
                 Vector3 min = childRend.bounds.min - GameController.LocalPlayer.transform.position;
                 Vector3 max = childRend.bounds.max - GameController.LocalPlayer.transform.position;
 
