@@ -42,11 +42,11 @@ public class CameraModeToggle : MonoBehaviour
 				buildCam.m_YAxis.m_InvertAxis = false;
 
 				//set centre radius
-				buildCam.m_Orbits[1].m_Radius = buildRadius;
+				buildCam.m_Orbits[1].m_Radius = buildRadius + bounds;
 
 				//set top and bottom heights
-				buildCam.m_Orbits[0].m_Height = buildHeight;
-				buildCam.m_Orbits[2].m_Height = -buildHeight;
+				buildCam.m_Orbits[0].m_Height = buildHeight + bounds;
+				buildCam.m_Orbits[2].m_Height = -buildHeight - bounds;
 
 				//stop camera moving if Shift is held down
 				if (Input.GetKey(KeyCode.LeftShift))
