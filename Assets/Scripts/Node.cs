@@ -41,7 +41,17 @@ public class Node : MonoBehaviour
     {
         get
         {
-            return transform.localPosition.normalized + transform.parent.parent.localPosition;
+            if(transform.parent.parent.parent == null)
+            {
+                return transform.localPosition.normalized;
+            }
+
+            //return transform.parent.parent.localToWorldMatrix * transform.localPosition.normalized;
+            return transform.parent.parent.localPosition + transform.localPosition.normalized;
+            //todo for future
+            //Transform player = transform.parent.parent.parent;
+            //Transform part = transform.parent.parent;
+            //return player.worldToLocalMatrix * part.localToWorldMatrix * (transform.localPosition * 2f);
         }
     }
 
