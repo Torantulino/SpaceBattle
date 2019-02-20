@@ -13,6 +13,7 @@ public class CameraModeToggle : MonoBehaviour
     [SerializeField] float combatHeight = 1.08f;
     [SerializeField] float combatRadius = 1.08f;
     private bool buildMode = false;
+    private float bounds;
 
     public float lastFrameCamX;
     public float lastFrameCamY;
@@ -21,6 +22,7 @@ public class CameraModeToggle : MonoBehaviour
 	{
 		buildCam = GetComponentInChildren<CinemachineFreeLook>();
         flightCam = transform.Find("CM 3rd-Person-FlightMode").GetComponent<CinemachineVirtualCamera>();
+        bounds = CalculateBounds();
     }
 
 	// Use lateupdate to try to act after any Cinemachine scripts to avoid jitter (not really working)
@@ -68,7 +70,7 @@ public class CameraModeToggle : MonoBehaviour
                 buildCam.gameObject.SetActive(false);
 
                 //Move lookat anchor infront of ship
-                CameraController.CameraAnchor.transform.localPosition = new Vector3(0.0f, 0.0f, 10.0f);
+                CameraController.CameraAnchor.transform.localPosition = new Vector3(0.0f, 0.0f, 10.0f * bounds);
 
                 //Release mouse - Testing only?
                 if (Input.GetKey(KeyCode.LeftShift))
@@ -92,10 +94,13 @@ public class CameraModeToggle : MonoBehaviour
     public void UpdateBuildmode(bool b)
     {
         buildMode = b;  //Hard set rather than toggle to ensure sync
+
+        //update bounds every switch
+        CalculateBounds();
     }
 
-    //Calculates the total bounds for the player and it's children. This includes the 'ghost' of unbuilt parts (as you want to see them) but not the visualiser.
-    private float CalculateBounds()
+    //Returns and sets the total bounds for the player and it's children. This includes the 'ghost' of unbuilt parts (as you want to see them) but not the visualiser.
+    public float CalculateBounds()
     {
         float furthest = 0.0f;
 
@@ -112,6 +117,8 @@ public class CameraModeToggle : MonoBehaviour
                     furthest = max.magnitude;
             }
         }
+        bounds = furthest;
+        flightCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset.z = -1.5f * (7.0f + bounds);
         return furthest;
     }
 

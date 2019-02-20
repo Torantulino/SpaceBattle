@@ -24,6 +24,7 @@ public class BuildController : MonoBehaviour {
     private Dictionary<Vector3, bool> partPositions = new Dictionary<Vector3, bool>();
 
     private PlayerController playerController;
+    private CameraModeToggle cameraModeToggle;
 
     // Use this for initialization
     void Start () {
@@ -40,6 +41,7 @@ public class BuildController : MonoBehaviour {
 
         //Get player controller
         playerController = GetComponent<PlayerController>();
+        cameraModeToggle = FindObjectOfType<CameraModeToggle>();
 
         GetCurrentParts();
         GetAvailableNodes();
@@ -114,6 +116,9 @@ public class BuildController : MonoBehaviour {
                 //PartData newPart = new PartData(selectedPartID, ghost.transform.localPosition);
                 ////ship.AddPart(newPart);
                 //GameController.LocalPlayerController.Ship.AddPart(newPart);
+
+                //Update bounds for camera zoom
+                cameraModeToggle.CalculateBounds();
             }
             //Remove Part
             if (Input.GetKeyDown(KeyCode.Backspace))
@@ -130,6 +135,8 @@ public class BuildController : MonoBehaviour {
 
                     partSelected = false;
                 }
+                //Update bounds for camera zoom
+                cameraModeToggle.CalculateBounds();
             }
 
             //TESTING
