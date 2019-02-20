@@ -8,8 +8,8 @@ public class GUIFacade : MonoBehaviour
 	//This class is used as a hub for calls coming from or to GUI processes/objects
 
 	//build mode panel
-	[SerializeField] private GUIToggle BuildPanel;
-	[SerializeField] private GUIToggle CombatPanel;
+	[SerializeField] private GameObject BuildPanel;
+	[SerializeField] private GameObject CombatPanel;
 	[SerializeField] private DisplayHP Health;
 
 	private void Start()
@@ -18,21 +18,33 @@ public class GUIFacade : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Toggle between build/combat mode
+	/// Change between build/combat mode
 	///<para>Changes between build/combat mode UI then appropriately locks or unlocks the cursor.</para>
 	/// </summary>
-	public void ToggleBuildMode()
+	public void UpdateBuildmode(bool b)
 	{
-		ToggleElement(BuildPanel);
-		ToggleElement(CombatPanel);
-		CursorMode();
+        //Non-toggle to ensure sync
+        //Cuild mode
+        if (b)
+        {
+            BuildPanel.gameObject.SetActive(true);
+            CombatPanel.gameObject.SetActive(false);
+        }
+        //Combat mode
+        else
+        {
+            BuildPanel.gameObject.SetActive(false);
+            CombatPanel.gameObject.SetActive(true);
+        }
+        //Update cursor mode
+        CursorMode();
 	}
 
 	private void CursorMode()
 	{
 		//when the Build panel is active unlock mouse, else lock the mouse to the centre
 
-		if (BuildPanel.isActiveAndEnabled) //this line give a null ref exception exactly once but still works for some reason.
+		if (BuildPanel.activeSelf) //this line give a null ref exception exactly once but still works for some reason.
 		{
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
@@ -42,16 +54,6 @@ public class GUIFacade : MonoBehaviour
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
 		}
-	}
-
-	/// <summary>
-	/// Calls the toggle script on an object which has been defined on the object calling this function in the Unity Editor. 
-	///<para>Allows Toggle method to change in future.</para>
-	/// </summary>
-	/// <param name="toggle">Takes only objects with GUIToggle scripts attached.</param>
-	public void ToggleElement(GUIToggle toggle)
-	{
-		toggle.Flip();
 	}
 
 	/// <summary>

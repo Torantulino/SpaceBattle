@@ -37,7 +37,18 @@ public partial class PlayerController : NetworkBehaviour {
         get { return _items.AsReadOnly(); }
     }
 
+    public bool BuildMode
+    {
+        get { return buildMode; }
+        set { buildMode = value; } //todo -----------------------
+    }
+
+    private bool buildMode;
+
+
     private BuildController buildController;
+    private CameraModeToggle cameraModeToggle;
+    private GUIFacade guiFacade;
     #endregion
 
     private int _testCounter = 0;
@@ -49,6 +60,15 @@ public partial class PlayerController : NetworkBehaviour {
         OnPlayerNameChanged(PlayerName);
         //Get buildController
         buildController = GetComponent<BuildController>();
+        //etc
+        cameraModeToggle = FindObjectOfType<CameraModeToggle>();
+        guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
+
+        //Set max AngularV
+        GetComponent<Rigidbody>().maxAngularVelocity = 1.0f;
+
+        //Update buildmode accross the board
+        UpdateBuildMode();
 
         // All other players
         if (isLocalPlayer)
@@ -66,9 +86,32 @@ public partial class PlayerController : NetworkBehaviour {
 	        return;
 
         //Flight & Fight Mode
-        if (!buildController.buildmode) {
-	        //todo testing
-	        Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        if (!buildMode) {
+            //Flight
+
+            //Steer
+            Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
+            GetComponent<Rigidbody>().angularVelocity = (transform.localToWorldMatrix.rotation * steering) * 2.0f;
+            //Roll
+            if (Input.GetKey(KeyCode.Q))
+            {
+                transform.RotateAroundLocal(transform.forward, 2.5f * Time.deltaTime);
+            }
+            if (Input.GetKey(KeyCode.E))
+            {
+                transform.RotateAroundLocal(transform.forward, -2.5f * Time.deltaTime);
+            }
+            //Thrust
+            if (Input.GetKey(KeyCode.LeftShift))
+                GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 10.0f);
+            
+            //Point velocity along ship direction
+            GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
+
+
+
+            //todo testing
+            Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 
             if (Input.GetKeyDown(KeyCode.Space))
 	            Ship.Shoot();
@@ -109,7 +152,20 @@ public partial class PlayerController : NetworkBehaviour {
         }
         //Toggle build mode
 	    if (Input.GetKeyDown(KeyCode.Tab))
-            buildController.ToggleBuildmode();
+	    {
+	        buildMode = !buildMode;
+            UpdateBuildMode();
+        }
+    }
+
+    private void UpdateBuildMode()
+    {
+        //Update BuildController
+        buildController.UpdateBuildmode(buildMode);
+        //Update CameraModeToggle
+        cameraModeToggle.UpdateBuildmode(buildMode);
+        //Update Gui facade
+        guiFacade.UpdateBuildmode(buildMode);
     }
 
     /// <summary>
