@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class CameraModeToggle : MonoBehaviour
 {
+    public CinemachineVirtualCamera flightCam;
+
     [SerializeField] GameObject FollowPoint;
     [SerializeField] CinemachineFreeLook buildCam;
-    CinemachineVirtualCamera flightCam;
     [SerializeField] float buildHeight = 5.08f;
     [SerializeField] float buildRadius = 5.08f;
     [SerializeField] float combatHeight = 1.08f;
