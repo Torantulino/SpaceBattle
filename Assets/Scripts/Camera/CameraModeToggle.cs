@@ -22,7 +22,6 @@ public class CameraModeToggle : MonoBehaviour
 	{
 		buildCam = GetComponentInChildren<CinemachineFreeLook>();
         flightCam = transform.Find("CM 3rd-Person-FlightMode").GetComponent<CinemachineVirtualCamera>();
-        bounds = CalculateBounds();
     }
 
 	// Use lateupdate to try to act after any Cinemachine scripts to avoid jitter (not really working)
