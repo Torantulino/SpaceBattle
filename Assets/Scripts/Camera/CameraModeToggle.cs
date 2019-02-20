@@ -72,17 +72,21 @@ public class CameraModeToggle : MonoBehaviour
                 //Move lookat anchor infront of ship
                 CameraController.CameraAnchor.transform.localPosition = new Vector3(0.0f, 0.0f, 10.0f * bounds);
 
-                //Release mouse - Testing only?
-                if (Input.GetKey(KeyCode.LeftShift))
-				{
-					Cursor.lockState = CursorLockMode.None;
-					Cursor.visible = true;
-				}
-				else
-				{
-					Cursor.lockState = CursorLockMode.Locked;
-					Cursor.visible = false;
-				}
+                //Release cursor
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
+    //            //Release mouse - Testing only?
+    //            if (Input.GetKey(KeyCode.LeftShift))
+				//{
+				//	Cursor.lockState = CursorLockMode.None;
+				//	Cursor.visible = true;
+				//}
+				//else
+				//{
+				//	Cursor.lockState = CursorLockMode.Locked;
+				//	Cursor.visible = false;
+				//}
 			}
 		}
 		else
