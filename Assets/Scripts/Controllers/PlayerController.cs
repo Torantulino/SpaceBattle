@@ -83,8 +83,18 @@ public partial class PlayerController : NetworkBehaviour {
 
         //Flight & Fight Mode
         if (!buildMode) {
-	        //todo testing
-	        Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+            //Flight
+            Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
+
+            if (Input.GetKey(KeyCode.F4))
+            {
+                Debug.Log(steering);
+                GetComponent<Rigidbody>().AddRelativeTorque(steering, ForceMode.Force);
+            }
+
+
+            //todo testing
+            Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 
             if (Input.GetKeyDown(KeyCode.Space))
 	            Ship.Shoot();
