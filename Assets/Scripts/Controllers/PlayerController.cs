@@ -45,6 +45,7 @@ public partial class PlayerController : NetworkBehaviour {
 
     private bool buildMode;
 
+
     private BuildController buildController;
     private CameraModeToggle cameraModeToggle;
     private GUIFacade guiFacade;
@@ -87,9 +88,16 @@ public partial class PlayerController : NetworkBehaviour {
         //Flight & Fight Mode
         if (!buildMode) {
             //Flight
+
+            //Steer
             Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
-            //rotate ship
             GetComponent<Rigidbody>().angularVelocity = (transform.localToWorldMatrix.rotation * steering) * 2.0f;
+            //Thrust
+            if (Input.GetKey(KeyCode.LeftShift))
+                GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 10.0f);
+            
+            //Point velocity along ship direction
+            GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
 
 
 
