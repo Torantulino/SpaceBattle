@@ -49,6 +49,7 @@ public partial class PlayerController : NetworkBehaviour {
     private BuildController buildController;
     private CameraModeToggle cameraModeToggle;
     private GUIFacade guiFacade;
+    private Cinemachine.CinemachineBasicMultiChannelPerlin flightNoiseChannel;
     #endregion
 
     private int _testCounter = 0;
@@ -64,6 +65,11 @@ public partial class PlayerController : NetworkBehaviour {
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
         guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
 
+        //Noise
+        flightNoiseChannel = cameraModeToggle.flightCam.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>();
+        ShakeScreen(0.0f, 1.0f, true);
+
+
         //Set max AngularV
         GetComponent<Rigidbody>().maxAngularVelocity = 1.0f;
 
@@ -78,7 +84,22 @@ public partial class PlayerController : NetworkBehaviour {
         Ship = GetComponent<Ship>();
     }
 
-    // Update is called once per physics tick
+    //Use update for frame dependent input (Key up/Down)
+    private void Update()
+    {
+        //- Combat -
+        //Fire Primary Weapon
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            ShakeScreen(3.0f, 1.0f, true);
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            ShakeScreen(0.0f, 1.0f, true);
+        }
+    }
+
+    // FixedUpdate is called once per physics tick
     void FixedUpdate ()
 	{
         // Check if this code runs on the game object that represents my Player
@@ -92,7 +113,6 @@ public partial class PlayerController : NetworkBehaviour {
             Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
             GetComponent<Rigidbody>().angularVelocity = (transform.localToWorldMatrix.rotation * steering) * 2.0f;
             //bank (roll due to steering)
-
             transform.RotateAroundLocal(transform.forward, steering.y * -5.0f * Time.deltaTime);
             //Roll
             if (Input.GetKey(KeyCode.Q))
@@ -106,11 +126,8 @@ public partial class PlayerController : NetworkBehaviour {
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
                 GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 10.0f);
-            
             //Point velocity along ship direction
             GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
-
-
 
             //todo testing
             Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
@@ -168,6 +185,15 @@ public partial class PlayerController : NetworkBehaviour {
         cameraModeToggle.UpdateBuildmode(buildMode);
         //Update Gui facade
         guiFacade.UpdateBuildmode(buildMode);
+    }
+
+    private void ShakeScreen(float ampGain, float freqGain, bool flight)
+    {
+        //Flight Camera
+        if (flight) {
+            flightNoiseChannel.m_AmplitudeGain = ampGain;
+            flightNoiseChannel.m_FrequencyGain = freqGain;
+        }
     }
 
     /// <summary>
