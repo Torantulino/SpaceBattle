@@ -48,8 +48,8 @@ public partial class PlayerController : NetworkBehaviour {
 
     private BuildController buildController;
     private CameraModeToggle cameraModeToggle;
+    private CameraController cameraController;
     private GUIFacade guiFacade;
-    private Cinemachine.CinemachineBasicMultiChannelPerlin flightNoiseChannel;
     #endregion
 
     private int _testCounter = 0;
@@ -63,11 +63,11 @@ public partial class PlayerController : NetworkBehaviour {
         buildController = GetComponent<BuildController>();
         //etc
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
+        cameraController = FindObjectOfType<CameraController>();
         guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
 
-        //Noise
-        flightNoiseChannel = cameraModeToggle.flightCam.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>();
-        ShakeScreen(0.0f, 1.0f, true);
+        //Stop Atmospheric Noise
+        cameraController.ShakeScreen(0.0f, 1.0f, true);
 
 
         //Set max AngularV
@@ -91,11 +91,11 @@ public partial class PlayerController : NetworkBehaviour {
         //Fire Primary Weapon
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            ShakeScreen(3.0f, 1.0f, true);
+            cameraController.ShakeScreen(3.0f, 1.0f, true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            ShakeScreen(0.0f, 1.0f, true);
+            cameraController.ShakeScreen(0.0f, 1.0f, true);
         }
     }
 
@@ -185,15 +185,6 @@ public partial class PlayerController : NetworkBehaviour {
         cameraModeToggle.UpdateBuildmode(buildMode);
         //Update Gui facade
         guiFacade.UpdateBuildmode(buildMode);
-    }
-
-    private void ShakeScreen(float ampGain, float freqGain, bool flight)
-    {
-        //Flight Camera
-        if (flight) {
-            flightNoiseChannel.m_AmplitudeGain = ampGain;
-            flightNoiseChannel.m_FrequencyGain = freqGain;
-        }
     }
 
     /// <summary>
