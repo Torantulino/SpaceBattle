@@ -13,39 +13,34 @@ public class BuildController : MonoBehaviour {
     public bool buildmode;
     public int SelectedPartID { private get; set; }            //ID of part to spawn
 
-    private List<Part> currentParts = new List<Part>();
-    private List<Node> availableNodes = new List<Node>();
     private int currentNode;
-
-    private PartManager partManager;
-    private Ship ship;
-    private GameObject ghost;
     private bool partSelected;
 
+    private List<Part> currentParts = new List<Part>();
+    private List<Node> availableNodes = new List<Node>();
     private Dictionary<Vector3, bool> partPositions = new Dictionary<Vector3, bool>();
 
-    private PlayerController playerController;
+    private PartManager partManager;
+    private GameObject ghost;
     private CameraModeToggle cameraModeToggle;
-
-
 
     // Use this for initialization
     void Start () {
+        //initialise
+        currentNode = 0;
         buildmode = false;
         partSelected = false;
 
-        //TESTING
+        //TESTING - Intial value to be set by inventory system
         SelectedPartID = 1;
-	    currentNode = 0;
 
         //Find part manager in scene
 	    partManager = FindObjectOfType<PartManager>();
-        ship = GetComponent<Ship>();
 
         //Get player controller
-        playerController = GetComponent<PlayerController>();
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
 
+        //Get nodes and parts
         GetCurrentParts();
         GetAvailableNodes();
     }
