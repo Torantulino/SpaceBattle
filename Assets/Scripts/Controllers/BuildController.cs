@@ -108,17 +108,17 @@ public class BuildController : MonoBehaviour {
                     //BuildPart(selectedPartID, ghost.transform.position - transform.position);
 
                     //TESTING while waiting for serverside fix
-                    GameObject testObj = Instantiate(partManager.GetPartById(SelectedPartID).Prefab, transform);
-                    testObj.transform.position = ghost.transform.position;
-                    testObj.name = "test";
+                    //GameObject testObj = Instantiate(partManager.GetPartById(SelectedPartID).Prefab, transform);
+                    //testObj.transform.position = ghost.transform.position;
+                    //testObj.name = "test";
 
                     Destroy(ghost);
 
                     partSelected = false;
 
-                    //PartData newPart = new PartData(selectedPartID, ghost.transform.localPosition);
-                    ////ship.AddPart(newPart);
-                    //GameController.LocalPlayerController.Ship.AddPart(newPart);
+                    PartData newPart = new PartData(SelectedPartID, ghost.transform.localPosition);
+                    //ship.AddPart(newPart);
+                    GameController.LocalPlayerController.Ship.AddPart(newPart);
 
                     //Update bounds for camera zoom
                     cameraModeToggle.CalculateBounds();

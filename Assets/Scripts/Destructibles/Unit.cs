@@ -170,10 +170,11 @@ public class Unit : Destructible
     /// </summary>
     private Part InstantiatePart(PartData partData)
     {
-        GameObject partGameObject = Instantiate(PartManager.Instance.GetPartById(partData.Id).Prefab, transform.position + partData.Position,
-            Quaternion.Euler(transform.localEulerAngles + partData.Rotation), gameObject.transform);
-        // Taking Part component
-        Part part = partGameObject.GetComponent<Part>();
+        // Rotate Part position
+        Vector3 position = transform.position + transform.rotation * partData.Position;
+        // Instantiate Part
+        Part part = Instantiate(PartManager.Instance.GetPartById(partData.Id).Prefab, position,
+            Quaternion.Euler(partData.Rotation + transform.eulerAngles), gameObject.transform).GetComponent<Part>();
         // Setting Part Id
         part.SetID(partData.Id);
         // Adding Part to parts Dictionary
