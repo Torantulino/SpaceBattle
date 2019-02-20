@@ -87,11 +87,13 @@ public partial class PlayerController : NetworkBehaviour {
 
         //Flight & Fight Mode
         if (!buildMode) {
-            //Flight
-
+            //- Flight -
             //Steer
             Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
             GetComponent<Rigidbody>().angularVelocity = (transform.localToWorldMatrix.rotation * steering) * 2.0f;
+            //bank (roll due to steering)
+
+            transform.RotateAroundLocal(transform.forward, steering.y * -5.0f * Time.deltaTime);
             //Roll
             if (Input.GetKey(KeyCode.Q))
             {
