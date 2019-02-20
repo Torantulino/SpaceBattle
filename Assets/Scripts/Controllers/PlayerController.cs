@@ -92,6 +92,15 @@ public partial class PlayerController : NetworkBehaviour {
             //Steer
             Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
             GetComponent<Rigidbody>().angularVelocity = (transform.localToWorldMatrix.rotation * steering) * 2.0f;
+            //Roll
+            if (Input.GetKey(KeyCode.Q))
+            {
+                transform.RotateAroundLocal(transform.forward, -2.5f * Time.deltaTime);
+            }
+            if (Input.GetKey(KeyCode.E))
+            {
+                transform.RotateAroundLocal(transform.forward, 2.5f * Time.deltaTime);
+            }
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
                 GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 10.0f);
