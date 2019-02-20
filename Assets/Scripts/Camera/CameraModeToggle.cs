@@ -74,18 +74,6 @@ public class CameraModeToggle : MonoBehaviour
                 //Release cursor
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-
-    //            //Release mouse - Testing only?
-    //            if (Input.GetKey(KeyCode.LeftShift))
-				//{
-				//	Cursor.lockState = CursorLockMode.None;
-				//	Cursor.visible = true;
-				//}
-				//else
-				//{
-				//	Cursor.lockState = CursorLockMode.Locked;
-				//	Cursor.visible = false;
-				//}
 			}
 		}
 		else
@@ -109,7 +97,7 @@ public class CameraModeToggle : MonoBehaviour
 
         //Obtain the furthest out value
         foreach (Renderer childRend in GameController.LocalPlayer.GetComponentsInChildren<Renderer>()) {
-            if (childRend.name != "Visualiser" && childRend.name != "Crosshair") { 
+            if (childRend.name != "Visualiser" && childRend.name != "Crosshair" && !(childRend is TrailRenderer)) { 
                 Vector3 min = childRend.bounds.min - GameController.LocalPlayer.transform.position;
                 Vector3 max = childRend.bounds.max - GameController.LocalPlayer.transform.position;
 
