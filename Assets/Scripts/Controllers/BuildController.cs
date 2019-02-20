@@ -49,115 +49,111 @@ public class BuildController : MonoBehaviour {
         GetCurrentParts();
         GetAvailableNodes();
     }
-	
-	// Update is called once per frame
-	    void Update () {
 
-
-            // - Buildmode -
-            if (buildmode)
+    // Update is called once per frame
+    void Update()
+    {
+        // Buildmode
+        if (buildmode)
+        {
+            if (!partSelected)
             {
-                if (!partSelected)
-                {
-                    //setflag
-                    partSelected = true;
-                    GetCurrentParts();
-                    GetAvailableNodes();
+                //setflag
+                partSelected = true;
+                GetCurrentParts();
+                GetAvailableNodes();
+                currentNode = 0;
+
+                //Display 'ghost' block
+                ghost = Instantiate(partManager.GetPartById(SelectedPartID).Prefab, transform);
+                ghost.name = "ghost";
+                ghost.GetComponent<Part>().isGhost = true;
+                //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
+                Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
+                col.a = 0.66f;
+                ghost.gameObject.GetComponent<Renderer>().material.color = col;
+                //Move ghost
+                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.rotation * availableNodes[currentNode].transform.localPosition;
+            }
+
+            //Node Cycling
+            //cycle left
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                //Cycle
+                if (availableNodes.Count - 1 > currentNode)
+                    currentNode++;
+                else
                     currentNode = 0;
+                //Move ghost
+                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.rotation * availableNodes[currentNode].transform.localPosition;
+            }
+            //cycle right
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                //Cycle
+                if (currentNode != 0)
+                    currentNode--;
+                else
+                    currentNode = availableNodes.Count - 1;
+                //Move ghost
+                ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.rotation * availableNodes[currentNode].transform.localPosition;
+            }
 
-                    //Display 'ghost' block
-                    ghost = Instantiate(partManager.GetPartById(SelectedPartID).Prefab, transform);
-                    ghost.name = "ghost";
-                    ghost.GetComponent<Part>().isGhost = true;
-                    //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
-                    Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
-                    col.a = 0.66f;
-                    ghost.gameObject.GetComponent<Renderer>().material.color = col;
-                    //Move ghost
-                    ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.rotation * availableNodes[currentNode].transform.localPosition;
-                }
+            //Build Part
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                //TESTING while waiting for serverside fix
+                //GameObject testObj = Instantiate(partManager.GetPartById(SelectedPartID).Prefab, transform);
+                //testObj.transform.position = ghost.transform.position;
+                //testObj.name = "test";
 
-                //Node Cycling
-                //cycle left
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    //Cycle
-                    if (availableNodes.Count-1 > currentNode)
-                        currentNode++;
-                    else
-                        currentNode = 0;
-                    //Move ghost
-                    ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.rotation * availableNodes[currentNode].transform.localPosition;
-                }
-                //cycle right
-                if (Input.GetKeyDown(KeyCode.D))
-                {
-                    //Cycle
-                    if (currentNode != 0)
-                        currentNode--;
-                    else
-                        currentNode = availableNodes.Count - 1;
-                    //Move ghost
-                    ghost.transform.position = availableNodes[currentNode].transform.position + availableNodes[currentNode].transform.rotation * availableNodes[currentNode].transform.localPosition;
-                }
+                //Build Part (Networked)
+                PartData newPart = new PartData(SelectedPartID, ghost.transform.localPosition);
+                GameController.LocalPlayerController.Ship.AddPart(newPart);
 
-                //Build Part
-                if (Input.GetKeyDown(KeyCode.Space))
+                //Destory ghost and reset flag
+                Destroy(ghost);
+                partSelected = false;
+
+                //Update bounds for camera zoom
+                cameraModeToggle.CalculateBounds();
+            }
+            //Remove Part
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                //if part is not core
+                if (availableNodes[currentNode].transform.parent.parent.gameObject.GetComponent<Ship>() == null)
                 {
-                    //BuildPart(selectedPartID, ghost.transform.rotation * ghost.transform.localPosition);
-                    //BuildPart(selectedPartID, ghost.transform.position - transform.position);
+                    //Remove part from collection
+                    currentParts.Remove(availableNodes[currentNode].transform.parent.parent.gameObject.GetComponent<Part>());
 
                     //TESTING while waiting for serverside fix
-                    GameObject testObj = Instantiate(partManager.GetPartById(SelectedPartID).Prefab, transform);
-                    testObj.transform.position = ghost.transform.position;
-                    testObj.name = "test";
+                    //Destroy(availableNodes[currentNode].transform.parent.parent.gameObject);
 
+                    //Remove Part (Networked)
+                    GameController.LocalPlayerController.Ship.RemovePart(availableNodes[currentNode].transform.parent.parent.transform.position);
+
+                    //Destory ghost and reset flag
                     Destroy(ghost);
-
                     partSelected = false;
 
-                    //PartData newPart = new PartData(selectedPartID, ghost.transform.localPosition);
-                    ////ship.AddPart(newPart);
-                    //GameController.LocalPlayerController.Ship.AddPart(newPart);
-
                     //Update bounds for camera zoom
                     cameraModeToggle.CalculateBounds();
+
                 }
-                //Remove Part
-                if (Input.GetKeyDown(KeyCode.Backspace))
-                {
-                    //if part is not core
-                    if (availableNodes[currentNode].transform.parent.parent.gameObject.GetComponent<Ship>() == null)
-                    {
-                        //Remove part from collection
-                        currentParts.Remove(availableNodes[currentNode].transform.parent.parent.gameObject.GetComponent<Part>());
-
-                        //TESTING while waiting for serverside fix
-                        Destroy(availableNodes[currentNode].transform.parent.parent.gameObject);
-                        Destroy(ghost);
-
-                        partSelected = false;
-                    }
-                    //Update bounds for camera zoom
-                    cameraModeToggle.CalculateBounds();
-                }
-
-                //TESTING
-                if (Input.GetKeyDown(KeyCode.F1))
-                {
-                    Debug.Log(GameController.LocalPlayerController.Ship.PartsData.Count);
-                }
-
             }
-        }
 
-    private void BuildPart(int id, Vector3 pos)
-    {
-        PartData newPart = new PartData(id, pos);
-        //ship.AddPart(newPart);
-        GameController.LocalPlayerController.Ship.AddPart(newPart);
+            //TESTING - RETURN NETWORKED PART COUNT
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                Debug.Log(GameController.LocalPlayerController.Ship.PartsData.Count);
+            }
+
+        }
     }
 
+    //Updates the current list of (non ghost) parts
     private void GetCurrentParts()
     {
         currentParts.Clear();
@@ -179,8 +175,10 @@ public class BuildController : MonoBehaviour {
         }
     }
 
+    //Updates the current list of nodes not occupied by a part
     private void GetAvailableNodes()
     {
+        //clear old list
         availableNodes.Clear();
 
         //Ship Nodes
@@ -202,15 +200,6 @@ public class BuildController : MonoBehaviour {
                 availableNodes.Add(n);
             }
         }
-
-        ////Part Nodes
-        //foreach (Part p in currentParts)
-        //{
-        //    foreach (Node n in p.Nodes){
-        //        if (n.gameObject.activeSelf)
-        //            availableNodes.Add(n);
-        //    }
-        //}
     }
 
     public void UpdateBuildmode(bool b)
@@ -221,7 +210,5 @@ public class BuildController : MonoBehaviour {
             Destroy(ghost);
             partSelected = false;
         }
-        //todo: toggle cursor lock
-        //todo: entering buildmode should cause player to slow and stop before they can build. (no moving and building)
     }
 }
