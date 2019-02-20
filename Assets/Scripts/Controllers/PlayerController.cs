@@ -63,6 +63,9 @@ public partial class PlayerController : NetworkBehaviour {
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
         guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
 
+        //Set max AngularV
+        GetComponent<Rigidbody>().maxAngularVelocity = 1.0f;
+
         //Update buildmode accross the board
         UpdateBuildMode();
 
@@ -85,12 +88,9 @@ public partial class PlayerController : NetworkBehaviour {
         if (!buildMode) {
             //Flight
             Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
+            //rotate ship
+            GetComponent<Rigidbody>().angularVelocity = (transform.localToWorldMatrix.rotation * steering) * 2.0f;
 
-            if (Input.GetKey(KeyCode.F4))
-            {
-                Debug.Log(steering);
-                GetComponent<Rigidbody>().AddRelativeTorque(steering, ForceMode.Force);
-            }
 
 
             //todo testing
