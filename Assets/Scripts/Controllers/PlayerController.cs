@@ -126,8 +126,16 @@ public partial class PlayerController : NetworkBehaviour {
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
                 GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 10.0f);
+            //Reverse Thrust
+            bool reversing = false;
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10.0f);
+                reversing = true;
+            }
             //Point velocity along ship direction
-            GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
+            if(!reversing)
+                GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;  //This causes a big boost forwards after reversing when velocity is inverted, kind of like engines 'spooling up', though should probably be fixed
 
             //todo testing
             Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
