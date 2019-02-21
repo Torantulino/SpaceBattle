@@ -16,7 +16,6 @@ public class BuildController : MonoBehaviour {
     private ReadOnlyCollection<Node> availableNodes;
     private Dictionary<Vector3Int, Part> currentParts;
 
-    private PartManager partManager;
     private GameObject ghost;
     private CameraModeToggle cameraModeToggle;
 
@@ -29,9 +28,6 @@ public class BuildController : MonoBehaviour {
 
         //TESTING - Intial value to be set by inventory system
         SelectedPartID = 1;
-
-        //Find part manager in scene
-	    partManager = FindObjectOfType<PartManager>();
 
         //Get player controller
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
@@ -54,7 +50,7 @@ public class BuildController : MonoBehaviour {
             currentNode = availableNodes[0];
 
             //Display 'ghost' block
-            ghost = Instantiate(partManager.GetPartById(SelectedPartID).Prefab, transform);
+            ghost = Instantiate(PartManager.Instance.GetPartById(SelectedPartID).Prefab, transform);
             ghost.name = "ghost";
             ghost.GetComponent<Part>().isGhost = true;
             //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
@@ -95,7 +91,7 @@ public class BuildController : MonoBehaviour {
             //Destory ghost and reset currentNode
             Destroy(ghost);
             currentNode = null;
-            Debug.Log("Adding position: " + position);
+
             //Build Part
             PartData newPart = new PartData(SelectedPartID, position);
             playerShip.AddPart(newPart);
@@ -134,7 +130,6 @@ public class BuildController : MonoBehaviour {
 
     private void UpdateGhostTransform()
     {
-        Debug.Log(currentNode.AttachmentPosition);
         ghost.transform.localPosition = currentNode.AttachmentPosition;
         //todo should also update rotation
     }
