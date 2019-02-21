@@ -27,7 +27,7 @@ public class BuildController : MonoBehaviour {
         buildmode = false;
 
         //TESTING - Intial value to be set by inventory system
-        SelectedPartID = 1;
+        SelectedPartID = 0;
 
         //Get player controller
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
@@ -54,9 +54,10 @@ public class BuildController : MonoBehaviour {
             ghost.name = "ghost";
             ghost.GetComponent<Part>().isGhost = true;
             //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
-            Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
-            col.a = 0.66f;
-            ghost.gameObject.GetComponent<Renderer>().material.color = col;
+            //todo not working for Test Weapon
+            //Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
+            //col.a = 0.66f;
+            //ghost.gameObject.GetComponent<Renderer>().material.color = col;
             //Update ghost
             UpdateGhostTransform();
         }

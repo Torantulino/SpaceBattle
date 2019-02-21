@@ -116,11 +116,6 @@ public partial class PlayerController : NetworkBehaviour {
             if (Input.GetKeyDown(KeyCode.Space))
 	            Ship.Shoot();
 
-	        if (Input.GetKey(KeyCode.E))
-	            Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
-	        if (Input.GetKey(KeyCode.Q))
-	            Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
-
             if (Input.GetKeyUp(KeyCode.R))
                 Ship.RefreshParts();
 

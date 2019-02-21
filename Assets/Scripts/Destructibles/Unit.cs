@@ -87,6 +87,7 @@ public class Unit : Destructible
     /// </summary>
     public void Shoot()
     {
+        //todo should also check if weapons are Ready() before callings Command
         CmdShoot();
     }
 
@@ -291,7 +292,8 @@ public class Unit : Destructible
         // Clear weapons List
         weapons.Clear();
         // Add weapons
-        weapons.AddRange(GetComponentsInChildren<Weapon>());
+        //todo temporary fix "ghost"
+        weapons.AddRange(GetComponentsInChildren<Weapon>().Where(w => w.name != "ghost"));
     }
 
     #region Networking
@@ -433,13 +435,14 @@ public class Unit : Destructible
     [Command]
     private void CmdShoot()
     {
+        Debug.Log("weapons: " + weapons.Count);
         foreach (Weapon weapon in weapons)
         {
             // Is the weapon ready to shoot
             if (!weapon.Ready())
                 continue;
             // Instantiate GameObject
-            GameObject shot = Instantiate(weapon.bulletPrefab, weapon.gunTransform.position, weapon.gunTransform.rotation);
+            GameObject shot = weapon.Shoot();
             // Spawn it - so it appears for all clients
             NetworkServer.Spawn(shot);
             // Destroy it after some time
