@@ -189,11 +189,12 @@ public class Unit : Destructible
     /// <param name="nodes">Nodes to recalculate</param>
     /// <param name="partsChecked">Will add all parts that were checked to this List.</param>
     /// <param name="recursion">Execute function on all parts' nodes that are found.</param>
+    /// <param name="connected">Passing current state of connection to the Unit</param>
     /// <returns>True if at least one node is connected to the Unit.</returns>
     //todo should probably take Part as an argument (but Unit is problematic)
-    private bool RecalculateAttachments(IEnumerable<Node> nodes, ref List<Part> partsChecked, bool recursion = false)
+    private bool RecalculateAttachments(IEnumerable<Node> nodes, ref List<Part> partsChecked, bool recursion = false, bool connected = false)
     {
-        bool connection = false;
+        bool connection = connected;
 
         foreach (Node node in nodes)
         {
@@ -205,7 +206,7 @@ public class Unit : Destructible
                 {
                     foundPart.Checked = true;
                     partsChecked.Add(foundPart);
-                    connection = RecalculateAttachments(foundPart.Nodes, ref partsChecked, true);
+                    connection = RecalculateAttachments(foundPart.Nodes, ref partsChecked, true, connection);
                 }
             }
             // If node is pointing at Vector3Int.zero (Unit position)
@@ -214,7 +215,10 @@ public class Unit : Destructible
                 node.IsAttachedToUnit = true;
                 connection = true;
                 if (node.AttachedPart != null)
+                {
+                    Debug.LogWarning("There was a Unit on this Node and Part attached. This should never happen.");
                     node.DetachPart();
+                }
             }
             // Detach a Part if there isn't any now
             if(!foundPart && node.AttachedPart != null)
@@ -226,7 +230,7 @@ public class Unit : Destructible
 
     private void RecalculateAllAttachments()
     {
-        // Set all Parts as not yet checked and without connection to the Unit
+        // Set all Parts as not yet checked
         foreach (KeyValuePair<Vector3Int, Part> keyValuePair in Parts)
         {
             keyValuePair.Value.Checked = false;
@@ -250,6 +254,8 @@ public class Unit : Destructible
             part.Checked = true;
             // Hold all parts recursively checked
             List<Part> partsChecked = new List<Part> {part};
+            // Clear parts to remove
+            keys.Clear();
             // Recalculate attachments recursively
             if (!RecalculateAttachments(part.Nodes, ref partsChecked, true))
             {

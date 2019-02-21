@@ -107,7 +107,7 @@ public class BuildController : MonoBehaviour {
             if (currentNode.transform.parent.parent.gameObject.GetComponent<Ship>() == null)
             {
                 //Remove Part (Networked)
-                playerShip.RemovePart(currentNode.transform.parent.parent.transform.position);
+                playerShip.RemovePart(currentNode.transform.parent.parent.transform.localPosition);
 
                 // Update currentParts collection
                 currentParts = playerShip.Parts;

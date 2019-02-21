@@ -30,7 +30,7 @@ public class Node : MonoBehaviour
     }
 
     /// <summary>
-    /// Part that is attached to this Node. Null when Node is empty.
+    /// Part that is attached to this Node. Null when Node is not attached to a Part.
     /// </summary>
     public Part AttachedPart { get; private set; }
 
@@ -102,7 +102,7 @@ public class Node : MonoBehaviour
             AttachedPart = null;
             return true;
         }
-
+        
         Debug.LogWarning("Trying to detach a Part from a Node, but there isn't a Part attached.");
         return false;
     }
