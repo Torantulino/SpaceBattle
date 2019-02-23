@@ -14,6 +14,8 @@ public class BuildController : MonoBehaviour {
     private Ship playerShip;
 
     private ReadOnlyCollection<Node> availableNodes;
+
+    //todo not used - maybe not needed
     private Dictionary<Vector3Int, Part> currentParts;
 
     private GameObject ghost;
@@ -40,6 +42,18 @@ public class BuildController : MonoBehaviour {
         if (!buildmode)
             return;
 
+        //TESTING
+        if (Input.GetKeyUp(KeyCode.Alpha0))
+        {
+            SelectedPartID = 0;
+            RecreateGhost();
+        }
+        if (Input.GetKeyUp(KeyCode.Alpha1))
+        {
+            SelectedPartID = 1;
+            RecreateGhost();
+        }
+
         playerShip = GameController.LocalPlayerController.Ship;
 
         if (currentNode == null)
@@ -50,16 +64,7 @@ public class BuildController : MonoBehaviour {
             currentNode = availableNodes[0];
 
             //Display 'ghost' block
-            ghost = Instantiate(PartManager.Instance.GetPartById(SelectedPartID).Prefab, transform);
-            ghost.name = "ghost";
-            ghost.GetComponent<Part>().isGhost = true;
-            //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
-            //todo not working for Test Weapon
-            //Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
-            //col.a = 0.66f;
-            //ghost.gameObject.GetComponent<Renderer>().material.color = col;
-            //Update ghost
-            UpdateGhostTransform();
+            RecreateGhost();
         }
 
         //Node Cycling
@@ -127,6 +132,23 @@ public class BuildController : MonoBehaviour {
         {
             Debug.Log(playerShip.Parts.Count);
         }
+    }
+
+    private void RecreateGhost()
+    {
+        if(ghost) Destroy(ghost);
+
+        ghost = Instantiate(PartManager.Instance.GetPartById(SelectedPartID).Prefab, transform);
+        ghost.name = "ghost";
+        ghost.GetComponent<Part>().isGhost = true;
+
+        //Make transparent - requires matrial rendering mode: Transparent. Doing this programatically is unfortunatly not currently simple.
+        //todo not working for Test Weapon
+        //Color col = ghost.gameObject.GetComponent<Renderer>().material.color;
+        //col.a = 0.66f;
+        //ghost.gameObject.GetComponent<Renderer>().material.color = col;
+
+        UpdateGhostTransform();
     }
 
     private void UpdateGhostTransform()

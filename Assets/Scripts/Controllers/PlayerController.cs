@@ -109,40 +109,13 @@ public partial class PlayerController : NetworkBehaviour {
             GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
 
 
-
             //todo testing
-            Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 
             if (Input.GetKeyDown(KeyCode.Space))
 	            Ship.Shoot();
 
             if (Input.GetKeyUp(KeyCode.R))
                 Ship.RefreshParts();
-
-            if (Input.GetKeyUp(KeyCode.T))
-            {
-                switch (_testCounter++)
-                {
-                    case 1:
-                        Ship.AddPart(new PartData(1, new Vector3(0, 1, 0)));
-                        break;
-                    case 2:
-                        Ship.AddPart(new PartData(1, new Vector3(0, 2, 0)));
-                        break;
-                    case 3:
-                        Ship.AddPart(new PartData(1, new Vector3(0, 3, 0)));
-                        break;
-                    case 4:
-                        Ship.AddPart(new PartData(1, new Vector3(0, 4, 0)));
-                        break;
-                    case 5:
-                        Ship.RemovePart(new Vector3(0, 2, 0));
-                        break;
-                    default:
-                        break;
-                }
-
-            }
 
         }
         //Toggle build mode

@@ -60,7 +60,7 @@ public class Weapon : Part
     /// </summary>
     public bool Ready()
     {
-        if(timeLeft <= 0f)
+        if (timeLeft <= 0f)
         {
             return true;
         }

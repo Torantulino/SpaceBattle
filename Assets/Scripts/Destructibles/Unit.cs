@@ -435,7 +435,6 @@ public class Unit : Destructible
     [Command]
     private void CmdShoot()
     {
-        Debug.Log("weapons: " + weapons.Count);
         foreach (Weapon weapon in weapons)
         {
             // Is the weapon ready to shoot
