@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using Random = System.Random;
 
 /// <summary>
 /// Class for all objects that can have Parts.
@@ -243,6 +244,8 @@ public class Unit : Destructible
 
         // Parts to remove
         List<Vector3Int> keys = new List<Vector3Int>();
+        // Clear parts to remove
+        keys.Clear();
 
         // Foreach Parts
         foreach (KeyValuePair<Vector3Int, Part> keyValuePair in Parts)
@@ -255,8 +258,7 @@ public class Unit : Destructible
             part.Checked = true;
             // Hold all parts recursively checked
             List<Part> partsChecked = new List<Part> {part};
-            // Clear parts to remove
-            keys.Clear();
+
             // Recalculate attachments recursively
             if (!RecalculateAttachments(part.Nodes, ref partsChecked, true))
             {
@@ -264,10 +266,10 @@ public class Unit : Destructible
                 // Keys to remove
                 foreach (Part partChecked in partsChecked)
                 {
-                    partChecked.transform.parent = part.transform;
+                    partChecked.transform.parent = null;
+                    // Add key for future removal from Parts
                     keys.Add(Parts.First(p => p.Value == partChecked).Key);
                 }
-                
                 part.transform.parent = null;
             }
         }
@@ -275,7 +277,22 @@ public class Unit : Destructible
         {
             // Removing from PartsData
             partsData.Remove(partsData.First(p => Vector3Int.RoundToInt(p.Position) == key));
-
+            // Create floating Part (server only)
+            if (isServer)
+            {
+                GameObject floatingPart = Instantiate(GameController.Instance.FloatingPartGameObject,
+                    Parts[key].transform.position, Parts[key].transform.rotation);
+                NetworkServer.Spawn(floatingPart);
+                // Set FloatingPart ID
+                floatingPart.GetComponent<FloatingPart>().ID = Parts[key].ID;
+                // Add random force
+                floatingPart.GetComponent<Rigidbody>().AddForce(new Vector3(
+                    UnityEngine.Random.Range(-100f, 100f),
+                    UnityEngine.Random.Range(-100f, 100f),
+                    UnityEngine.Random.Range(-100f, 100f)), ForceMode.Impulse);
+            }
+            // Destroy original Part gameObject
+            Destroy(Parts[key].gameObject);
             // Remove from Parts
             Parts.Remove(key);
         }
@@ -444,8 +461,6 @@ public class Unit : Destructible
             GameObject shot = weapon.Shoot();
             // Spawn it - so it appears for all clients
             NetworkServer.Spawn(shot);
-            // Destroy it after some time
-            Destroy(shot, 5f);
         }
     }
 

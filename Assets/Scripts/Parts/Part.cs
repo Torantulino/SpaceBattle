@@ -46,6 +46,14 @@ public class Part : MonoBehaviour
         get { return _hp; }
     }
 
+    /// <summary>
+    /// ID of this Part.
+    /// </summary>
+    public int ID
+    {
+        get { return id; }
+    }
+
     #endregion
 
     [HideInInspector]

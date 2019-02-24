@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4654465723680210}
   - component: {fileID: 114825905481990920}
   - component: {fileID: 114885490483366152}
+  - component: {fileID: 114205105137608640}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -41,6 +42,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114205105137608640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1891599541345446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 227461547, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 0}
+  showGUI: 1
+  offsetX: 0
+  offsetY: 0
 --- !u!114 &114825905481990920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -61,7 +77,7 @@ MonoBehaviour:
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 1723641478073822, guid: 6e355915bc9388d4ab5c080fab427f20,
+  m_PlayerPrefab: {fileID: 1685116653520778, guid: 6e355915bc9388d4ab5c080fab427f20,
     type: 2}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
@@ -69,6 +85,7 @@ MonoBehaviour:
   m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1308864699473142, guid: e6a28a2711f43e74c90aaf87a7ea1b8b, type: 2}
+  - {fileID: 1888568191496848, guid: e09a8b1d4519afb47a9485c64304615a, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
