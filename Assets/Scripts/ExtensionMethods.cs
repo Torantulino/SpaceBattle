@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 public static class ExtensionMethods
 {
+    //dependant on Unity being set to use .Net4.x
+    ///<summary>
+    ///Returns the 2 dimensional index of a 2D array as a tuple of 2 ints
+    ///</summary>
     public static Tuple<int, int> IndexOf2D<T>(this T[, ] matrix, T value)
     {
         int w = matrix.GetLength(0); // width
