@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ItemContainer : MonoBehaviour
 {
     private int itemID = int.MaxValue;
-    private int quantity = int.MaxValue;
+    private int quantity = 0;
     public int ItemID
     {
         get { return itemID; }

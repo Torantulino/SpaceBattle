@@ -18,7 +18,6 @@ public class Inventory : MonoBehaviour
 	/// 2D array representing inventory locations [rows, collumns]
 	/// </summary>
 	public Button[, ] displayCells2D = new Button[3, 5];
-
 	// Use this for initialization
 	void Start()
 	{
@@ -62,7 +61,7 @@ public class Inventory : MonoBehaviour
 	}
 
 	/// <summary>
-	/// set a cells item container params and pass to server
+	/// set a cell's item container 
 	/// </summary>
 	public void AddLocal(Button b, int id, int quantity)
 	{
@@ -77,9 +76,51 @@ public class Inventory : MonoBehaviour
 		GameController.LocalPlayerController.AddItem(item.ItemID, item.Quantity);
 	}
 
-	public void Clicked()
+	/// <summary>
+	/// remove a cell's item 
+	/// </summary>
+	public void RemoveLocal(Button b, int num)
 	{
-		print("Clicked");
+		ItemContainer cont = b.GetComponent<ItemContainer>();
+
+		if (cont.Quantity - num > 0)
+		{
+			Debug.LogError("Can't have less than 0 of a part.");
+			return;
+		}
+		else
+		{
+			cont.Quantity -= num;
+			RemoveServer(cont, num);
+
+			//if a cell has 0 of an item in it set it's type to default
+			if (cont.Quantity == 0)
+				cont.ItemID = int.MaxValue;
+
+		}
+	}
+
+	void RemoveServer(ItemContainer item, int num)
+	{
+		GameController.LocalPlayerController.RemoveItem(item.ItemID, num);
+	}
+
+	/// <summary>
+	/// increment numer of items in a cell by a numer (defaults to 1).!-- May only be positive
+	/// </summary>
+	public void Increment(Button b, int num = 1)
+	{
+		if (num >= 0)
+		{
+			Debug.LogError("Can only incement by positive numbers");
+			return;
+		}
+		else
+		{
+			ItemContainer cont = b.GetComponent<ItemContainer>();
+			cont.Quantity += num;
+			AddServer(cont);
+		}
 	}
 
 	// Update is called once per frame

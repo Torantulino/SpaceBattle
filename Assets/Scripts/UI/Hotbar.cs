@@ -84,6 +84,16 @@ public class Hotbar : MonoBehaviour
 			}
 		}
 
+		//debug only
+		if (Input.GetKeyDown(KeyCode.Alpha9))
+		{
+			inv.Increment(inv.displayCells2D[0, activeCell], 1);
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha0))
+		{
+			inv.RemoveLocal(inv.displayCells2D[0, activeCell], 1);
+		}
+
 	}
 
 	public void SetHotbarIndex(Button button)
