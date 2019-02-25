@@ -13,5 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 1
   _name: Hull
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: f27bb47f0f18b9d408ec8c78758f8636, type: 3}
   _prefab: {fileID: 1031929522801432, guid: 63e00cd6f9dd9f840b6808420763da2a, type: 2}

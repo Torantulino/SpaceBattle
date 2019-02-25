@@ -13,5 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _name: Test Weapon
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: dd4fc451a13de9746b126227905665a4, type: 3}
   _prefab: {fileID: 1825573966985780, guid: 83ce761279479de408706be31c2d061f, type: 2}
