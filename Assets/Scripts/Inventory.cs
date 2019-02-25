@@ -74,11 +74,16 @@ public class Inventory : MonoBehaviour
 		GameController.LocalPlayerController.AddItem(item.ItemID, item.Quantity);
 	}
 
+	public void Clicked()
+	{
+		print("Clicked");
+	}
+
 	// Update is called once per frame
 	void Update()
 	{
 		//if there are 2 selected cells
-		if (selectedCell.Count >= 2)
+		if (selectedCell.Count == 2)
 		{
 			Swap();
 		}
