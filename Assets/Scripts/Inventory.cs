@@ -53,9 +53,12 @@ public class Inventory : MonoBehaviour
 		ItemContainer first = selectedCell[0].GetComponent<ItemContainer>();
 		ItemContainer second = selectedCell[1].GetComponent<ItemContainer>();
 
-		ItemContainer temp = first;
-		first = second;
-		second = temp;
+		//force copy by value
+		ItemContainer temp = new ItemContainer(second.ItemID, second.Quantity);
+		second.SetComponents(first.ItemID, first.Quantity);
+		first.SetComponents(temp.ItemID, temp.Quantity);
+
+		selectedCell.Clear();
 	}
 
 	/// <summary>
