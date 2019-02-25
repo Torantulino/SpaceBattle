@@ -10,15 +10,17 @@ public class Hotbar : MonoBehaviour
 	///<summary>
 	/// reference to a part in inventory corresponding to the index of the highlighted cell
 	///</summary>
-	public Part SelectedPart { get; private set; }
+	public ItemContainer SelectedPart { get; private set; }
 
 	private List<Image> highlights = new List<Image>();
 	private List<Button> cells = new List<Button>();
 	private int activeCell = 0;
+	private Inventory inv;
 
 	// Use this for initialization
 	void Start()
 	{
+		inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
 		//populate cells
 		cells = GetComponentsInChildren<Button>().ToList();
 		//populate highlights with the child image from each cell
@@ -51,7 +53,22 @@ public class Hotbar : MonoBehaviour
 			{
 				Debug.Log("hotbar index : " + i);
 				activeCell = i;
+
+				//set selected part to a reference to a part on the top row of the inventory
+				SelectedPart = inv.displayCells2D[0, activeCell].GetComponent<ItemContainer>();
+
+				//set selected part in the build controller
+				BuildController.SelectedPartID = SelectedPart.ItemID;
 			}
+		}
+
+		for (int i = 0; i < cells.Count; i++)
+		{
+			ItemContainer ic = inv.displayCells2D[0, i].GetComponent<ItemContainer>();
+			if (ic.ItemID != int.MaxValue)
+				cells[i].GetComponent<Image>().sprite = ic.Icon;
+			else
+				cells[i].GetComponent<Image>().sprite = inv.DefaultImage;
 		}
 
 		//turn on the highlight for the active cell and off for inactive cells
@@ -66,9 +83,6 @@ public class Hotbar : MonoBehaviour
 				highlights[i].gameObject.SetActive(false);
 			}
 		}
-
-		//set selected part to a reference to a part on the top row of the inventory
-		SelectedPart = Inventory.locations[0, activeCell];
 
 	}
 

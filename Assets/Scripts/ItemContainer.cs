@@ -1,9 +1,23 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ItemContainer
+public class ItemContainer : MonoBehaviour
 {
-    public int ItemID { get; set; }
-    public int Quantity { get; set; }
+    [SerializeField] private int itemID = int.MaxValue;
+    [SerializeField] private int quantity = int.MaxValue;
+    public int ItemID
+    {
+        get { return itemID; }
+        set { itemID = value; }
+    }
+    public int Quantity
+    {
+        get { return quantity; }
+        set { quantity = value; }
+    }
 
     public Sprite Icon
     {

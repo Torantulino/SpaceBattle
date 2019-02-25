@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222276346124030416}
   - component: {fileID: 114356594187711984}
   m_Layer: 5
-  m_Name: EmptyImage
+  m_Name: PartImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 222117944469015806}
   - component: {fileID: 114918947102169702}
   - component: {fileID: 114242442743901548}
+  - component: {fileID: 114154891894015926}
   m_Layer: 5
   m_Name: InventoryCell
   m_TagString: Untagged
@@ -46,6 +47,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114154891894015926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1560329309033420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965f5d38604780c4fa9700916cf5bc37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemID: 2147483647
+  quantity: 2147483647
 --- !u!114 &114242442743901548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -106,7 +120,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: eaa971439a19bf54397ca75d12bbb60b, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
