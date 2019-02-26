@@ -11,7 +11,7 @@ public class BuildController : MonoBehaviour {
     //ID of part to spawn. Set currentNode to null to regenerate ghost
     public int SelectedPartID { 
         private get { return seletedPartID; }
-        set { currentNode = null; seletedPartID = value; } 
+        set { seletedPartID = value; RecreateGhost(); } 
     }
     private int seletedPartID;
     private Node currentNode;
@@ -31,9 +31,6 @@ public class BuildController : MonoBehaviour {
         //initialise
         currentNode = null;
         buildmode = false;
-
-        //TESTING - Intial value to be set by inventory system
-        seletedPartID = 0;
  
         //Get player controller
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
@@ -46,17 +43,6 @@ public class BuildController : MonoBehaviour {
         if (!buildmode)
             return;
 
-        //TESTING
-        if (Input.GetKeyUp(KeyCode.Alpha0))
-        {
-            seletedPartID = 0;
-            RecreateGhost();
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha1))
-        {
-            seletedPartID = 1;
-            RecreateGhost();
-        }
 
         playerShip = GameController.LocalPlayerController.Ship;
 
