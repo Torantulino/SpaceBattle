@@ -109,6 +109,7 @@ public partial class PlayerController : NetworkBehaviour {
         }
     }
 
+    //Shooting for fully automatic weapons
     private IEnumerator Shooting()
     {
         while (shooting)
