@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -52,6 +53,7 @@ public partial class PlayerController : NetworkBehaviour {
     #endregion
 
     private int _testCounter = 0;
+    private FloatingPart _testPart;
 
     // Use this for initialization
     void Start()
@@ -69,6 +71,9 @@ public partial class PlayerController : NetworkBehaviour {
 
         //Update buildmode accross the board
         UpdateBuildMode();
+
+        //todo setting random name (needed for picking up parts)
+        PlayerName = "Player" + Mathf.RoundToInt(Random.value * 1000000);
 
         // All other players
         if (isLocalPlayer)
@@ -115,8 +120,32 @@ public partial class PlayerController : NetworkBehaviour {
 	            Ship.Shoot();
 
             if (Input.GetKeyUp(KeyCode.R))
-                Ship.RefreshParts();
-
+            {
+                _testCounter++;
+                switch (_testCounter)
+                {
+                    case 1:
+                        if (!isServer)
+                            break;
+                        GameObject floatingPart = Instantiate(GameController.Instance.FloatingPartGameObject, new Vector3(0f, 0f, 15f), new Quaternion());
+                        NetworkServer.Spawn(floatingPart);
+                        // Set FloatingPart ID
+                        floatingPart.GetComponent<FloatingPart>().ID = 1;
+                        _testPart = floatingPart.GetComponent<FloatingPart>();
+                        Debug.Log("Created FloatingPart");
+                        break;
+                    case 2:
+                        Debug.Log("Picking up FloatingPart");
+                        PickUpFloatingPart(_testPart);
+                        break;
+                    case 3:
+                        _testCounter = 0;
+                        break;
+                    default:
+                        _testCounter = 0;
+                        break;
+                }
+            }
         }
         //Toggle build mode
 	    if (Input.GetKeyDown(KeyCode.Tab))
@@ -134,6 +163,15 @@ public partial class PlayerController : NetworkBehaviour {
         cameraModeToggle.UpdateBuildmode(buildMode);
         //Update Gui facade
         guiFacade.UpdateBuildmode(buildMode);
+    }
+
+    /// <summary>
+    /// Picks up a floating part.
+    /// </summary>
+    /// <param name="part"></param>
+    public void PickUpFloatingPart(FloatingPart part)
+    {
+        part.PickUp(PlayerName);
     }
 
     /// <summary>

@@ -28,6 +28,42 @@ public class FloatingPart : NetworkBehaviour
 		
 	}
 
+    /// <summary>
+    /// Picking up this Part.
+    /// </summary>
+    public void PickUp(string playerName)
+    {
+        CmdPickUp(playerName);
+    }
+
+    /// <summary>
+    /// Picking up FloatingPart on the server
+    /// </summary>
+    /// <param name="playerName"></param>
+    //todo should use player ID instead
+    [Command]
+    private void CmdPickUp(string playerName)
+    {
+        // Only on server
+        if (!isServer)
+            return;
+
+        //todo not optimal
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            // Search for the player that wants to pick up this Part
+            if (playerController.PlayerName == playerName)
+            {
+                //todo check distance to player, etc.
+                playerController.AddItem(_id);
+                NetworkServer.Destroy(gameObject);
+                return;
+            }
+        }
+        Debug.LogWarning("Player " + playerName + " tried to pick up a FloatingPart but wasn't found.");
+    }
+
     void OnIdChanged(int id)
     {
         ID = id;
