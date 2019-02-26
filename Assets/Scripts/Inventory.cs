@@ -102,7 +102,7 @@ public class Inventory : MonoBehaviour
 		else
 		{
 			cont.Quantity -= num;
-			UpdateServerPart(cont, num);
+			RemoveServer(cont, num);
 
 			//if a cell has 0 of an item in it set it's type to default
 			if (cont.Quantity == 0)
