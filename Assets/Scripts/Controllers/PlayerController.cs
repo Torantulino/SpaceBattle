@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -52,6 +53,7 @@ public partial class PlayerController : NetworkBehaviour {
     #endregion
 
     private int _testCounter = 0;
+    private FloatingPart _testPart;
 
     // Use this for initialization
     void Start()
@@ -69,6 +71,9 @@ public partial class PlayerController : NetworkBehaviour {
 
         //Update buildmode accross the board
         UpdateBuildMode();
+
+        //todo setting random name (needed for picking up parts)
+        PlayerName = "Player" + Mathf.RoundToInt(Random.value * 1000000);
 
         // All other players
         if (isLocalPlayer)
@@ -109,46 +114,38 @@ public partial class PlayerController : NetworkBehaviour {
             GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
 
 
-
             //todo testing
-            Ship.Thrust(new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 
             if (Input.GetKeyDown(KeyCode.Space))
 	            Ship.Shoot();
 
-	        if (Input.GetKey(KeyCode.E))
-	            Ship.Target = Ship.Target + new Vector3(0f, Time.fixedDeltaTime * 30f, 0f);
-	        if (Input.GetKey(KeyCode.Q))
-	            Ship.Target = Ship.Target + new Vector3(0f, -Time.fixedDeltaTime * 30f, 0f);
-
             if (Input.GetKeyUp(KeyCode.R))
-                Ship.RefreshParts();
-
-            if (Input.GetKeyUp(KeyCode.T))
             {
-                switch (_testCounter++)
+                _testCounter++;
+                switch (_testCounter)
                 {
                     case 1:
-                        Ship.AddPart(new PartData(1, new Vector3(0, 1, 0)));
+                        if (!isServer)
+                            break;
+                        GameObject floatingPart = Instantiate(GameController.Instance.FloatingPartGameObject, new Vector3(0f, 0f, 15f), new Quaternion());
+                        NetworkServer.Spawn(floatingPart);
+                        // Set FloatingPart ID
+                        floatingPart.GetComponent<FloatingPart>().ID = 1;
+                        _testPart = floatingPart.GetComponent<FloatingPart>();
+                        Debug.Log("Created FloatingPart");
                         break;
                     case 2:
-                        Ship.AddPart(new PartData(1, new Vector3(0, 2, 0)));
+                        Debug.Log("Picking up FloatingPart");
+                        PickUpFloatingPart(_testPart);
                         break;
                     case 3:
-                        Ship.AddPart(new PartData(1, new Vector3(0, 3, 0)));
-                        break;
-                    case 4:
-                        Ship.AddPart(new PartData(1, new Vector3(0, 4, 0)));
-                        break;
-                    case 5:
-                        Ship.RemovePart(new Vector3(0, 2, 0));
+                        _testCounter = 0;
                         break;
                     default:
+                        _testCounter = 0;
                         break;
                 }
-
             }
-
         }
         //Toggle build mode
 	    if (Input.GetKeyDown(KeyCode.Tab))
@@ -166,6 +163,15 @@ public partial class PlayerController : NetworkBehaviour {
         cameraModeToggle.UpdateBuildmode(buildMode);
         //Update Gui facade
         guiFacade.UpdateBuildmode(buildMode);
+    }
+
+    /// <summary>
+    /// Picks up a floating part.
+    /// </summary>
+    /// <param name="part"></param>
+    public void PickUpFloatingPart(FloatingPart part)
+    {
+        part.PickUp(PlayerName);
     }
 
     /// <summary>

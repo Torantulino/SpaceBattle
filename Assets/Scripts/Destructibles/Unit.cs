@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using Random = System.Random;
 
 /// <summary>
 /// Class for all objects that can have Parts.
@@ -87,6 +88,7 @@ public class Unit : Destructible
     /// </summary>
     public void Shoot()
     {
+        //todo should also check if weapons are Ready() before callings Command
         CmdShoot();
     }
 
@@ -170,10 +172,11 @@ public class Unit : Destructible
     /// </summary>
     private Part InstantiatePart(PartData partData)
     {
-        GameObject partGameObject = Instantiate(PartManager.Instance.GetPartById(partData.Id).Prefab, transform.position + partData.Position,
-            Quaternion.Euler(transform.localEulerAngles + partData.Rotation), gameObject.transform);
-        // Taking Part component
-        Part part = partGameObject.GetComponent<Part>();
+        // Rotate Part position
+        Vector3 position = transform.position + transform.rotation * partData.Position;
+        // Instantiate Part
+        Part part = Instantiate(PartManager.Instance.GetPartById(partData.Id).Prefab, position,
+            Quaternion.Euler(partData.Rotation + transform.eulerAngles), gameObject.transform).GetComponent<Part>();
         // Setting Part Id
         part.SetID(partData.Id);
         // Adding Part to parts Dictionary
@@ -188,11 +191,12 @@ public class Unit : Destructible
     /// <param name="nodes">Nodes to recalculate</param>
     /// <param name="partsChecked">Will add all parts that were checked to this List.</param>
     /// <param name="recursion">Execute function on all parts' nodes that are found.</param>
+    /// <param name="connected">Passing current state of connection to the Unit</param>
     /// <returns>True if at least one node is connected to the Unit.</returns>
     //todo should probably take Part as an argument (but Unit is problematic)
-    private bool RecalculateAttachments(IEnumerable<Node> nodes, ref List<Part> partsChecked, bool recursion = false)
+    private bool RecalculateAttachments(IEnumerable<Node> nodes, ref List<Part> partsChecked, bool recursion = false, bool connected = false)
     {
-        bool connection = false;
+        bool connection = connected;
 
         foreach (Node node in nodes)
         {
@@ -204,7 +208,7 @@ public class Unit : Destructible
                 {
                     foundPart.Checked = true;
                     partsChecked.Add(foundPart);
-                    connection = RecalculateAttachments(foundPart.Nodes, ref partsChecked, true);
+                    connection = RecalculateAttachments(foundPart.Nodes, ref partsChecked, true, connection);
                 }
             }
             // If node is pointing at Vector3Int.zero (Unit position)
@@ -213,7 +217,10 @@ public class Unit : Destructible
                 node.IsAttachedToUnit = true;
                 connection = true;
                 if (node.AttachedPart != null)
+                {
+                    Debug.LogWarning("There was a Unit on this Node and Part attached. This should never happen.");
                     node.DetachPart();
+                }
             }
             // Detach a Part if there isn't any now
             if(!foundPart && node.AttachedPart != null)
@@ -225,7 +232,7 @@ public class Unit : Destructible
 
     private void RecalculateAllAttachments()
     {
-        // Set all Parts as not yet checked and without connection to the Unit
+        // Set all Parts as not yet checked
         foreach (KeyValuePair<Vector3Int, Part> keyValuePair in Parts)
         {
             keyValuePair.Value.Checked = false;
@@ -237,6 +244,8 @@ public class Unit : Destructible
 
         // Parts to remove
         List<Vector3Int> keys = new List<Vector3Int>();
+        // Clear parts to remove
+        keys.Clear();
 
         // Foreach Parts
         foreach (KeyValuePair<Vector3Int, Part> keyValuePair in Parts)
@@ -249,6 +258,7 @@ public class Unit : Destructible
             part.Checked = true;
             // Hold all parts recursively checked
             List<Part> partsChecked = new List<Part> {part};
+
             // Recalculate attachments recursively
             if (!RecalculateAttachments(part.Nodes, ref partsChecked, true))
             {
@@ -256,10 +266,10 @@ public class Unit : Destructible
                 // Keys to remove
                 foreach (Part partChecked in partsChecked)
                 {
-                    partChecked.transform.parent = part.transform;
+                    partChecked.transform.parent = null;
+                    // Add key for future removal from Parts
                     keys.Add(Parts.First(p => p.Value == partChecked).Key);
                 }
-                
                 part.transform.parent = null;
             }
         }
@@ -267,7 +277,22 @@ public class Unit : Destructible
         {
             // Removing from PartsData
             partsData.Remove(partsData.First(p => Vector3Int.RoundToInt(p.Position) == key));
-
+            // Create floating Part (server only)
+            if (isServer)
+            {
+                GameObject floatingPart = Instantiate(GameController.Instance.FloatingPartGameObject,
+                    Parts[key].transform.position, Parts[key].transform.rotation);
+                NetworkServer.Spawn(floatingPart);
+                // Set FloatingPart ID
+                floatingPart.GetComponent<FloatingPart>().ID = Parts[key].ID;
+                // Add random force
+                floatingPart.GetComponent<Rigidbody>().AddForce(new Vector3(
+                    UnityEngine.Random.Range(-100f, 100f),
+                    UnityEngine.Random.Range(-100f, 100f),
+                    UnityEngine.Random.Range(-100f, 100f)), ForceMode.Impulse);
+            }
+            // Destroy original Part gameObject
+            Destroy(Parts[key].gameObject);
             // Remove from Parts
             Parts.Remove(key);
         }
@@ -284,7 +309,8 @@ public class Unit : Destructible
         // Clear weapons List
         weapons.Clear();
         // Add weapons
-        weapons.AddRange(GetComponentsInChildren<Weapon>());
+        //todo temporary fix "ghost"
+        weapons.AddRange(GetComponentsInChildren<Weapon>().Where(w => w.name != "ghost"));
     }
 
     #region Networking
@@ -432,11 +458,9 @@ public class Unit : Destructible
             if (!weapon.Ready())
                 continue;
             // Instantiate GameObject
-            GameObject shot = Instantiate(weapon.bulletPrefab, weapon.gunTransform.position, weapon.gunTransform.rotation);
+            GameObject shot = weapon.Shoot();
             // Spawn it - so it appears for all clients
             NetworkServer.Spawn(shot);
-            // Destroy it after some time
-            Destroy(shot, 5f);
         }
     }
 

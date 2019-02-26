@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Daniel.unity
-    guid: 8c028e3840581a64e84c9b2ba87ee6b8
+    path: Assets/Scenes/multiplayer-test.unity
+    guid: 0ad5a440fba26f646854f6290c440d24

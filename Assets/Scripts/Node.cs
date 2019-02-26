@@ -30,7 +30,7 @@ public class Node : MonoBehaviour
     }
 
     /// <summary>
-    /// Part that is attached to this Node. Null when Node is empty.
+    /// Part that is attached to this Node. Null when Node is not attached to a Part.
     /// </summary>
     public Part AttachedPart { get; private set; }
 
@@ -41,7 +41,17 @@ public class Node : MonoBehaviour
     {
         get
         {
-            return transform.localPosition.normalized + transform.parent.parent.localPosition;
+            if(transform.parent.parent.parent == null)
+            {
+                return transform.localPosition.normalized;
+            }
+
+            //return transform.parent.parent.localToWorldMatrix * transform.localPosition.normalized;
+            return transform.parent.parent.localPosition + transform.localPosition.normalized;
+            //todo for future
+            //Transform player = transform.parent.parent.parent;
+            //Transform part = transform.parent.parent;
+            //return player.worldToLocalMatrix * part.localToWorldMatrix * (transform.localPosition * 2f);
         }
     }
 
@@ -92,7 +102,7 @@ public class Node : MonoBehaviour
             AttachedPart = null;
             return true;
         }
-
+        
         Debug.LogWarning("Trying to detach a Part from a Node, but there isn't a Part attached.");
         return false;
     }

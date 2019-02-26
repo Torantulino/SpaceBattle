@@ -42,6 +42,7 @@ public class PartData
     {
         if (string.IsNullOrEmpty(partData))
             return;
+
         string[] data = partData.Split(',');
 
         // Reading all data from splitted string
@@ -58,8 +59,8 @@ public class PartData
     {
         string str = "";
         str += Id + ",";
-        str += (int) Position.x + "," + (int) Position.y + "," + (int) Position.z + ",";
-        str += (int) Rotation.x + "," + (int) Rotation.y + "," + (int) Rotation.z + ",";
+        str += Mathf.RoundToInt(Position.x) + "," + Mathf.RoundToInt(Position.y) + "," + Mathf.RoundToInt(Position.z) + ",";
+        str += Mathf.RoundToInt(Rotation.x) + "," + Mathf.RoundToInt(Rotation.y) + "," + Mathf.RoundToInt(Rotation.z) + ",";
 
         return str;
     }

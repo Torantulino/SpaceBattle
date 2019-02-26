@@ -5,7 +5,6 @@
 /// </summary>
 public class GameController : MonoBehaviour
 {
-
     #region Singleton
     private static GameController instance;
 
@@ -24,6 +23,9 @@ public class GameController : MonoBehaviour
     }
     #endregion
 
+    [SerializeField]
+    private GameObject _floatingPartGameObject;
+
     #region Properties
 
     /// <summary>
@@ -35,6 +37,14 @@ public class GameController : MonoBehaviour
     /// Local player PlayerController script
     /// </summary>
     public static PlayerController LocalPlayerController { get; private set; }
+
+    /// <summary>
+    /// Floating Part prefab.
+    /// </summary>
+    public GameObject FloatingPartGameObject
+    {
+        get { return _floatingPartGameObject; }
+    }
 
     #endregion
 
