@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Xml;
 using UnityEngine;
@@ -55,6 +56,7 @@ public partial class PlayerController : NetworkBehaviour {
 
     private int _testCounter = 0;
     private FloatingPart _testPart;
+    private bool shooting = false;
 
     // Use this for initialization
     void Start()
@@ -96,12 +98,25 @@ public partial class PlayerController : NetworkBehaviour {
         //Fire Primary Weapon
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            shooting = true;
+            StartCoroutine("Shooting");
             cameraController.ShakeScreen(3.0f, 1.0f, true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
+            shooting = false;
             cameraController.ShakeScreen(0.0f, 1.0f, true);
         }
+    }
+
+    private IEnumerator Shooting()
+    {
+        while (shooting)
+        {
+            Ship.Shoot();
+            yield return new WaitForSeconds(0.1f);  //todo: this will acquiesce to weapon's cooldown(s), but could be optimised by obtaining a reference to it
+        }
+        yield return null;
     }
 
     // FixedUpdate is called once per physics tick
@@ -143,10 +158,6 @@ public partial class PlayerController : NetworkBehaviour {
                 GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
 
             //todo testing
-
-            if (Input.GetKeyDown(KeyCode.Space))
-	            Ship.Shoot();
-
             if (Input.GetKeyUp(KeyCode.R))
             {
                 _testCounter++;
