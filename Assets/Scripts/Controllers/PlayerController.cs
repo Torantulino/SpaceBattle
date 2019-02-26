@@ -96,7 +96,7 @@ public partial class PlayerController : NetworkBehaviour {
     {
         //- Combat -
         //Fire Primary Weapon
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0))       //todo: add check to see if weapon is on the ship
         {
             shooting = true;
             StartCoroutine("Shooting");
