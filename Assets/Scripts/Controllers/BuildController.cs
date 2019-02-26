@@ -8,8 +8,12 @@ using UnityEngine;
 public class BuildController : MonoBehaviour {
 
     public bool buildmode;
-    public int SelectedPartID { private get; set; } //ID of part to spawn
-
+    //ID of part to spawn. Set currentNode to null to regenerate ghost
+    public int SelectedPartID { 
+        private get { return seletedPartID; }
+        set { currentNode = null; seletedPartID = value; } 
+    }
+    private int seletedPartID;
     private Node currentNode;
     private Ship playerShip;
 
@@ -29,7 +33,7 @@ public class BuildController : MonoBehaviour {
         buildmode = false;
 
         //TESTING - Intial value to be set by inventory system
-        SelectedPartID = 0;
+        seletedPartID = 0;
  
         //Get player controller
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
@@ -45,12 +49,12 @@ public class BuildController : MonoBehaviour {
         //TESTING
         if (Input.GetKeyUp(KeyCode.Alpha0))
         {
-            SelectedPartID = 0;
+            seletedPartID = 0;
             RecreateGhost();
         }
         if (Input.GetKeyUp(KeyCode.Alpha1))
         {
-            SelectedPartID = 1;
+            seletedPartID = 1;
             RecreateGhost();
         }
 
@@ -100,7 +104,7 @@ public class BuildController : MonoBehaviour {
             currentNode = null;
 
             //Build Part
-            PartData newPart = new PartData(SelectedPartID, position);
+            PartData newPart = new PartData(seletedPartID, position);
             playerShip.AddPart(newPart);
 
             //Update bounds for camera zoom
@@ -139,7 +143,7 @@ public class BuildController : MonoBehaviour {
     {
         if(ghost) Destroy(ghost);
 
-        ghost = Instantiate(PartManager.Instance.GetPartById(SelectedPartID).Prefab, transform);
+        ghost = Instantiate(PartManager.Instance.GetPartById(seletedPartID).Prefab, transform);
         ghost.name = "ghost";
         ghost.GetComponent<Part>().isGhost = true;
 

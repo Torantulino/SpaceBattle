@@ -63,7 +63,7 @@ public class Hotbar : MonoBehaviour
 
                 //set selected part in the build controller
 			    buildController.SelectedPartID = SelectedPart.ItemID;
-			}
+            }
 		}
 
 		for (int i = 0; i < cells.Count; i++)
