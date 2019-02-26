@@ -10,7 +10,7 @@ public class Weapon : Part
     [Tooltip("Bullet prefab - must be registered in the Network manager.")]
     public GameObject bulletPrefab;//todo should be registered automatically in Unit
     [Tooltip("Minimum time between consecutive shots.")]
-    public float cooldown = 1f;
+    public float cooldown;
     [Tooltip("Weapon won't change aiming direction.")]
     public bool fixedDirection;
 
