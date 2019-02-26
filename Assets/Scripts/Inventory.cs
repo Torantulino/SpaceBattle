@@ -76,6 +76,17 @@ public class Inventory : MonoBehaviour
 		GameController.LocalPlayerController.AddItem(item.ItemID, item.Quantity);
 	}
 
+	private void RemoveServer(ItemContainer item, int num)
+	{
+		GameController.LocalPlayerController.RemoveItem(item.ItemID, num);
+	}
+
+	private void UpdateServerPart(ItemContainer item, int num)
+	{
+		GameController.LocalPlayerController.RemoveItem(item.ItemID, item.Quantity);
+		GameController.LocalPlayerController.AddItem(item.ItemID, item.Quantity + num);
+	}
+
 	/// <summary>
 	/// remove a cell's item 
 	/// </summary>
@@ -83,7 +94,7 @@ public class Inventory : MonoBehaviour
 	{
 		ItemContainer cont = b.GetComponent<ItemContainer>();
 
-		if (cont.Quantity - num > 0)
+		if (cont.Quantity - num < 0)
 		{
 			Debug.LogError("Can't have less than 0 of a part.");
 			return;
@@ -91,7 +102,7 @@ public class Inventory : MonoBehaviour
 		else
 		{
 			cont.Quantity -= num;
-			RemoveServer(cont, num);
+			UpdateServerPart(cont, num);
 
 			//if a cell has 0 of an item in it set it's type to default
 			if (cont.Quantity == 0)
@@ -100,17 +111,12 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	void RemoveServer(ItemContainer item, int num)
-	{
-		GameController.LocalPlayerController.RemoveItem(item.ItemID, num);
-	}
-
 	/// <summary>
 	/// increment numer of items in a cell by a numer (defaults to 1).!-- May only be positive
 	/// </summary>
 	public void Increment(Button b, int num = 1)
 	{
-		if (num >= 0)
+		if (num <= 0)
 		{
 			Debug.LogError("Can only incement by positive numbers");
 			return;
@@ -123,7 +129,7 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	// Update is called once per frame
+	// Update is called once per frame0
 	void Update()
 	{
 		//if there are 2 selected cells
@@ -135,14 +141,18 @@ public class Inventory : MonoBehaviour
 		//display the right icon
 		foreach (Button b in displayCells2D)
 		{
+			ItemContainer container = b.GetComponent<ItemContainer>();
+
 			if (b.GetComponent<ItemContainer>().ItemID != int.MaxValue)
 			{
-				b.GetComponentsInChildren<Image>() [1].sprite = b.GetComponent<ItemContainer>().Icon;
+				b.GetComponentsInChildren<Image>() [1].sprite = container.Icon;
 			}
 			else
 			{
 				b.GetComponentsInChildren<Image>() [1].sprite = DefaultImage;
 			}
+
+			b.GetComponentInChildren<Text>().text = container.Quantity.ToString();
 
 		}
 

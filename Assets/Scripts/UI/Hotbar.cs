@@ -82,14 +82,16 @@ public class Hotbar : MonoBehaviour
 			{
 				highlights[i].gameObject.SetActive(false);
 			}
+
+			cells[i].GetComponentInChildren<Text>().text = inv.displayCells2D[0, i].GetComponent<ItemContainer>().Quantity.ToString();
 		}
 
 		//debug only
-		if (Input.GetKeyDown(KeyCode.Alpha9))
+		if (Input.GetKeyDown(KeyCode.Alpha0))
 		{
 			inv.Increment(inv.displayCells2D[0, activeCell], 1);
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha0))
+		if (Input.GetKeyDown(KeyCode.Alpha9))
 		{
 			inv.RemoveLocal(inv.displayCells2D[0, activeCell], 1);
 		}
