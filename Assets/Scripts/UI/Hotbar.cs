@@ -21,7 +21,6 @@ public class Hotbar : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        buildController = FindObjectOfType<BuildController>();
         inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
 		//populate cells
 		cells = GetComponentsInChildren<Button>().ToList();
@@ -39,7 +38,10 @@ public class Hotbar : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		bool[] hotkeys = new bool[5];
+        if(buildController == null)
+            buildController = FindObjectOfType<BuildController>();
+
+        bool[] hotkeys = new bool[5];
 
 		//all the inputs checked so I dont have lots of repeat code
 		hotkeys[0] = Input.GetKeyDown(KeyCode.Alpha1);
