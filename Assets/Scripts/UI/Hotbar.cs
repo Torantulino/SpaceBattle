@@ -16,11 +16,13 @@ public class Hotbar : MonoBehaviour
 	private List<Button> cells = new List<Button>();
 	private int activeCell = 0;
 	private Inventory inv;
+    private BuildController buildController;
 
-	// Use this for initialization
-	void Start()
-	{
-		inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
+    // Use this for initialization
+    void Start()
+    {
+        buildController = FindObjectOfType<BuildController>();
+        inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
 		//populate cells
 		cells = GetComponentsInChildren<Button>().ToList();
 		//populate highlights with the child image from each cell
@@ -57,8 +59,8 @@ public class Hotbar : MonoBehaviour
 				//set selected part to a reference to a part on the top row of the inventory
 				SelectedPart = inv.displayCells2D[0, activeCell].GetComponent<ItemContainer>();
 
-				//set selected part in the build controller
-				BuildController.SelectedPartID = SelectedPart.ItemID;
+                //set selected part in the build controller
+			    buildController.SelectedPartID = SelectedPart.ItemID;
 			}
 		}
 
