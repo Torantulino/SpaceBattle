@@ -4,12 +4,15 @@ using UnityEngine;
 /// <summary>
 /// Controls Main Camera.
 /// </summary>
-public class CameraController : MonoBehaviour {
+public class CameraController : MonoBehaviour
+{
 
     #region Singleton
     private static CameraController instance;
 
     public static CameraController Instance { get { return instance; } }
+
+    public static GameObject CameraAnchor;
 
     private void Awake()
     {
@@ -24,22 +27,52 @@ public class CameraController : MonoBehaviour {
     }
     #endregion
 
-    private CinemachineVirtualCamera _cinemachineVirtualCamera;
+    private CinemachineFreeLook _cinemachineFreeLookCamera;
+    private CinemachineVirtualCamera _flightCamera;
+    private Cinemachine.CinemachineBasicMultiChannelPerlin flightNoiseChannel;
 
     // Use this for initialization
     void Start()
     {
-        _cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
+        _cinemachineFreeLookCamera = GetComponentInChildren<CinemachineFreeLook>();
+        _flightCamera = transform.Find("CM 3rd-Person-FlightMode").GetComponent<CinemachineVirtualCamera>();    //Obtaining ref by GetComponent wasn't working
+        flightNoiseChannel = _flightCamera.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!GameController.LocalPlayer)
+        if (GameController.LocalPlayer == null)
+        {
             return;
+        }
 
-        // Setting Player to follow
-        if (!_cinemachineVirtualCamera.m_Follow)
-            _cinemachineVirtualCamera.m_Follow = GameController.LocalPlayer.transform;
+        // Setting Player to follow the camera anchor on the active player
+        if (!_cinemachineFreeLookCamera.m_Follow)
+        {
+            CameraAnchor = GameController.LocalPlayer.transform.Find("CameraAnchor").gameObject;
+            _cinemachineFreeLookCamera.m_Follow = CameraAnchor.transform;
+            _cinemachineFreeLookCamera.m_LookAt = CameraAnchor.transform;
+
+        }
+        //Set flightcam Follow and Lookat
+        if (!_flightCamera.m_Follow)
+        {
+            //Follow player
+            _flightCamera.m_Follow = GameController.LocalPlayer.transform;
+            //Lookat Anchor
+            _flightCamera.m_LookAt = GameController.LocalPlayer.transform.Find("CameraAnchor").gameObject.transform;
+        }
     }
+
+    public void ShakeScreen(float ampGain, float freqGain, bool flight)
+    {
+        //Flight Camera
+        if (flight)
+        {
+            flightNoiseChannel.m_AmplitudeGain = ampGain;
+            flightNoiseChannel.m_FrequencyGain = freqGain;
+        }
+    }
+
 }

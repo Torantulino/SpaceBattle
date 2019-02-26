@@ -65,21 +65,30 @@ Please don't use private variables directly, to make sure that they're synchroni
 // PlayerController
 string PlayerName
 Ship Ship
+ReadOnlyCollection<ItemContainer> Items
 
 // Ship
 float Hp
 Vector3 Target
-List<PartData> PartsData
+ReadOnlyCollection<PartData> PartsData
+Dictionary<Vector3Int, Part> Parts
+
 ```
 ### Methods
 ```cs
 // PlayerController
+AddItem(int id, int quantity = 1)
+RemoveItem(int id, int quantity = 1)
+Refreshitems() // Not necessary and not recommended to use in most cases
+ClearItems()
 
 // Ship
 void Thrust(Vector3 force)
 void Shoot()
 void RefreshParts()
 void AddPart(PartData partData)
+void RemovePart(Vector3 position)
+ReadOnlyCollection<Node> GetNodes(bool onlyAvailable)
 
 // Weapon
 bool Ready()
@@ -89,6 +98,7 @@ For now, events use generic implementation of EventArgs (just use *Value* from t
 ```
 // PlayerController
 PlayerNameChanged
+ItemsChanged
 
 // Ship
 HpChanged

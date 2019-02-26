@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e2ae58d9de8a4746b3a1768422db1f6, type: 3}
   m_Name: Hull
   m_EditorClassIdentifier: 
-  id: 1
-  name: Hull
-  icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  prefab: {fileID: 1031929522801432, guid: 63e00cd6f9dd9f840b6808420763da2a, type: 2}
+  _id: 1
+  _name: Hull
+  _icon: {fileID: 21300000, guid: f27bb47f0f18b9d408ec8c78758f8636, type: 3}
+  _prefab: {fileID: 1031929522801432, guid: 63e00cd6f9dd9f840b6808420763da2a, type: 2}

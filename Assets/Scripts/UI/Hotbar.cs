@@ -10,15 +10,18 @@ public class Hotbar : MonoBehaviour
 	///<summary>
 	/// reference to a part in inventory corresponding to the index of the highlighted cell
 	///</summary>
-	public Part SelectedPart { get; private set; }
+	public ItemContainer SelectedPart { get; private set; }
 
 	private List<Image> highlights = new List<Image>();
 	private List<Button> cells = new List<Button>();
 	private int activeCell = 0;
+	private Inventory inv;
+    private BuildController buildController;
 
-	// Use this for initialization
-	void Start()
-	{
+    // Use this for initialization
+    void Start()
+    {
+        inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
 		//populate cells
 		cells = GetComponentsInChildren<Button>().ToList();
 		//populate highlights with the child image from each cell
@@ -35,7 +38,10 @@ public class Hotbar : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		bool[] hotkeys = new bool[5];
+        if(buildController == null)
+            buildController = FindObjectOfType<BuildController>();
+
+        bool[] hotkeys = new bool[5];
 
 		//all the inputs checked so I dont have lots of repeat code
 		hotkeys[0] = Input.GetKeyDown(KeyCode.Alpha1);
@@ -51,7 +57,22 @@ public class Hotbar : MonoBehaviour
 			{
 				Debug.Log("hotbar index : " + i);
 				activeCell = i;
+
+				//set selected part to a reference to a part on the top row of the inventory
+				SelectedPart = inv.displayCells2D[0, activeCell].GetComponent<ItemContainer>();
+
+                //set selected part in the build controller
+			    buildController.SelectedPartID = SelectedPart.ItemID;
 			}
+		}
+
+		for (int i = 0; i < cells.Count; i++)
+		{
+			ItemContainer ic = inv.displayCells2D[0, i].GetComponent<ItemContainer>();
+			if (ic.ItemID != int.MaxValue)
+				cells[i].GetComponent<Image>().sprite = ic.Icon;
+			else
+				cells[i].GetComponent<Image>().sprite = inv.DefaultImage;
 		}
 
 		//turn on the highlight for the active cell and off for inactive cells
@@ -65,10 +86,19 @@ public class Hotbar : MonoBehaviour
 			{
 				highlights[i].gameObject.SetActive(false);
 			}
+
+			cells[i].GetComponentInChildren<Text>().text = inv.displayCells2D[0, i].GetComponent<ItemContainer>().Quantity.ToString();
 		}
 
-		//set selected part to a reference to a part on the top row of the inventory
-		SelectedPart = Inventory.locations[0, activeCell];
+		//debug only
+		if (Input.GetKeyDown(KeyCode.Alpha0))
+		{
+			inv.Increment(inv.displayCells2D[0, activeCell], 1);
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha9))
+		{
+			inv.RemoveLocal(inv.displayCells2D[0, activeCell], 1);
+		}
 
 	}
 

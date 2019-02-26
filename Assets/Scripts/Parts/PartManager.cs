@@ -32,10 +32,9 @@ public class PartManager : MonoBehaviour
     /// Returns PartInfo for specified part.
     /// </summary>
     /// <param name="id">Id of a Part.</param>
-    /// <returns></returns>
     public PartInfo GetPartById(int id)
     {
-        return registeredParts.Find(part => part.id == id);
+        return registeredParts.Find(part => part.Id == id);
     }
 }
 
