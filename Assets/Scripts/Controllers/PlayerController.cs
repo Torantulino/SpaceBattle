@@ -19,7 +19,7 @@ public partial class PlayerController : NetworkBehaviour {
     /// <summary>
     /// Name of the player. Synchronized variable
     /// </summary>
-    public string PlayerName
+    public string PlayerName 
     {
         get { return _playerName; }
         set { CmdChangeName(value); }

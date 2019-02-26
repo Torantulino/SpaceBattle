@@ -30,7 +30,7 @@ public class BuildController : MonoBehaviour {
 
         //TESTING - Intial value to be set by inventory system
         SelectedPartID = 0;
-
+ 
         //Get player controller
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
     }
@@ -66,7 +66,7 @@ public class BuildController : MonoBehaviour {
             //Display 'ghost' block
             RecreateGhost();
         }
-    }
+    
 
         //Node Cycling
         // Cycle left

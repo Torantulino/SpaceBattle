@@ -87,7 +87,7 @@ public class CameraModeToggle : MonoBehaviour
     {
         buildMode = b;  //Hard set rather than toggle to ensure sync
 
-        //update bounds every switch
+        //update bounds every switch 
         CalculateBounds();
     }
 
