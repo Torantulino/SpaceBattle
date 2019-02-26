@@ -131,12 +131,6 @@ public partial class PlayerController : NetworkBehaviour {
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
                 GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 10.0f);
-<<<<<<< HEAD
-            
-            //Point velocity along ship direction
-            GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
-
-=======
             //Reverse Thrust
             bool reversing = false;
             if (Input.GetKey(KeyCode.LeftControl))
@@ -147,7 +141,6 @@ public partial class PlayerController : NetworkBehaviour {
             //Point velocity along ship direction (if not trying to reverse or currently going backwards)
             if (transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity).z > 0 && !reversing)
                 GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
->>>>>>> flight
 
             //todo testing
 
