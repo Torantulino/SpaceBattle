@@ -1,8 +1,31 @@
 fileFormatVersion: 2
-guid: 6282d1fcb46565348bb43a66c3b96015
+guid: 9f057607223bf4644a0e5a7a1f6b6520
 ModelImporter:
   serializedVersion: 22
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    100000: imagePlane1
+    100002: imagePlane2
+    100004: pCube1
+    100006: pCube2
+    100008: pPipe1
+    100010: //RootNode
+    400000: imagePlane1
+    400002: imagePlane2
+    400004: pCube1
+    400006: pCube2
+    400008: pPipe1
+    400010: //RootNode
+    2100000: lambert1
+    2300000: pCube1
+    2300002: pCube2
+    2300004: pPipe1
+    3300000: pCube1
+    3300002: pCube2
+    3300004: pPipe1
+    4300000: pCube1
+    4300002: pCube2
+    4300004: pPipe1
+    9500000: //RootNode
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -33,7 +56,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 10
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
