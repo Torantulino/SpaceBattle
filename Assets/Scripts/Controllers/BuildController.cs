@@ -8,8 +8,12 @@ using UnityEngine;
 public class BuildController : MonoBehaviour {
 
     public bool buildmode;
-    public int SelectedPartID { private get; set; } //ID of part to spawn
-
+    //ID of part to spawn. Set currentNode to null to regenerate ghost
+    public int SelectedPartID { 
+        private get { return seletedPartID; }
+        set { seletedPartID = value; RecreateGhost(); } 
+    }
+    private int seletedPartID;
     private Node currentNode;
     private Ship playerShip;
 
@@ -27,10 +31,7 @@ public class BuildController : MonoBehaviour {
         //initialise
         currentNode = null;
         buildmode = false;
-
-        //TESTING - Intial value to be set by inventory system
-        SelectedPartID = 0;
-
+ 
         //Get player controller
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
     }
@@ -42,17 +43,6 @@ public class BuildController : MonoBehaviour {
         if (!buildmode)
             return;
 
-        //TESTING
-        if (Input.GetKeyUp(KeyCode.Alpha0))
-        {
-            SelectedPartID = 0;
-            RecreateGhost();
-        }
-        if (Input.GetKeyUp(KeyCode.Alpha1))
-        {
-            SelectedPartID = 1;
-            RecreateGhost();
-        }
 
         playerShip = GameController.LocalPlayerController.Ship;
 
@@ -66,6 +56,7 @@ public class BuildController : MonoBehaviour {
             //Display 'ghost' block
             RecreateGhost();
         }
+    
 
         //Node Cycling
         // Cycle left
@@ -99,7 +90,7 @@ public class BuildController : MonoBehaviour {
             currentNode = null;
 
             //Build Part
-            PartData newPart = new PartData(SelectedPartID, position);
+            PartData newPart = new PartData(seletedPartID, position);
             playerShip.AddPart(newPart);
 
             //Update bounds for camera zoom
@@ -138,7 +129,7 @@ public class BuildController : MonoBehaviour {
     {
         if(ghost) Destroy(ghost);
 
-        ghost = Instantiate(PartManager.Instance.GetPartById(SelectedPartID).Prefab, transform);
+        ghost = Instantiate(PartManager.Instance.GetPartById(seletedPartID).Prefab, transform);
         ghost.name = "ghost";
         ghost.GetComponent<Part>().isGhost = true;
 
@@ -159,7 +150,7 @@ public class BuildController : MonoBehaviour {
 
     public void UpdateBuildmode(bool b)
     {
-        buildmode = b;  //Hard set rather than toggle to ensure sync
+        buildmode = b; //Hard set rather than toggle to ensure sync
         if (!buildmode)
         {
             Destroy(ghost);

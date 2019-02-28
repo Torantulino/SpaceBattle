@@ -29,12 +29,14 @@ public class CameraController : MonoBehaviour
 
     private CinemachineFreeLook _cinemachineFreeLookCamera;
     private CinemachineVirtualCamera _flightCamera;
+    private Cinemachine.CinemachineBasicMultiChannelPerlin flightNoiseChannel;
 
     // Use this for initialization
     void Start()
     {
         _cinemachineFreeLookCamera = GetComponentInChildren<CinemachineFreeLook>();
         _flightCamera = transform.Find("CM 3rd-Person-FlightMode").GetComponent<CinemachineVirtualCamera>();    //Obtaining ref by GetComponent wasn't working
+        flightNoiseChannel = _flightCamera.GetCinemachineComponent<Cinemachine.CinemachineBasicMultiChannelPerlin>();
     }
 
     // Update is called once per frame
@@ -62,4 +64,15 @@ public class CameraController : MonoBehaviour
             _flightCamera.m_LookAt = GameController.LocalPlayer.transform.Find("CameraAnchor").gameObject.transform;
         }
     }
+
+    public void ShakeScreen(float ampGain, float freqGain, bool flight)
+    {
+        //Flight Camera
+        if (flight)
+        {
+            flightNoiseChannel.m_AmplitudeGain = ampGain;
+            flightNoiseChannel.m_FrequencyGain = freqGain;
+        }
+    }
+
 }

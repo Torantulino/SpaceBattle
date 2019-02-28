@@ -10,7 +10,7 @@ public class Weapon : Part
     [Tooltip("Bullet prefab - must be registered in the Network manager.")]
     public GameObject bulletPrefab;//todo should be registered automatically in Unit
     [Tooltip("Minimum time between consecutive shots.")]
-    public float cooldown = 1f;
+    public float cooldown;
     [Tooltip("Weapon won't change aiming direction.")]
     public bool fixedDirection;
 
@@ -50,7 +50,7 @@ public class Weapon : Part
         timeLeft = cooldown;
         GameObject shot = Instantiate(bulletPrefab, gunTransform.position, gunTransform.rotation);
         //todo that isn't networked
-        shot.GetComponent<Rigidbody>().velocity = playerShip.GetComponent<Rigidbody>().velocity;
+        shot.GetComponent<Rigidbody>().velocity = playerShip.GetComponent<Rigidbody>().velocity + playerShip.transform.forward * 25.0f;
 
         return shot;
     }

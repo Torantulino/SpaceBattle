@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class CameraModeToggle : MonoBehaviour
 {
+    public CinemachineVirtualCamera flightCam;
+
     [SerializeField] GameObject FollowPoint;
     [SerializeField] CinemachineFreeLook buildCam;
-    CinemachineVirtualCamera flightCam;
     [SerializeField] float buildHeight = 5.08f;
     [SerializeField] float buildRadius = 5.08f;
     [SerializeField] float combatHeight = 1.08f;
@@ -74,18 +75,6 @@ public class CameraModeToggle : MonoBehaviour
                 //Release cursor
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-
-    //            //Release mouse - Testing only?
-    //            if (Input.GetKey(KeyCode.LeftShift))
-				//{
-				//	Cursor.lockState = CursorLockMode.None;
-				//	Cursor.visible = true;
-				//}
-				//else
-				//{
-				//	Cursor.lockState = CursorLockMode.Locked;
-				//	Cursor.visible = false;
-				//}
 			}
 		}
 		else
@@ -98,7 +87,7 @@ public class CameraModeToggle : MonoBehaviour
     {
         buildMode = b;  //Hard set rather than toggle to ensure sync
 
-        //update bounds every switch
+        //update bounds every switch 
         CalculateBounds();
     }
 
@@ -109,9 +98,8 @@ public class CameraModeToggle : MonoBehaviour
 
         //Obtain the furthest out value
         foreach (Renderer childRend in GameController.LocalPlayer.GetComponentsInChildren<Renderer>()) {
-            if (childRend.name != "Visualiser" && childRend.name != "Crosshair" && !(childRend is TrailRenderer))
-            {
-                    Vector3 min = childRend.bounds.min - GameController.LocalPlayer.transform.position;
+            if (childRend.name != "Visualiser" && childRend.name != "Crosshair" && !(childRend is TrailRenderer)) { 
+                Vector3 min = childRend.bounds.min - GameController.LocalPlayer.transform.position;
                 Vector3 max = childRend.bounds.max - GameController.LocalPlayer.transform.position;
 
                 if (min.magnitude > furthest)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Xml;
 using UnityEngine;
@@ -19,7 +20,7 @@ public partial class PlayerController : NetworkBehaviour {
     /// <summary>
     /// Name of the player. Synchronized variable
     /// </summary>
-    public string PlayerName
+    public string PlayerName 
     {
         get { return _playerName; }
         set { CmdChangeName(value); }
@@ -49,11 +50,13 @@ public partial class PlayerController : NetworkBehaviour {
 
     private BuildController buildController;
     private CameraModeToggle cameraModeToggle;
+    private CameraController cameraController;
     private GUIFacade guiFacade;
     #endregion
 
     private int _testCounter = 0;
     private FloatingPart _testPart;
+    private bool shooting = false;
 
     // Use this for initialization
     void Start()
@@ -64,7 +67,12 @@ public partial class PlayerController : NetworkBehaviour {
         buildController = GetComponent<BuildController>();
         //etc
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
+        cameraController = FindObjectOfType<CameraController>();
         guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
+
+        //Stop Atmospheric Noise
+        cameraController.ShakeScreen(0.0f, 1.0f, true);
+
 
         //Set max AngularV
         GetComponent<Rigidbody>().maxAngularVelocity = 1.0f;
@@ -83,7 +91,36 @@ public partial class PlayerController : NetworkBehaviour {
         Ship = GetComponent<Ship>();
     }
 
-    // Update is called once per physics tick
+    //Use update for frame dependent input (Key up/Down)
+    private void Update()
+    {
+        //- Combat -
+        //Fire Primary Weapon
+        if (Input.GetKeyDown(KeyCode.Mouse0))       //todo: add check to see if weapon is on the ship
+        {
+            shooting = true;
+            StartCoroutine("Shooting");
+            cameraController.ShakeScreen(3.0f, 1.0f, true);
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            shooting = false;
+            cameraController.ShakeScreen(0.0f, 1.0f, true);
+        }
+    }
+
+    //Shooting for fully automatic weapons
+    private IEnumerator Shooting()
+    {
+        while (shooting)
+        {
+            Ship.Shoot();
+            yield return new WaitForSeconds(0.1f);  //todo: this will acquiesce to weapon's cooldown(s), but could be optimised by obtaining a reference to it
+        }
+        yield return null;
+    }
+
+    // FixedUpdate is called once per physics tick
     void FixedUpdate ()
 	{
         // Check if this code runs on the game object that represents my Player
@@ -92,11 +129,12 @@ public partial class PlayerController : NetworkBehaviour {
 
         //Flight & Fight Mode
         if (!buildMode) {
-            //Flight
-
+            //- Flight -
             //Steer
             Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
             GetComponent<Rigidbody>().angularVelocity = (transform.localToWorldMatrix.rotation * steering) * 2.0f;
+            //bank (roll due to steering)
+            transform.RotateAroundLocal(transform.forward, steering.y * -5.0f * Time.deltaTime);
             //Roll
             if (Input.GetKey(KeyCode.Q))
             {
@@ -109,16 +147,18 @@ public partial class PlayerController : NetworkBehaviour {
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
                 GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 10.0f);
-            
-            //Point velocity along ship direction
-            GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
-
+            //Reverse Thrust
+            bool reversing = false;
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10.0f);
+                reversing = true;
+            }
+            //Point velocity along ship direction (if not trying to reverse or currently going backwards)
+            if (transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity).z > 0 && !reversing)
+                GetComponent<Rigidbody>().velocity = transform.forward * GetComponent<Rigidbody>().velocity.magnitude;
 
             //todo testing
-
-            if (Input.GetKeyDown(KeyCode.Space))
-	            Ship.Shoot();
-
             if (Input.GetKeyUp(KeyCode.R))
             {
                 _testCounter++;
