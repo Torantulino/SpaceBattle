@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemContainer : MonoBehaviour
+public class ItemContainer
 {
     private int itemID = int.MaxValue;
     private int quantity = 0;
@@ -36,8 +36,5 @@ public class ItemContainer : MonoBehaviour
         itemID = id;
         Quantity = quant;
     }
-    public ItemContainer ShallowCopy()
-    {
-        return (ItemContainer) this.MemberwiseClone();
-    }
+
 }

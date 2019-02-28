@@ -49,8 +49,8 @@ public class Inventory : MonoBehaviour
 	private void Swap()
 	{
 
-		ItemContainer first = selectedCell[0].GetComponent<ItemContainer>();
-		ItemContainer second = selectedCell[1].GetComponent<ItemContainer>();
+		ItemContainer first = selectedCell[0].GetComponent<ItemContainerUI>().ItemContainer;
+		ItemContainer second = selectedCell[1].GetComponent<ItemContainerUI>().ItemContainer;
 
 		//force copy by value
 		ItemContainer temp = new ItemContainer(second.ItemID, second.Quantity);
@@ -65,11 +65,11 @@ public class Inventory : MonoBehaviour
 	/// </summary>
 	public void AddLocal(Button b, int id, int quantity)
 	{
-		ItemContainer cont = b.GetComponent<ItemContainer>();
+		ItemContainer cont = b.GetComponent<ItemContainerUI>().ItemContainer;
 		cont.ItemID = id;
 		cont.Quantity = quantity;
 		AddServer(cont);
-	}
+    }
 
 	private void AddServer(ItemContainer item)
 	{
@@ -92,7 +92,7 @@ public class Inventory : MonoBehaviour
 	/// </summary>
 	public void RemoveLocal(Button b, int num)
 	{
-		ItemContainer cont = b.GetComponent<ItemContainer>();
+		ItemContainer cont = b.GetComponent<ItemContainerUI>().ItemContainer;
 
 		if (cont.Quantity - num < 0)
 		{
@@ -123,7 +123,7 @@ public class Inventory : MonoBehaviour
 		}
 		else
 		{
-			ItemContainer cont = b.GetComponent<ItemContainer>();
+			ItemContainer cont = b.GetComponent<ItemContainerUI>().ItemContainer;
 			cont.Quantity += num;
 			AddServer(cont);
 		}
@@ -141,9 +141,9 @@ public class Inventory : MonoBehaviour
 		//display the right icon
 		foreach (Button b in displayCells2D)
 		{
-			ItemContainer container = b.GetComponent<ItemContainer>();
+			ItemContainer container = b.GetComponent<ItemContainerUI>().ItemContainer;
 
-			if (b.GetComponent<ItemContainer>().ItemID != int.MaxValue)
+            if (b.GetComponent<ItemContainerUI>().ItemContainer.ItemID != int.MaxValue)
 			{
 				b.GetComponentsInChildren<Image>() [1].sprite = container.Icon;
 			}
