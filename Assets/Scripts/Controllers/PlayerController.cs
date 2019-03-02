@@ -133,26 +133,24 @@ public partial class PlayerController : NetworkBehaviour {
             //Steer
             Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
             GetComponent<Rigidbody>().angularVelocity = (transform.localToWorldMatrix.rotation * steering) * 2.0f;
-            //bank (roll due to steering)
-            transform.RotateAroundLocal(transform.forward, steering.y * -3f * Time.fixedDeltaTime);
+            // Bank (roll due to steering)
+            Ship.Roll(steering.y * -90f);
             //Roll
             if (Input.GetKey(KeyCode.Q))
             {
-                transform.RotateAroundLocal(transform.forward, 1.5f * Time.fixedDeltaTime);
+                Ship.Roll(60f);
             }
             if (Input.GetKey(KeyCode.E))
             {
-                transform.RotateAroundLocal(transform.forward, -1.5f * Time.fixedDeltaTime);
+                Ship.Roll(-60f);
             }
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
-                //GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 10.0f);
                 Ship.Thrust(Vector3.forward);
             //Reverse Thrust
             bool reversing = false;
             if (Input.GetKey(KeyCode.LeftControl))
             {
-                //GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10.0f);
                 Ship.Thrust(Vector3.back);
                 reversing = true;
             }
