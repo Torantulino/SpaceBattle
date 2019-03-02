@@ -6,22 +6,21 @@
 [RequireComponent(typeof(Rigidbody))]
 public class Ship : Unit {
 
-    private Rigidbody body;
+    
 
     // Use this for initialization
     new void Start()
     {
         base.Start();
 
-        body = GetComponent<Rigidbody>();
     }
 
     /// <summary>
     /// Tries to use engines of the Ship.
     /// </summary>
-    public void Thrust(Vector3 force)
+    public void Thrust(Vector3 direction)
     {
-        body.AddForce(force * body.mass);
+        body.AddRelativeForce(power * direction.normalized, ForceMode.Force);
     }
 
 }

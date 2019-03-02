@@ -54,3 +54,4 @@ MonoBehaviour:
   registeredParts:
   - {fileID: 11400000, guid: e076cb401ebb85842b637c17e01a5067, type: 2}
   - {fileID: 11400000, guid: 89637ab7606b83044a41c0e79ff63fd8, type: 2}
+  - {fileID: 11400000, guid: 416e48c56533ad84087490393415d4a2, type: 2}

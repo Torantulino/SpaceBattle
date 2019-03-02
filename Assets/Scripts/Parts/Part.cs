@@ -15,6 +15,8 @@ public class Part : MonoBehaviour
     [SerializeField]
     private float _hp;
     private float _maxHp;
+    [SerializeField]
+    private float _mass;
 
     #region Properties
 
@@ -23,14 +25,6 @@ public class Part : MonoBehaviour
     /// </summary>
     [HideInInspector]
     public bool Checked;
-
-    /// <summary>
-    /// If this Part is directly or indirectly connected to the Unit.
-    /// </summary>
-    //todo remove later
-    [Obsolete("Property isn't used anywhere and therefore isn't updated.")]
-    [HideInInspector]
-    public bool ConnectedToUnit;
 
     /// <summary>
     /// All nodes of this Part.
@@ -44,6 +38,14 @@ public class Part : MonoBehaviour
     public float Hp
     {
         get { return _hp; }
+    }
+
+    /// <summary>
+    /// Mass of this Part
+    /// </summary>
+    public float Mass
+    {
+        get { return _mass; }
     }
 
     /// <summary>

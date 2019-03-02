@@ -162,6 +162,7 @@ public class Inventory : MonoBehaviour
 			//For now start with 2 items on top row
 			AddLocal(displayCells2D[0, 0], 0, 5);
 			AddLocal(displayCells2D[0, 1], 1, 5);
+			AddLocal(displayCells2D[0, 2], 2, 5);
 			init = true;
 		}
 

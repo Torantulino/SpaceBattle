@@ -565,14 +565,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hp: 100
+  _mass: 1
   Checked: 0
-  ConnectedToUnit: 0
   Nodes: []
   isGhost: 0
   gunTransform: {fileID: 4362975457060662}
   bulletPrefab: {fileID: 1308864699473142, guid: e6a28a2711f43e74c90aaf87a7ea1b8b,
     type: 2}
-  cooldown: 0.01
+  cooldown: 0.2
   fixedDirection: 1
 --- !u!114 &114949031024769418
 MonoBehaviour:

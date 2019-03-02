@@ -13,13 +13,19 @@ public class Unit : Destructible
 {
     [Tooltip("Empty GameObject used to represent aiming direction. Should also be put into NetworkTransformChild component.")]
     public Transform aimTransform;
-
+    
+    [SerializeField][Tooltip("Power of Unit itself.")]
+    protected float unitPower;
+    protected float power;//Total power: Unit + engines
+    protected Rigidbody body;
     protected List<PartData> partsData = new List<PartData>();
     protected List<Weapon> weapons = new List<Weapon>();
     protected Dictionary<Vector3Int, Part> parts = new Dictionary<Vector3Int, Part>();
 
     // Holds all children that won't be deleted when rebuilding parts
     private readonly List<string> _children = new List<string>();
+
+    private float mass;
 
     #region Properties
 
@@ -73,6 +79,10 @@ public class Unit : Destructible
 
         // Adding all children to the List that will prevent them from being destroyed
         _children.AddRange(transform.GetComponentsInChildren<Transform>().Select(t => t.name));
+
+        // Setting Rigidbody
+        body = GetComponent<Rigidbody>();
+        mass = body.mass;
 
         // Handling event
         PartsChanged += OnPartsChanged;
@@ -308,9 +318,32 @@ public class Unit : Destructible
         RecalculateAllAttachments();
         // Clear weapons List
         weapons.Clear();
-        // Add weapons
-        //todo temporary fix "ghost"
-        weapons.AddRange(GetComponentsInChildren<Weapon>().Where(w => w.name != "ghost"));
+        // Resetting mass
+        body.mass = mass;
+        // Resetting power
+        power = unitPower;
+
+        foreach(Part part in GetComponentsInChildren<Part>())
+        {
+            //todo temporary fix "ghost"
+            if(part.name == "ghost")
+                continue;
+
+            // Adding mass
+            body.mass += part.Mass;
+
+            // Adding weapon         
+            if(part is Weapon)
+                weapons.Add(part as Weapon);
+
+            // Adding engine power
+            if(part is Engine)
+            {
+                power += (part as Engine).Power;
+                Debug.Log("Engine");
+            }
+        }
+
     }
 
     #region Networking
