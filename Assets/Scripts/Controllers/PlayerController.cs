@@ -94,6 +94,12 @@ public partial class PlayerController : NetworkBehaviour {
     //Use update for frame dependent input (Key up/Down)
     private void Update()
     {
+        //Toggle build mode
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            buildMode = !buildMode;
+            UpdateBuildMode();
+        }
         //- Combat -
         //Fire Primary Weapon
         if (Input.GetKeyDown(KeyCode.Mouse0))       //todo: add check to see if weapon is on the ship
@@ -115,7 +121,7 @@ public partial class PlayerController : NetworkBehaviour {
         while (shooting)
         {
             Ship.Shoot();
-            yield return new WaitForSeconds(0.1f);  //todo: this will acquiesce to weapon's cooldown(s), but could be optimised by obtaining a reference to it
+            yield return new WaitForSeconds(0.1f);  //todo: this will acquiesce to weapon's cooldown(s), but could/should be optimised by obtaining a reference to it
         }
         yield return null;
     }
@@ -186,12 +192,6 @@ public partial class PlayerController : NetworkBehaviour {
                         break;
                 }
             }
-        }
-        //Toggle build mode
-	    if (Input.GetKeyDown(KeyCode.Tab))
-	    {
-	        buildMode = !buildMode;
-            UpdateBuildMode();
         }
     }
 
