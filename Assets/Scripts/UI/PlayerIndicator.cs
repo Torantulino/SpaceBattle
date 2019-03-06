@@ -11,7 +11,8 @@ public class PlayerIndicator : MonoBehaviour
 	{
 		if (GameController.LocalPlayer)
 		{
-			gameObject.transform.localRotation = GameController.LocalPlayer.transform.rotation;
+			Quaternion rot = GameController.LocalPlayer.transform.rotation;
+			gameObject.transform.localRotation = rot;
 		}
 	}
 }
