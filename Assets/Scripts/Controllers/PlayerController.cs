@@ -129,26 +129,26 @@ public partial class PlayerController : NetworkBehaviour
         if (lasing)
         {
             //Fire
-            lineRenderer.SetPosition(0, transform.position);
+            lineRenderer.SetPosition(0, Vector3.zero);
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit))
             {
                 if (hit.collider)
                 {   
                     //Stop laser at hit surface.
-                    lineRenderer.SetPosition(1, hit.point);
+                    lineRenderer.SetPosition(1, transform.InverseTransformPoint(hit.point));
                     if(hit.transform.GetComponent<FloatingPart>())
                     {
                         GameController.LocalPlayerController.PickUpFloatingPart(hit.transform.GetComponent<FloatingPart>());
                     }
                 }
             }
-            else lineRenderer.SetPosition(1, (CameraController.CameraAnchor.transform.position - transform.position)*20.0f);
+            else lineRenderer.SetPosition(1, Vector3.forward *100.0f);
         }
         else
         {
-            lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.SetPosition(1, transform.position);
+            lineRenderer.SetPosition(0, Vector3.zero);
+            lineRenderer.SetPosition(1, Vector3.zero);
         }
     }
 
