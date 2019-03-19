@@ -137,6 +137,10 @@ public partial class PlayerController : NetworkBehaviour
                 {   
                     //Stop laser at hit surface.
                     lineRenderer.SetPosition(1, hit.point);
+                    if(hit.transform.GetComponent<FloatingPart>())
+                    {
+                        GameController.LocalPlayerController.PickUpFloatingPart(hit.transform.GetComponent<FloatingPart>());
+                    }
                 }
             }
             else lineRenderer.SetPosition(1, (CameraController.CameraAnchor.transform.position - transform.position)*20.0f);
