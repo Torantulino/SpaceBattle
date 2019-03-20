@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1674264, g: 0.15686649, b: 0.11376328, a: 1}
+  m_IndirectSpecularColor: {r: 0.167478, g: 0.15684348, b: 0.11371098, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -177,6 +177,10 @@ Prefab:
     - target: {fileID: 1712506097440688, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}
       propertyPath: m_Name
       value: FakePlayer (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1712506097440688, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}
@@ -617,31 +621,31 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4205810134250550, guid: 7640e468346044b418881eea22a412d0, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.011067883
       objectReference: {fileID: 0}
     - target: {fileID: 4205810134250550, guid: 7640e468346044b418881eea22a412d0, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.6121911
       objectReference: {fileID: 0}
     - target: {fileID: 4205810134250550, guid: 7640e468346044b418881eea22a412d0, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1.0671844
       objectReference: {fileID: 0}
     - target: {fileID: 4205810134250550, guid: 7640e468346044b418881eea22a412d0, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.0523305
       objectReference: {fileID: 0}
     - target: {fileID: 4205810134250550, guid: 7640e468346044b418881eea22a412d0, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.00017468192
       objectReference: {fileID: 0}
     - target: {fileID: 4205810134250550, guid: 7640e468346044b418881eea22a412d0, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.0033334761
       objectReference: {fileID: 0}
     - target: {fileID: 4205810134250550, guid: 7640e468346044b418881eea22a412d0, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.99862427
       objectReference: {fileID: 0}
     - target: {fileID: 4205810134250550, guid: 7640e468346044b418881eea22a412d0, type: 2}
       propertyPath: m_RootOrder
@@ -655,11 +659,15 @@ Prefab:
     - target: {fileID: 20137226018131212, guid: 7640e468346044b418881eea22a412d0,
         type: 2}
       propertyPath: field of view
-      value: 40
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 1969618192771240, guid: 7640e468346044b418881eea22a412d0, type: 2}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 1450254619602722, guid: 7640e468346044b418881eea22a412d0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7640e468346044b418881eea22a412d0, type: 2}
@@ -1596,6 +1604,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1712506097440688, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}
   m_IsPrefabParent: 0
@@ -1737,6 +1749,10 @@ Prefab:
       propertyPath: m_Name
       value: FakePlayer (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1712506097440688, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}
   m_IsPrefabParent: 0
@@ -1798,6 +1814,10 @@ Prefab:
     - target: {fileID: 1712506097440688, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}
       propertyPath: m_Name
       value: FakePlayer (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1712506097440688, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d32a8b6d969fde419a761d0fd5bb16c, type: 2}

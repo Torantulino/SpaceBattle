@@ -43,7 +43,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1595252439863944
 GameObject:
   m_ObjectHideFlags: 1
@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 33135034767335290}
   - component: {fileID: 23623226083651350}
   - component: {fileID: 114596012192306168}
+  - component: {fileID: 114146166958961442}
   m_Layer: 5
   m_Name: Radar
   m_TagString: Untagged
@@ -186,8 +187,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1734463438625052}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.0523305, y: 0.00017468192, z: -0.0033334761, w: -0.99862427}
+  m_LocalPosition: {x: -0.011067883, y: -0.6121911, z: -1.0671844}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4126381800944276}
@@ -309,7 +310,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 90
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -628,13 +629,27 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1734463438625052}
   m_Enabled: 1
+--- !u!114 &114146166958961442
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1969618192771240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aa853b60d02510478283518aa5ec5e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyIndicator: {fileID: 1426832295883040, guid: d5e86c543d04321419b19c86807ec030,
+    type: 2}
+  defaultTime: 0
 --- !u!114 &114201097504126930
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1712266769523088}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0dccf2a805bc6d14088fb5d3a5c2843e, type: 3}
   m_Name: 
