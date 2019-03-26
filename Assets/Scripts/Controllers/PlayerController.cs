@@ -11,7 +11,8 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
 [RequireComponent(typeof(BuildController))]
-public partial class PlayerController : NetworkBehaviour {
+public partial class PlayerController : NetworkBehaviour
+{
 
     private readonly List<ItemContainer> _items = new List<ItemContainer>();
 
@@ -20,7 +21,7 @@ public partial class PlayerController : NetworkBehaviour {
     /// <summary>
     /// Name of the player. Synchronized variable
     /// </summary>
-    public string PlayerName 
+    public string PlayerName
     {
         get { return _playerName; }
         set { CmdChangeName(value); }
@@ -47,7 +48,7 @@ public partial class PlayerController : NetworkBehaviour {
 
     private bool buildMode;
 
-
+    private LineRenderer lineRenderer;
     private BuildController buildController;
     private CameraModeToggle cameraModeToggle;
     private CameraController cameraController;
@@ -57,6 +58,7 @@ public partial class PlayerController : NetworkBehaviour {
     private int _testCounter = 0;
     private FloatingPart _testPart;
     private bool shooting = false;
+    bool lasing = false;
 
     // Use this for initialization
     void Start()
@@ -69,6 +71,7 @@ public partial class PlayerController : NetworkBehaviour {
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
         cameraController = FindObjectOfType<CameraController>();
         guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
+        lineRenderer = GetComponent<LineRenderer>();
 
         //Stop Atmospheric Noise
         cameraController.ShakeScreen(0.0f, 1.0f, true);
@@ -113,6 +116,40 @@ public partial class PlayerController : NetworkBehaviour {
             shooting = false;
             cameraController.ShakeScreen(0.0f, 1.0f, true);
         }
+        //Fire Mining Laser
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            lasing = true;
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            lasing = false;
+        }
+        //TODO: EXTRACT TO METHOD A LA Ship.Shoot()
+        if (lasing)
+        {
+            //Fire
+            lineRenderer.SetPosition(0, Vector3.zero);
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
+            {
+                if (hit.collider)
+                {   
+                    //Stop laser at hit surface.
+                    lineRenderer.SetPosition(1, transform.InverseTransformPoint(hit.point));
+                    if(hit.transform.GetComponent<FloatingPart>())
+                    {
+                        GameController.LocalPlayerController.PickUpFloatingPart(hit.transform.GetComponent<FloatingPart>());
+                    }
+                }
+            }
+            else lineRenderer.SetPosition(1, Vector3.forward *100.0f);
+        }
+        else
+        {
+            lineRenderer.SetPosition(0, Vector3.zero);
+            lineRenderer.SetPosition(1, Vector3.zero);
+        }
     }
 
     //Shooting for fully automatic weapons
@@ -127,14 +164,15 @@ public partial class PlayerController : NetworkBehaviour {
     }
 
     // FixedUpdate is called once per physics tick
-    void FixedUpdate ()
-	{
+    void FixedUpdate()
+    {
         // Check if this code runs on the game object that represents my Player
-	    if (!isLocalPlayer)
-	        return;
+        if (!isLocalPlayer)
+            return;
 
         //Flight & Fight Mode
-        if (!buildMode) {
+        if (!buildMode)
+        {
             //- Flight -
             //Steer
             Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
