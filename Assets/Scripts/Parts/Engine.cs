@@ -7,8 +7,11 @@ public class Engine : Part {
 	[SerializeField]
 	private float _power;
 
+	//todo change to ParticleSystem if GameObject isn't needed 
+	public GameObject Particles;
+
 	/// <summary>
-	/// Power of this engine
+	/// Power of this engine.
 	/// </summary>
 	public float Power
 	{

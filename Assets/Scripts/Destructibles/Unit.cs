@@ -20,6 +20,7 @@ public class Unit : Destructible
     protected Rigidbody body;
     protected List<PartData> partsData = new List<PartData>();
     protected List<Weapon> weapons = new List<Weapon>();
+    protected List<Engine> engines = new List<Engine>();
     protected Dictionary<Vector3Int, Part> parts = new Dictionary<Vector3Int, Part>();
 
     // Holds all children that won't be deleted when rebuilding parts
@@ -316,8 +317,9 @@ public class Unit : Destructible
     {
         // Revalculate all connections
         RecalculateAllAttachments();
-        // Clear weapons List
+        // Clear weapons and engines List
         weapons.Clear();
+        engines.Clear();
         // Resetting mass
         body.mass = mass;
         // Resetting power
@@ -340,7 +342,7 @@ public class Unit : Destructible
             if(part is Engine)
             {
                 power += (part as Engine).Power;
-                Debug.Log("Engine");
+                engines.Add(part as Engine);
             }
         }
 
