@@ -63,11 +63,8 @@ public class Unit : Destructible
     /// </summary>
     public event EventHandler<EventArgs> PartsChanged;
 
-    // Use this for initialization
-    public new void Start()
+    public void Awake()
     {
-        base.Start();
-
         // Making sure that there's an Aim GameObject
         if (!aimTransform)
         {
@@ -80,6 +77,12 @@ public class Unit : Destructible
 
         // Adding all children to the List that will prevent them from being destroyed
         _children.AddRange(transform.GetComponentsInChildren<Transform>().Select(t => t.name));
+    }
+
+    // Use this for initialization
+    public new void Start()
+    {
+        base.Start();
 
         // Setting Rigidbody
         body = GetComponent<Rigidbody>();

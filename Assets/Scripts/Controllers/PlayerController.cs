@@ -87,6 +87,7 @@ public partial class PlayerController : NetworkBehaviour {
         if (isLocalPlayer)
             return;
 
+        Destroy(GetComponent<BuildController>());
         // Set the reference for Ship
         Ship = GetComponent<Ship>();
     }
@@ -94,18 +95,23 @@ public partial class PlayerController : NetworkBehaviour {
     //Use update for frame dependent input (Key up/Down)
     private void Update()
     {
+        if(!isLocalPlayer)
+            return;
+            
         //- Combat -
         //Fire Primary Weapon
-        if (Input.GetKeyDown(KeyCode.Mouse0))       //todo: add check to see if weapon is on the ship
+        if (Input.GetKey(KeyCode.Mouse0))       //todo: add check to see if weapon is on the ship
         {
             shooting = true;
-            StartCoroutine("Shooting");
+            //StartCoroutine("Shooting");
+            Ship.Shoot();
             cameraController.ShakeScreen(3.0f, 1.0f, true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             shooting = false;
             cameraController.ShakeScreen(0.0f, 1.0f, true);
+            
         }
     }
 
