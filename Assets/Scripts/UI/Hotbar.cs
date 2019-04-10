@@ -39,9 +39,14 @@ public class Hotbar : MonoBehaviour
 
 	// Update is called once per frame
 	void Update()
-	{
-        if(buildController == null)
-			buildController = GameController.LocalPlayer.GetComponent<BuildController>();
+    {
+        if (GameController.LocalPlayer)
+		{
+            if (buildController == null)
+                buildController = GameController.LocalPlayer.GetComponent<BuildController>();
+		}
+		else
+			return;
 
         bool[] hotkeys = new bool[5];
 
