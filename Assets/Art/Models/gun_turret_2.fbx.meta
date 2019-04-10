@@ -1,39 +1,35 @@
 fileFormatVersion: 2
-guid: c8e729a272763af42a84dac045a23eb5
+guid: 007c4293316736148b6d8c63cc2b1f9a
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: Big
-    100002: //RootNode
-    100004: Head
-    100006: Small
-    100008: group1
-    100010: Head 1
-    100012: transform1
-    100014: transform2
-    100016: transform3
+    100002: building_block:pCube1
+    100004: group1
+    100006: //RootNode
+    100008: pCylinder2
+    100010: Small
     400000: Big
-    400002: //RootNode
-    400004: Head
-    400006: Small
-    400008: group1
-    400010: Head 1
-    400012: transform1
-    400014: transform2
-    400016: transform3
-    2100000: lambert1
-    2100002: lambert2
-    2100004: lambert6
-    2100006: lambert3
+    400002: building_block:pCube1
+    400004: group1
+    400006: //RootNode
+    400008: pCylinder2
+    400010: Small
+    2100000: lambert6
+    2100002: lambert3
+    2100004: lambert7
     2300000: Big
-    2300002: Head
-    2300004: Small
+    2300002: building_block:pCube1
+    2300004: pCylinder2
+    2300006: Small
     3300000: Big
-    3300002: Head
-    3300004: Small
-    4300000: Head
+    3300002: building_block:pCube1
+    3300004: pCylinder2
+    3300006: Small
+    4300000: Small
     4300002: Big
-    4300004: Small
+    4300004: building_block:pCube1
+    4300006: pCylinder2
     7400000: Take 001
     9500000: //RootNode
   externalObjects: {}

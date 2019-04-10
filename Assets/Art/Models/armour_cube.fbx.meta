@@ -1,40 +1,24 @@
 fileFormatVersion: 2
-guid: c8e729a272763af42a84dac045a23eb5
+guid: fc9a998ad87411547a6daa39ec761781
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Big
-    100002: //RootNode
-    100004: Head
-    100006: Small
-    100008: group1
-    100010: Head 1
-    100012: transform1
-    100014: transform2
-    100016: transform3
-    400000: Big
-    400002: //RootNode
-    400004: Head
-    400006: Small
-    400008: group1
-    400010: Head 1
-    400012: transform1
-    400014: transform2
-    400016: transform3
-    2100000: lambert1
-    2100002: lambert2
-    2100004: lambert6
-    2100006: lambert3
-    2300000: Big
-    2300002: Head
-    2300004: Small
-    3300000: Big
-    3300002: Head
-    3300004: Small
-    4300000: Head
-    4300002: Big
-    4300004: Small
-    7400000: Take 001
+    100000: //RootNode
+    100002: pCube10
+    100004: pCube12
+    400000: //RootNode
+    400002: pCube10
+    400004: pCube12
+    2100000: lambert2
+    2100002: lambert14
+    2100004: lambert16
+    2100006: lambert1
+    2300000: pCube10
+    2300002: pCube12
+    3300000: pCube10
+    3300002: pCube12
+    4300000: pCube12
+    4300002: pCube10
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -66,7 +50,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.1
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
@@ -85,7 +69,7 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
