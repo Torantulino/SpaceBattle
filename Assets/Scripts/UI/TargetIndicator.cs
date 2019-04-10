@@ -24,11 +24,11 @@ public class TargetIndicator : MonoBehaviour
     void Start()
     {
         //prevent script from running if it's on the local player
-        if (gameObject.transform.parent != GameController.LocalPlayer)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
+        // if (gameObject.transform.parent != GameController.LocalPlayer)
+        // {
+        //     gameObject.SetActive(false);
+        //     return;
+        // }
 
         mainCamera = Camera.main;
         mainCanvas = FindObjectOfType<Canvas>();
