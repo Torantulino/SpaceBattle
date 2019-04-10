@@ -69,7 +69,12 @@ public class TargetIndicator : MonoBehaviour
         newPos = mainCamera.ViewportToScreenPoint(newPos);
         newPos.x = Mathf.Clamp(newPos.x, EdgeBuffer, Screen.width - EdgeBuffer);
         newPos.y = Mathf.Clamp(newPos.y, EdgeBuffer, Screen.height - EdgeBuffer);
-        m_icon.transform.position = newPos;
+        //NaN killing validation #FixTheSymptomNotTheCause
+        if (!float.IsNaN(newPos.x) && !float.IsNaN(newPos.y) && !float.IsNaN(newPos.z))
+        {
+            m_icon.transform.position = newPos;
+
+        }
         //Operations if the object is out of the screen
         if (m_outOfScreen)
         {
