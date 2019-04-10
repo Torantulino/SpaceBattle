@@ -17,7 +17,7 @@ public class GUIFacade : MonoBehaviour
 	private void Start()
 	{
 		UpdateCursorMode();
-		flightCursor = (Texture2D)Resources.Load("icons/icon-square.png");
+		flightCursor = (Texture2D)Resources.Load<Texture2D>("icons/icon-plus.png");
 	}
 
 	/// <summary>
@@ -41,7 +41,8 @@ public class GUIFacade : MonoBehaviour
             BuildPanel.gameObject.SetActive(false);
             CombatPanel.gameObject.SetActive(true);
             //Change cursor and update hotspot
-            Cursor.SetCursor(flightCursor, new Vector2(flightCursor.width/2, flightCursor.height/2), CursorMode.Auto);
+			//TODO: Fix null ref
+            //Cursor.SetCursor(null, new Vector2(flightCursor.width/2, flightCursor.height/2), CursorMode.Auto);
         }
         //Update cursor mode
         UpdateCursorMode();

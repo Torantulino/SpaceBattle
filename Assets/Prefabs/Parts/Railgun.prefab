@@ -485,7 +485,7 @@ MonoBehaviour:
   gunTransform: {fileID: 4362975457060662}
   bulletPrefab: {fileID: 1308864699473142, guid: e6a28a2711f43e74c90aaf87a7ea1b8b,
     type: 2}
-  cooldown: 0.2
+  cooldown: 0.5
   fixedDirection: 1
 --- !u!114 &114949031024769418
 MonoBehaviour:

@@ -21,7 +21,9 @@ public class Hotbar : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		//todo fix so it works for local player only
         inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
+
 		//populate cells
 		cells = GetComponentsInChildren<Button>().ToList();
 		//populate highlights with the child image from each cell
@@ -37,9 +39,14 @@ public class Hotbar : MonoBehaviour
 
 	// Update is called once per frame
 	void Update()
-	{
-        if(buildController == null)
-            buildController = FindObjectOfType<BuildController>();
+    {
+        if (GameController.LocalPlayer)
+		{
+            if (buildController == null)
+                buildController = GameController.LocalPlayer.GetComponent<BuildController>();
+		}
+		else
+			return;
 
         bool[] hotkeys = new bool[5];
 
