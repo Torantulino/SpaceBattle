@@ -8,6 +8,9 @@ using UnityEngine.Networking;
 /// <summary>
 /// Class for all Player prefabs.
 /// </summary>
+/// 
+
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
 [RequireComponent(typeof(BuildController))]
@@ -60,6 +63,10 @@ public partial class PlayerController : NetworkBehaviour
     private bool shooting = false;
     bool lasing = false;
 
+    //Audio
+    private AudioManager audioManager;
+
+
     // Use this for initialization
     void Start()
     {
@@ -94,6 +101,7 @@ public partial class PlayerController : NetworkBehaviour
         // Set the reference for Ship
         Ship = GetComponent<Ship>();
     }
+    
 
     //Use update for frame dependent input (Key up/Down)
     private void Update()
@@ -114,13 +122,13 @@ public partial class PlayerController : NetworkBehaviour
             shooting = true;
             //StartCoroutine("Shooting");
             Ship.Shoot();
+
             cameraController.ShakeScreen(3.0f, 1.0f, true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             shooting = false;
             cameraController.ShakeScreen(0.0f, 1.0f, true);
-            
         }
         //Fire Mining Laser
         if (Input.GetKeyDown(KeyCode.Mouse1))

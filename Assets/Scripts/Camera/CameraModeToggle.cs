@@ -79,7 +79,7 @@ public class CameraModeToggle : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogWarning("Waiting for valid camera Player/CameraAnchor");
+			//Debug.LogWarning("Waiting for valid camera Player/CameraAnchor");
 		}
 	}
 

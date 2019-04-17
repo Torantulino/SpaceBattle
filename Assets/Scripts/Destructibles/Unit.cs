@@ -28,6 +28,8 @@ public class Unit : Destructible
 
     private float mass;
 
+    private AudioManager audioManager;
+
     #region Properties
 
     /// <summary>
@@ -83,6 +85,9 @@ public class Unit : Destructible
     public new void Start()
     {
         base.Start();
+
+        //Get Audio manager
+        audioManager = FindObjectOfType<AudioManager>();
 
         // Setting Rigidbody
         body = GetComponent<Rigidbody>();
@@ -499,6 +504,10 @@ public class Unit : Destructible
             GameObject shot = weapon.Shoot();
             // Spawn it - so it appears for all clients
             NetworkServer.Spawn(shot);
+
+            // Laser sound
+            audioManager.audioEvents[0].start();
+            //audioManager.audioEvents[0].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT); <--Example
         }
     }
 
