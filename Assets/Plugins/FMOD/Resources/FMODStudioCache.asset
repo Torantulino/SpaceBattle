@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  EditorBanks:
+  - {fileID: 114492549919670426}
+  - {fileID: 114954878977863512}
+  EditorEvents:
+  - {fileID: 114739925969244998}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: 114954878977863512}
+  StringsBanks:
+  - {fileID: 114492549919670426}
+  stringsBankWriteTime: 636911039260000000
+  cacheVersion: 3
+--- !u!114 &114275626239558760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\SpaceBattle-master\Fmod SFX session\Build\Desktop\Master Bank.strings.bank
+  lastModified: 636911021200000000
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 684
+  Exists: 1
+--- !u!114 &114331555362062878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\SpaceBattle-master\Fmod SFX session\Build\Desktop\Master Bank.bank
+  lastModified: 636911021200000000
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 976
+  Exists: 1
+--- !u!114 &114492549919670426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\SpaceBattle-master\Fmod SFX session\Build\Desktop\Master Bank.strings.bank
+  lastModified: 636911039260000000
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 766
+  Exists: 1
+--- !u!114 &114739925969244998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat Sounds/Weapons/Laser Gun/Laser Shots
+  guid: 391644b00e77ab4b9725de007090dbce
+  Banks:
+  - {fileID: 114954878977863512}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2000
+--- !u!114 &114954878977863512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: D:\SpaceBattle-master\Fmod SFX session\Build\Desktop\Master Bank.bank
+  lastModified: 636911039260000000
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 24224
+  Exists: 1
