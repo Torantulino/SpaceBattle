@@ -31,9 +31,6 @@
 		<relationship name="timeline">
 			<destination>{cb222ca3-9179-4a0f-a4ea-ba1a9e6243af}</destination>
 		</relationship>
-		<relationship name="banks">
-			<destination>{c4ad0aca-54e3-49f7-9018-cbf9c8d39d7d}</destination>
-		</relationship>
 	</object>
 	<object class="EventMixer" id="{27ce4d27-0dfb-4278-99d3-6e22cc69c2bc}">
 		<relationship name="masterBus">
@@ -91,6 +88,9 @@
 	<object class="MultiSound" id="{49a49392-1402-4728-bc08-15e618655344}">
 		<property name="length">
 			<value>2</value>
+		</property>
+		<property name="looping">
+			<value>true</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{eecf9d4e-5902-471e-8292-e961e37c35d7}</destination>
