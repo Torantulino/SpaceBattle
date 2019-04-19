@@ -10,7 +10,6 @@ using UnityEngine.Networking;
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
-[RequireComponent(typeof(BuildController))]
 public partial class PlayerController : NetworkBehaviour
 {
 
