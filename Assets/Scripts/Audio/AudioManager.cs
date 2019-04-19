@@ -10,15 +10,11 @@ public class AudioManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        Debug.Log("TeSTSTSTT");
         for (int i = 0; i < itemEventStrings.Count; i++)
-
         {
-
-            audioEvents.Add(FMODUnity.RuntimeManager.CreateInstance(itemEventStrings[i]));
-
+            audioEvents[i] = FMODUnity.RuntimeManager.CreateInstance(itemEventStrings[i]);
         }
-
     }
 
     // Update is called once per frame
