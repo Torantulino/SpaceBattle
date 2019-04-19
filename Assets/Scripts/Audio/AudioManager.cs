@@ -6,7 +6,7 @@ public class AudioManager : MonoBehaviour {
 
     [FMODUnity.EventRef]
     public List<string> itemEventStrings;
-    public List<FMOD.Studio.EventInstance> audioEvents;
+    public List<FMOD.Studio.EventInstance> audioEvents = new List<FMOD.Studio.EventInstance>();
 
     // Use this for initialization
     void Start () {
