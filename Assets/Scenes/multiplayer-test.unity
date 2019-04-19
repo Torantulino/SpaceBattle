@@ -164,6 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemEventStrings:
   - event:/Combat Sounds/Weapons/Laser Gun/Laser Shots
+  - event:/Player Sounds/Thrusters
+  - event:/Combat Sounds/Weapons/Mining Laser/Mining Laser (Contact)
 --- !u!4 &414953432
 Transform:
   m_ObjectHideFlags: 0

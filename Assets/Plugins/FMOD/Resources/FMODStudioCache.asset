@@ -12,17 +12,57 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 114492549919670426}
-  - {fileID: 114954878977863512}
+  - {fileID: 114183035680928256}
+  - {fileID: 114061710611217198}
   EditorEvents:
-  - {fileID: 114739925969244998}
+  - {fileID: 114817382282942454}
+  - {fileID: 114561471802787740}
+  - {fileID: 114828815325839962}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 114954878977863512}
+  - {fileID: 114061710611217198}
   StringsBanks:
-  - {fileID: 114492549919670426}
-  stringsBankWriteTime: 636911039260000000
+  - {fileID: 114183035680928256}
+  stringsBankWriteTime: 636912840204725137
   cacheVersion: 3
+--- !u!114 &114061710611217198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\conno\Documents\SpaceGameThingy\SpaceBattle-master\Fmod SFX session\Build\Desktop\Master
+    Bank.bank
+  lastModified: 636912840204695216
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 314240
+  Exists: 1
+--- !u!114 &114183035680928256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\conno\Documents\SpaceGameThingy\SpaceBattle-master\Fmod SFX session\Build\Desktop\Master
+    Bank.strings.bank
+  lastModified: 636912840204725137
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 910
+  Exists: 1
 --- !u!114 &114275626239558760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,6 +99,25 @@ MonoBehaviour:
   - Name: Desktop
     Value: 976
   Exists: 1
+--- !u!114 &114440677592471670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\conno\Documents\SpaceGameThingy\SpaceBattle-master\Fmod SFX session\Build\Desktop\Master
+    Bank.bank
+  lastModified: 636910382608771765
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 12474
+  Exists: 1
 --- !u!114 &114492549919670426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +135,47 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 766
+  Exists: 1
+--- !u!114 &114561471802787740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Player Sounds/Thrusters
+  guid: 52e44f83fa7dcf40988d22960ffeea91
+  Banks:
+  - {fileID: 114061710611217198}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 8008
+--- !u!114 &114654403110024696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\conno\Documents\SpaceGameThingy\SpaceBattle-master\Fmod SFX session\Build\Desktop\Master
+    Bank.strings.bank
+  lastModified: 636910382608811658
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 672
   Exists: 1
 --- !u!114 &114739925969244998
 MonoBehaviour:
@@ -99,6 +199,50 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 2000
+--- !u!114 &114817382282942454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat Sounds/Weapons/Laser Gun/Laser Shots
+  guid: 391644b00e77ab4b9725de007090dbce
+  Banks:
+  - {fileID: 114061710611217198}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2000
+--- !u!114 &114828815325839962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat Sounds/Weapons/Mining Laser/Mining Laser (Contact)
+  guid: 401d7eb7eb76da458ea617c755068bd0
+  Banks:
+  - {fileID: 114061710611217198}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 12000
 --- !u!114 &114954878977863512
 MonoBehaviour:
   m_ObjectHideFlags: 0

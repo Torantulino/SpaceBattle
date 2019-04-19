@@ -79,7 +79,7 @@ public partial class PlayerController : NetworkBehaviour
         cameraController = FindObjectOfType<CameraController>();
         guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
         lineRenderer = GetComponent<LineRenderer>();
-
+        audioManager = FindObjectOfType<AudioManager>();
         //Stop Atmospheric Noise
         cameraController.ShakeScreen(0.0f, 1.0f, true);
 
@@ -134,10 +134,13 @@ public partial class PlayerController : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             lasing = true;
+
+            audioManager.audioEvents[2].start();
         }
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
             lasing = false;
+            //audioManager.audioEvents[2].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         //TODO: EXTRACT TO METHOD A LA Ship.Shoot()
         if (lasing)
@@ -204,7 +207,7 @@ public partial class PlayerController : NetworkBehaviour
             }
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
-                Ship.Thrust(Vector3.forward);
+            Ship.Thrust(Vector3.forward);
             //Reverse Thrust
             bool reversing = false;
             if (Input.GetKey(KeyCode.LeftControl))
