@@ -14,15 +14,15 @@ public class Hotbar : MonoBehaviour
 
 	private List<Image> highlights = new List<Image>();
 	private List<Button> cells = new List<Button>();
-	private int activeCell = 0;
+	private static int activeCell = 0;
 	private Inventory inv;
-    private BuildController buildController;
+	private BuildController buildController;
 
-    // Use this for initialization
-    void Start()
-    {
+	// Use this for initialization
+	void Start()
+	{
 		//todo fix so it works for local player only
-        inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
+		inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
 
 		//populate cells
 		cells = GetComponentsInChildren<Button>().ToList();
@@ -39,16 +39,16 @@ public class Hotbar : MonoBehaviour
 
 	// Update is called once per frame
 	void Update()
-    {
-        if (GameController.LocalPlayer)
+	{
+		if (GameController.LocalPlayer)
 		{
-            if (buildController == null)
-                buildController = GameController.LocalPlayer.GetComponent<BuildController>();
+			if (buildController == null)
+				buildController = GameController.LocalPlayer.GetComponent<BuildController>();
 		}
 		else
 			return;
 
-        bool[] hotkeys = new bool[5];
+		bool[] hotkeys = new bool[5];
 
 		//all the inputs checked so I dont have lots of repeat code
 		hotkeys[0] = Input.GetKeyDown(KeyCode.Alpha1);
@@ -68,9 +68,9 @@ public class Hotbar : MonoBehaviour
 				//set selected part to a reference to a part on the top row of the inventory
 				SelectedPart = inv.displayCells2D[0, activeCell].GetComponent<ItemContainerUI>().ItemContainer;
 
-                //set selected part in the build controller
-			    buildController.SelectedPartID = SelectedPart.ItemID;
-            }
+				//set selected part in the build controller
+				buildController.SelectedPartID = SelectedPart.ItemID;
+			}
 		}
 
 		for (int i = 0; i < cells.Count; i++)
@@ -117,5 +117,16 @@ public class Hotbar : MonoBehaviour
 			//set that cell to be highlighted
 			activeCell = cells.IndexOf(button);
 		}
+	}
+
+	public static void AddToInv(Inventory inv)
+	{
+		inv.Increment(inv.displayCells2D[0, activeCell], 1);
+	}
+
+	public static void RemoveFromInv(Inventory inv)
+	{
+
+		inv.RemoveLocal(inv.displayCells2D[0, activeCell], 1);
 	}
 }

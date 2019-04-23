@@ -5,13 +5,15 @@ using UnityEngine;
 /// <summary>
 /// Class for handling player input in buildmode.
 /// </summary>
-public class BuildController : MonoBehaviour {
+public class BuildController : MonoBehaviour
+{
 
     public bool buildmode;
     //ID of part to spawn. Set currentNode to null to regenerate ghost
-    public int SelectedPartID { 
+    public int SelectedPartID
+    {
         private get { return selectedPartID; }
-        set { selectedPartID = value; RecreateGhost(); } 
+        set { selectedPartID = value; RecreateGhost(); }
     }
     private int selectedPartID;
     private Node currentNode;
@@ -25,15 +27,19 @@ public class BuildController : MonoBehaviour {
     private GameObject ghost;
     private CameraModeToggle cameraModeToggle;
 
+    private Inventory inv;
+
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         //initialise
         currentNode = null;
         buildmode = false;
- 
+
         //Get player controller
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
+
+        inv = FindObjectOfType<Inventory>();
     }
 
     // Update is called once per frame
@@ -42,7 +48,6 @@ public class BuildController : MonoBehaviour {
         // Buildmode
         if (!buildmode)
             return;
-
 
         playerShip = GameController.LocalPlayerController.Ship;
 
@@ -56,14 +61,13 @@ public class BuildController : MonoBehaviour {
             //Display 'ghost' block
             RecreateGhost();
         }
-    
 
         //Node Cycling
         // Cycle left
         if (Input.GetKeyDown(KeyCode.A))
         {
             //Cycle
-            currentNode = availableNodes.Count - 1 > availableNodes.IndexOf(currentNode) ? 
+            currentNode = availableNodes.Count - 1 > availableNodes.IndexOf(currentNode) ?
                 availableNodes[availableNodes.IndexOf(currentNode) + 1] : availableNodes[0];
 
             //Move ghost
@@ -95,6 +99,9 @@ public class BuildController : MonoBehaviour {
 
             //Update bounds for camera zoom
             cameraModeToggle.CalculateBounds();
+
+            //-1 from inventory
+            Hotbar.RemoveFromInv(inv);
         }
 
         //Remove Part
@@ -115,6 +122,9 @@ public class BuildController : MonoBehaviour {
 
                 //Update bounds for camera zoom
                 cameraModeToggle.CalculateBounds();
+
+                //+1 to inventory
+                Hotbar.AddToInv(inv);
             }
         }
 
@@ -127,7 +137,7 @@ public class BuildController : MonoBehaviour {
 
     private void RecreateGhost()
     {
-        if(ghost) Destroy(ghost);
+        if (ghost) Destroy(ghost);
 
         ghost = Instantiate(PartManager.Instance.GetPartById(selectedPartID).Prefab, transform);
         ghost.name = "ghost";
