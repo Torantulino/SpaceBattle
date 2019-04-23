@@ -18,9 +18,13 @@ public class Hotbar : MonoBehaviour
 	private Inventory inv;
     private BuildController buildController;
 
+	//Audio
+    private AudioManager audioManager;
+
     // Use this for initialization
     void Start()
     {
+		audioManager = FindObjectOfType<AudioManager>();
 		//todo fix so it works for local player only
         inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
 
@@ -62,6 +66,7 @@ public class Hotbar : MonoBehaviour
 		{
 			if (hotkeys[i])
 			{
+				audioManager.audioEvents[3].start();;
 				Debug.Log("hotbar index : " + i);
 				activeCell = i;
 

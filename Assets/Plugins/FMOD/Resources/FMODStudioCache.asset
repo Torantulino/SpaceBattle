@@ -12,18 +12,30 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 114183035680928256}
-  - {fileID: 114061710611217198}
+  - {fileID: 114348531220833820}
+  - {fileID: 114892879121457444}
+  - {fileID: 114560973282043226}
   EditorEvents:
-  - {fileID: 114817382282942454}
-  - {fileID: 114561471802787740}
-  - {fileID: 114828815325839962}
+  - {fileID: 114731476539542510}
+  - {fileID: 114637690925821500}
+  - {fileID: 114201280847914650}
+  - {fileID: 114412285691785462}
+  - {fileID: 114110570071895760}
+  - {fileID: 114685448758629050}
+  - {fileID: 114722777580949694}
+  - {fileID: 114458963937620094}
+  - {fileID: 114756552787164886}
+  - {fileID: 114973206404872198}
+  - {fileID: 114600575293414458}
+  - {fileID: 114912391753278882}
+  - {fileID: 114807988230800504}
+  - {fileID: 114697374716344436}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 114061710611217198}
+  - {fileID: 114892879121457444}
   StringsBanks:
-  - {fileID: 114183035680928256}
-  stringsBankWriteTime: 636912840204725137
+  - {fileID: 114348531220833820}
+  stringsBankWriteTime: 636916292536639574
   cacheVersion: 3
 --- !u!114 &114061710611217198
 MonoBehaviour:
@@ -44,6 +56,28 @@ MonoBehaviour:
   - Name: Desktop
     Value: 314240
   Exists: 1
+--- !u!114 &114110570071895760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat Sounds/Weapons/Mining Laser/Mining Laser (Contact)
+  guid: 401d7eb7eb76da458ea617c755068bd0
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 500
 --- !u!114 &114183035680928256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +97,28 @@ MonoBehaviour:
   - Name: Desktop
     Value: 910
   Exists: 1
+--- !u!114 &114201280847914650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/UI Sounds/Inventory/Inventory (place)
+  guid: 2b35b8273b80da4b978b138aae17b082
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 208
 --- !u!114 &114275626239558760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +155,46 @@ MonoBehaviour:
   - Name: Desktop
     Value: 976
   Exists: 1
+--- !u!114 &114348531220833820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: Fmod SFX session\Build\Desktop\Master Bank.strings.bank
+  lastModified: 636916292536639574
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1506
+  Exists: 1
+--- !u!114 &114412285691785462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat Sounds/Weapons/Laser Gun/Laser Shots
+  guid: 391644b00e77ab4b9725de007090dbce
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2000
 --- !u!114 &114440677592471670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +214,28 @@ MonoBehaviour:
   - Name: Desktop
     Value: 12474
   Exists: 1
+--- !u!114 &114458963937620094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Idea 1 Exploration - Menu
+  guid: 7f909ab5f186254887f88bb1912707ca
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 255600
 --- !u!114 &114492549919670426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,6 +253,23 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 766
+  Exists: 1
+--- !u!114 &114560973282043226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\40214314\Desktop\SpaceBattle\Fmod SFX session\Build\Desktop\Master
+    Bank.strings.bank
+  lastModified: 636916292536639574
+  LoadResult: 70
+  FileSizes: []
   Exists: 1
 --- !u!114 &114561471802787740
 MonoBehaviour:
@@ -158,6 +293,50 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 8008
+--- !u!114 &114600575293414458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/UI Sounds/Menu/UI Blip
+  guid: c40d5c61a58c2c4fbc3fe120aca382b4
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 180
+--- !u!114 &114637690925821500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat Sounds/Combat Player Sounds/Hit Marker
+  guid: 28124a5c306c164b87da740cfe23e092
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 125
 --- !u!114 &114654403110024696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +356,94 @@ MonoBehaviour:
   - Name: Desktop
     Value: 672
   Exists: 1
+--- !u!114 &114685448758629050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Player Sounds/Thrusters
+  guid: 52e44f83fa7dcf40988d22960ffeea91
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 880
+--- !u!114 &114697374716344436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat Sounds/Combat Player Sounds/Shield Alarm
+  guid: cd72e7fc8255af40b367e9cd435fa27f
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1243
+--- !u!114 &114722777580949694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Idea 3 Exploration
+  guid: 586d4fea0303f248a4ac924debba8124
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 215064
+--- !u!114 &114731476539542510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/UI Sounds/Inventory/Inventory (pick up_
+  guid: 1e8588165d0e104d8ee97c5dffad57ff
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 870
 --- !u!114 &114739925969244998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,6 +466,50 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 2000
+--- !u!114 &114756552787164886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Idea 4 Battle
+  guid: 93d7e57424378a4387387a6480115477
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 200784
+--- !u!114 &114807988230800504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat Sounds/Weapons/Canon/Ion Canon (explosion)
+  guid: 017b4c10e084634e881f28c26696b2fb
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1500
 --- !u!114 &114817382282942454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +554,45 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 12000
+--- !u!114 &114892879121457444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\40214314\Desktop\SpaceBattle\Fmod SFX session\Build\Desktop\Master
+    Bank.bank
+  lastModified: 636916292536609701
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
+--- !u!114 &114912391753278882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Idea 5 Ambient
+  guid: c88dc61dd8ea164db8e3101b594f94d2
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 198816
 --- !u!114 &114954878977863512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,3 +611,25 @@ MonoBehaviour:
   - Name: Desktop
     Value: 24224
   Exists: 1
+--- !u!114 &114973206404872198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Idea 2 Battle
+  guid: 960e13419dfff74bb2419985bdff362c
+  Banks:
+  - {fileID: 114892879121457444}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 221064

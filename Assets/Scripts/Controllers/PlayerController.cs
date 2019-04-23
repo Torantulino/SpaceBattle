@@ -140,7 +140,7 @@ public partial class PlayerController : NetworkBehaviour
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
             lasing = false;
-            //audioManager.audioEvents[2].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            audioManager.audioEvents[2].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         //TODO: EXTRACT TO METHOD A LA Ship.Shoot()
         if (lasing)
@@ -207,7 +207,11 @@ public partial class PlayerController : NetworkBehaviour
             }
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
-            Ship.Thrust(Vector3.forward);
+                Ship.Thrust(Vector3.forward);
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                audioManager.audioEvents[1].start();
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+                audioManager.audioEvents[1].stop((FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
             //Reverse Thrust
             bool reversing = false;
             if (Input.GetKey(KeyCode.LeftControl))
