@@ -69,7 +69,7 @@ public class Inventory : MonoBehaviour
 		cont.ItemID = id;
 		cont.Quantity = quantity;
 		AddServer(cont);
-    }
+	}
 
 	private void AddServer(ItemContainer item)
 	{
@@ -143,7 +143,7 @@ public class Inventory : MonoBehaviour
 		{
 			ItemContainer container = b.GetComponent<ItemContainerUI>().ItemContainer;
 
-            if (b.GetComponent<ItemContainerUI>().ItemContainer.ItemID != int.MaxValue)
+			if (b.GetComponent<ItemContainerUI>().ItemContainer.ItemID != int.MaxValue)
 			{
 				b.GetComponentsInChildren<Image>() [1].sprite = container.Icon;
 			}
@@ -167,5 +167,10 @@ public class Inventory : MonoBehaviour
 		}
 
 	}
+
+	// public static void ReturnQuantity()
+	// {
+	// 	foreach(Button)
+	// }
 
 }
