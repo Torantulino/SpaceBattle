@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{838ac498-c799-4e48-bf70-7d53d26f92d2}">
+        <property name="assetPath">
+            <value>Idea 2 Battle.mp3</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>221.06399999999999</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{1e9c041a-f86b-4de7-971a-f3ffdd55f696}</destination>
+        </relationship>
+    </object>
+</objects>

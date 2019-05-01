@@ -8,6 +8,9 @@ using UnityEngine.Networking;
 /// <summary>
 /// Class for all Player prefabs.
 /// </summary>
+/// 
+
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
 public partial class PlayerController : NetworkBehaviour
@@ -59,6 +62,10 @@ public partial class PlayerController : NetworkBehaviour
     private bool shooting = false;
     bool lasing = false;
 
+    //Audio
+    private AudioManager audioManager;
+
+
     // Use this for initialization
     void Start()
     {
@@ -71,7 +78,7 @@ public partial class PlayerController : NetworkBehaviour
         cameraController = FindObjectOfType<CameraController>();
         guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
         lineRenderer = GetComponent<LineRenderer>();
-
+        audioManager = FindObjectOfType<AudioManager>();
         //Stop Atmospheric Noise
         cameraController.ShakeScreen(0.0f, 1.0f, true);
 
@@ -93,6 +100,7 @@ public partial class PlayerController : NetworkBehaviour
         // Set the reference for Ship
         Ship = GetComponent<Ship>();
     }
+    
 
     //Use update for frame dependent input (Key up/Down)
     private void Update()
@@ -113,22 +121,25 @@ public partial class PlayerController : NetworkBehaviour
             shooting = true;
             //StartCoroutine("Shooting");
             Ship.Shoot();
+
             cameraController.ShakeScreen(3.0f, 1.0f, true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             shooting = false;
             cameraController.ShakeScreen(0.0f, 1.0f, true);
-            
         }
         //Fire Mining Laser
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             lasing = true;
+
+            audioManager.audioEvents[2].start();
         }
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
             lasing = false;
+            audioManager.audioEvents[2].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
         //TODO: EXTRACT TO METHOD A LA Ship.Shoot()
         if (lasing)
@@ -196,6 +207,10 @@ public partial class PlayerController : NetworkBehaviour
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
                 Ship.Thrust(Vector3.forward);
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                audioManager.audioEvents[1].start();
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+                audioManager.audioEvents[1].stop((FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
             //Reverse Thrust
             bool reversing = false;
             if (Input.GetKey(KeyCode.LeftControl))

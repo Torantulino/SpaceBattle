@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{9cba5a80-a381-4139-88b2-789a8aade44e}">
+        <property name="assetPath">
+            <value>Mining Laser (Contact).wav</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>12.248208333333332</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{1e9c041a-f86b-4de7-971a-f3ffdd55f696}</destination>
+        </relationship>
+    </object>
+</objects>
