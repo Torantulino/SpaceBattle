@@ -1550,7 +1550,7 @@ TrailRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1685116653520778}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1722,7 +1722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b910a229c709807418a14a6f27ba380a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunshot: event:/Combat Sounds/Weapons/Laser Gun/Laser Shots
 --- !u!114 &114251526871998868
 MonoBehaviour:
   m_ObjectHideFlags: 1
