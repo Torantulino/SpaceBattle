@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Name: FMODStudioSettings
   m_EditorClassIdentifier: 
   SwitchSettingsMigration: 1
-  HasSourceProject: 1
+  HasSourceProject: 0
   HasPlatforms: 1
   sourceProjectPath: Fmod SFX session\Fmod SFX session.fspro
   SourceProjectPathUnformatted: Fmod SFX session\Fmod SFX session.fspro
-  SourceBankPathUnformatted: Fmod SFX session\Build
+  SourceBankPathUnformatted: F:\Github\SpaceBattle\Assets\StreamingAssetsFmod SFX
+    session\Build
   AutomaticEventLoading: 1
   BankLoadType: 0
   AutomaticSampleLoading: 0
@@ -76,7 +77,6 @@ MonoBehaviour:
   Plugins: []
   MasterBanks:
   - Master Bank
-  Banks:
-  - Master Bank.strings
+  Banks: []
   BanksToLoad: []
   LiveUpdatePort: 9264
