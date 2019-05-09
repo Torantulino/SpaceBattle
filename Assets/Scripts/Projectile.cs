@@ -14,7 +14,7 @@ public abstract class Projectile : NetworkBehaviour
     protected GameObject destroyParticles;
 
     //todo temporary, time after this projectile will damage anything (including weapon that is firing it!)
-    private float _time = .5f;
+    private float _time = .1f;
 
     // Use this for initialization
     protected void Start()

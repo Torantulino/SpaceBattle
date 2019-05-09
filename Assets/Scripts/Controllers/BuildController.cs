@@ -10,10 +10,10 @@ public class BuildController : MonoBehaviour {
     public bool buildmode;
     //ID of part to spawn. Set currentNode to null to regenerate ghost
     public int SelectedPartID { 
-        private get { return seletedPartID; }
-        set { seletedPartID = value; RecreateGhost(); } 
+        private get { return selectedPartID; }
+        set { selectedPartID = value; RecreateGhost(); } 
     }
-    private int seletedPartID;
+    private int selectedPartID;
     private Node currentNode;
     private Ship playerShip;
 
@@ -90,7 +90,7 @@ public class BuildController : MonoBehaviour {
             currentNode = null;
 
             //Build Part
-            PartData newPart = new PartData(seletedPartID, position);
+            PartData newPart = new PartData(selectedPartID, position);
             playerShip.AddPart(newPart);
 
             //Update bounds for camera zoom
@@ -129,7 +129,7 @@ public class BuildController : MonoBehaviour {
     {
         if(ghost) Destroy(ghost);
 
-        ghost = Instantiate(PartManager.Instance.GetPartById(seletedPartID).Prefab, transform);
+        ghost = Instantiate(PartManager.Instance.GetPartById(selectedPartID).Prefab, transform);
         ghost.name = "ghost";
         ghost.GetComponent<Part>().isGhost = true;
 

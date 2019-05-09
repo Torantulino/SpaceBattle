@@ -29,6 +29,8 @@ public partial class PlayerController : NetworkBehaviour
         // Adding Parts that every player receives when they start
         //Ship.AddPart(new PartData(0, new Vector3(0, 1, 0)));
         //Ship.AddPart(new PartData(0, new Vector3(0, -1, 0), new Vector3(0f, 0f, 180f)));
+
+        Destroy(GetComponentInChildren<TargetIndicator>());
     }
 
     /// <summary>

@@ -79,7 +79,7 @@ public class CameraModeToggle : MonoBehaviour
 		}
 		else
 		{
-			Debug.LogWarning("Waiting for valid camera Player/CameraAnchor");
+			//Debug.LogWarning("Waiting for valid camera Player/CameraAnchor");
 		}
 	}
 
@@ -98,7 +98,7 @@ public class CameraModeToggle : MonoBehaviour
 
         //Obtain the furthest out value
         foreach (Renderer childRend in GameController.LocalPlayer.GetComponentsInChildren<Renderer>()) {
-            if (childRend.name != "Visualiser" && childRend.name != "Crosshair" && !(childRend is TrailRenderer)) { 
+            if (childRend.name != "Visualiser" && childRend.name != "Crosshair" && !(childRend is TrailRenderer) && !(childRend is ParticleSystemRenderer)) { 
                 Vector3 min = childRend.bounds.min - GameController.LocalPlayer.transform.position;
                 Vector3 max = childRend.bounds.max - GameController.LocalPlayer.transform.position;
 

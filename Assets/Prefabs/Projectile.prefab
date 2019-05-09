@@ -100,7 +100,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &114275114772925362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -112,9 +112,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eedae04c88d626045bd856c507131573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 50
   destroyParticles: {fileID: 0}
-  lifetime: 5
+  lifetime: 4
 --- !u!114 &114473983402485954
 MonoBehaviour:
   m_ObjectHideFlags: 1

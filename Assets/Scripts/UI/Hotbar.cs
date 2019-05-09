@@ -18,10 +18,16 @@ public class Hotbar : MonoBehaviour
 	private Inventory inv;
     private BuildController buildController;
 
+	//Audio
+    private AudioManager audioManager;
+
     // Use this for initialization
     void Start()
     {
+		audioManager = FindObjectOfType<AudioManager>();
+		//todo fix so it works for local player only
         inv = GameObject.Find("InventoryManager").GetComponent<Inventory>();
+
 		//populate cells
 		cells = GetComponentsInChildren<Button>().ToList();
 		//populate highlights with the child image from each cell
@@ -37,9 +43,14 @@ public class Hotbar : MonoBehaviour
 
 	// Update is called once per frame
 	void Update()
-	{
-        if(buildController == null)
-            buildController = FindObjectOfType<BuildController>();
+    {
+        if (GameController.LocalPlayer)
+		{
+            if (buildController == null)
+                buildController = GameController.LocalPlayer.GetComponent<BuildController>();
+		}
+		else
+			return;
 
         bool[] hotkeys = new bool[5];
 
@@ -55,11 +66,12 @@ public class Hotbar : MonoBehaviour
 		{
 			if (hotkeys[i])
 			{
+				audioManager.audioEvents[3].start();;
 				Debug.Log("hotbar index : " + i);
 				activeCell = i;
 
 				//set selected part to a reference to a part on the top row of the inventory
-				SelectedPart = inv.displayCells2D[0, activeCell].GetComponent<ItemContainer>();
+				SelectedPart = inv.displayCells2D[0, activeCell].GetComponent<ItemContainerUI>().ItemContainer;
 
                 //set selected part in the build controller
 			    buildController.SelectedPartID = SelectedPart.ItemID;
@@ -68,7 +80,7 @@ public class Hotbar : MonoBehaviour
 
 		for (int i = 0; i < cells.Count; i++)
 		{
-			ItemContainer ic = inv.displayCells2D[0, i].GetComponent<ItemContainer>();
+			ItemContainer ic = inv.displayCells2D[0, i].GetComponent<ItemContainerUI>().ItemContainer;
 			if (ic.ItemID != int.MaxValue)
 				cells[i].GetComponent<Image>().sprite = ic.Icon;
 			else
@@ -87,7 +99,7 @@ public class Hotbar : MonoBehaviour
 				highlights[i].gameObject.SetActive(false);
 			}
 
-			cells[i].GetComponentInChildren<Text>().text = inv.displayCells2D[0, i].GetComponent<ItemContainer>().Quantity.ToString();
+			cells[i].GetComponentInChildren<Text>().text = inv.displayCells2D[0, i].GetComponent<ItemContainerUI>().ItemContainer.Quantity.ToString();
 		}
 
 		//debug only

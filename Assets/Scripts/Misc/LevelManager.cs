@@ -1,22 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEngine.Networking;
 
-public class LevelManager : MonoBehaviour {
+public class LevelManager : NetworkBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-        for (int i = 0; i < 500; i++)
+    private UnityEngine.Object[] asteroids;
+
+    // Use this for initialization
+    void Start()
+    {
+        if(!isServer)
+            return;
+
+        // Spawning asteroids only on server
+        try
         {
-            GameObject asteroid = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            asteroid.transform.position = Random.insideUnitSphere * 1000.0f;
-            asteroid.transform.localScale = Vector3.one * Random.Range(5.0f, 40.0f);
-            asteroid.transform.rotation = Random.rotation;
+            asteroids = Resources.LoadAll("asteroids", typeof(GameObject));
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        catch (Exception e)
+        {
+            Debug.Log("asteroid loading failed for the following reason: " + e);
+        }
+
+        //Generate map
+        for (int i = 0; i < 100; i++)
+        {
+            int rand = UnityEngine.Random.Range(0, asteroids.Length - 1);
+
+            GameObject asteroid = Instantiate((GameObject)asteroids[rand]);
+            asteroid.transform.position = UnityEngine.Random.insideUnitSphere * 150.0f;
+            //asteroid.transform.localScale = Vector3.one * UnityEngine.Random.Range(5.0f, 40.0f);
+            asteroid.transform.rotation = UnityEngine.Random.rotation;
+            NetworkServer.Spawn(asteroid);
+        }
+    }
 }

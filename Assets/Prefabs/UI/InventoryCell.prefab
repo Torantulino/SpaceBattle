@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 222117944469015806}
   - component: {fileID: 114918947102169702}
   - component: {fileID: 114242442743901548}
-  - component: {fileID: 114154891894015926}
+  - component: {fileID: 114657068366606792}
   m_Layer: 5
   m_Name: InventoryCell
   m_TagString: Untagged
@@ -47,19 +47,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114154891894015926
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1560329309033420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 965f5d38604780c4fa9700916cf5bc37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemID: 2147483647
-  quantity: 2147483647
 --- !u!114 &114242442743901548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -150,6 +137,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114657068366606792
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1560329309033420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5ac99de8d4f5ef49a98d9c7de405549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemContainer: {fileID: 0}
 --- !u!114 &114918947102169702
 MonoBehaviour:
   m_ObjectHideFlags: 1

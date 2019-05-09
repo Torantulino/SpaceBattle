@@ -11,10 +11,13 @@ public class GUIFacade : MonoBehaviour
 	[SerializeField] private GameObject BuildPanel;
 	[SerializeField] private GameObject CombatPanel;
 	[SerializeField] private DisplayHP Health;
+	private Texture2D flightCursor;
+
 
 	private void Start()
 	{
-		CursorMode();
+		UpdateCursorMode();
+		flightCursor = (Texture2D)Resources.Load<Texture2D>("icons/icon-plus.png");
 	}
 
 	/// <summary>
@@ -24,23 +27,28 @@ public class GUIFacade : MonoBehaviour
 	public void UpdateBuildmode(bool b)
 	{
         //Non-toggle to ensure sync
-        //Cuild mode
+        //Build mode
         if (b)
         {
             BuildPanel.gameObject.SetActive(true);
             CombatPanel.gameObject.SetActive(false);
+            //Change cursor and update hotspot
+            //todo: buildmode cursor
         }
         //Combat mode
         else
         {
             BuildPanel.gameObject.SetActive(false);
             CombatPanel.gameObject.SetActive(true);
+            //Change cursor and update hotspot
+			//TODO: Fix null ref
+            //Cursor.SetCursor(null, new Vector2(flightCursor.width/2, flightCursor.height/2), CursorMode.Auto);
         }
         //Update cursor mode
-        CursorMode();
+        UpdateCursorMode();
 	}
 
-	private void CursorMode()
+	private void UpdateCursorMode()
 	{
 		//when the Build panel is active unlock mouse, else lock the mouse to the centre
 
@@ -84,4 +92,6 @@ public class GUIFacade : MonoBehaviour
 
 		Health.IncrementHP(value);
 	}
+
+
 }

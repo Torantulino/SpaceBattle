@@ -8,10 +8,13 @@ using UnityEngine.Networking;
 /// <summary>
 /// Class for all Player prefabs.
 /// </summary>
+/// 
+
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Ship))]
-[RequireComponent(typeof(BuildController))]
-public partial class PlayerController : NetworkBehaviour {
+public partial class PlayerController : NetworkBehaviour
+{
 
     private readonly List<ItemContainer> _items = new List<ItemContainer>();
 
@@ -20,7 +23,7 @@ public partial class PlayerController : NetworkBehaviour {
     /// <summary>
     /// Name of the player. Synchronized variable
     /// </summary>
-    public string PlayerName 
+    public string PlayerName
     {
         get { return _playerName; }
         set { CmdChangeName(value); }
@@ -47,7 +50,7 @@ public partial class PlayerController : NetworkBehaviour {
 
     private bool buildMode;
 
-
+    private LineRenderer lineRenderer;
     private BuildController buildController;
     private CameraModeToggle cameraModeToggle;
     private CameraController cameraController;
@@ -57,6 +60,11 @@ public partial class PlayerController : NetworkBehaviour {
     private int _testCounter = 0;
     private FloatingPart _testPart;
     private bool shooting = false;
+    bool lasing = false;
+
+    //Audio
+    private AudioManager audioManager;
+
 
     // Use this for initialization
     void Start()
@@ -69,7 +77,8 @@ public partial class PlayerController : NetworkBehaviour {
         cameraModeToggle = FindObjectOfType<CameraModeToggle>();
         cameraController = FindObjectOfType<CameraController>();
         guiFacade = GameObject.Find("GUI_Interface").GetComponent<GUIFacade>();
-
+        lineRenderer = GetComponent<LineRenderer>();
+        audioManager = FindObjectOfType<AudioManager>();
         //Stop Atmospheric Noise
         cameraController.ShakeScreen(0.0f, 1.0f, true);
 
@@ -87,25 +96,75 @@ public partial class PlayerController : NetworkBehaviour {
         if (isLocalPlayer)
             return;
 
+        Destroy(GetComponent<BuildController>());
         // Set the reference for Ship
         Ship = GetComponent<Ship>();
     }
+    
 
     //Use update for frame dependent input (Key up/Down)
     private void Update()
     {
+        if(!isLocalPlayer)
+            return;
+            
+        //Toggle build mode
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            buildMode = !buildMode;
+            UpdateBuildMode();
+        }
         //- Combat -
         //Fire Primary Weapon
-        if (Input.GetKeyDown(KeyCode.Mouse0))       //todo: add check to see if weapon is on the ship
+        if (Input.GetKey(KeyCode.Mouse0))       //todo: add check to see if weapon is on the ship
         {
             shooting = true;
-            StartCoroutine("Shooting");
+            //StartCoroutine("Shooting");
+            Ship.Shoot();
+
             cameraController.ShakeScreen(3.0f, 1.0f, true);
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             shooting = false;
             cameraController.ShakeScreen(0.0f, 1.0f, true);
+        }
+        //Fire Mining Laser
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            lasing = true;
+
+            audioManager.audioEvents[2].start();
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            lasing = false;
+            audioManager.audioEvents[2].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+        //TODO: EXTRACT TO METHOD A LA Ship.Shoot()
+        if (lasing)
+        {
+            //Fire
+            lineRenderer.SetPosition(0, Vector3.zero);
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit))
+            {
+                if (hit.collider)
+                {   
+                    //Stop laser at hit surface.
+                    lineRenderer.SetPosition(1, transform.InverseTransformPoint(hit.point));
+                    if(hit.transform.GetComponent<FloatingPart>())
+                    {
+                        GameController.LocalPlayerController.PickUpFloatingPart(hit.transform.GetComponent<FloatingPart>());
+                    }
+                }
+            }
+            else lineRenderer.SetPosition(1, Vector3.forward *100.0f);
+        }
+        else
+        {
+            lineRenderer.SetPosition(0, Vector3.zero);
+            lineRenderer.SetPosition(1, Vector3.zero);
         }
     }
 
@@ -115,43 +174,48 @@ public partial class PlayerController : NetworkBehaviour {
         while (shooting)
         {
             Ship.Shoot();
-            yield return new WaitForSeconds(0.1f);  //todo: this will acquiesce to weapon's cooldown(s), but could be optimised by obtaining a reference to it
+            yield return new WaitForSeconds(0.1f);  //todo: this will acquiesce to weapon's cooldown(s), but could/should be optimised by obtaining a reference to it
         }
         yield return null;
     }
 
     // FixedUpdate is called once per physics tick
-    void FixedUpdate ()
-	{
+    void FixedUpdate()
+    {
         // Check if this code runs on the game object that represents my Player
-	    if (!isLocalPlayer)
-	        return;
+        if (!isLocalPlayer)
+            return;
 
         //Flight & Fight Mode
-        if (!buildMode) {
+        if (!buildMode)
+        {
             //- Flight -
             //Steer
             Vector3 steering = new Vector3((Camera.main.ScreenToViewportPoint(Input.mousePosition).y - 0.5f) * -1.0f, Camera.main.ScreenToViewportPoint(Input.mousePosition).x - 0.5f, 0.0f);
             GetComponent<Rigidbody>().angularVelocity = (transform.localToWorldMatrix.rotation * steering) * 2.0f;
-            //bank (roll due to steering)
-            transform.RotateAroundLocal(transform.forward, steering.y * -5.0f * Time.deltaTime);
+            // Bank (roll due to steering)
+            Ship.Roll(steering.y * -90f);
             //Roll
             if (Input.GetKey(KeyCode.Q))
             {
-                transform.RotateAroundLocal(transform.forward, 2.5f * Time.deltaTime);
+                Ship.Roll(60f);
             }
             if (Input.GetKey(KeyCode.E))
             {
-                transform.RotateAroundLocal(transform.forward, -2.5f * Time.deltaTime);
+                Ship.Roll(-60f);
             }
             //Thrust
             if (Input.GetKey(KeyCode.LeftShift))
-                GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 10.0f);
+                Ship.Thrust(Vector3.forward);
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                audioManager.audioEvents[1].start();
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+                audioManager.audioEvents[1].stop((FMOD.Studio.STOP_MODE.ALLOWFADEOUT));
             //Reverse Thrust
             bool reversing = false;
             if (Input.GetKey(KeyCode.LeftControl))
             {
-                GetComponent<Rigidbody>().AddRelativeForce(Vector3.back * 10.0f);
+                Ship.Thrust(Vector3.back);
                 reversing = true;
             }
             //Point velocity along ship direction (if not trying to reverse or currently going backwards)
@@ -186,12 +250,6 @@ public partial class PlayerController : NetworkBehaviour {
                         break;
                 }
             }
-        }
-        //Toggle build mode
-	    if (Input.GetKeyDown(KeyCode.Tab))
-	    {
-	        buildMode = !buildMode;
-            UpdateBuildMode();
         }
     }
 

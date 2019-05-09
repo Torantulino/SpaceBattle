@@ -50,7 +50,7 @@ public class Weapon : Part
         timeLeft = cooldown;
         GameObject shot = Instantiate(bulletPrefab, gunTransform.position, gunTransform.rotation);
         //todo that isn't networked
-        shot.GetComponent<Rigidbody>().velocity = playerShip.GetComponent<Rigidbody>().velocity + playerShip.transform.forward * 25.0f;
+        shot.GetComponent<Rigidbody>().velocity = playerShip.GetComponent<Rigidbody>().velocity + playerShip.transform.forward * 35.0f;
 
         return shot;
     }
